@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buscar form {
+  display: flex;
+}
+.buscar .form-control {
+  width: 80%;
+}
+
+.usuario_carrito {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.usuario_carrito .user img,
+.usuario_carrito .carrito img {
+  max-height: 40px;
+}
+
+.navbar-nav .nav-link {
+  font-size: 16px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+}
+
+.slide-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #343a40;
+  transition: left 0.3s ease;
+  z-index: 1050;
+}
+.slide-menu.show {
+  left: 0;
+}
+
+.navbar-toggler.collapsed + .navbar-collapse {
+  left: 0;
+}
+
+@media (max-width: 576px) {
+  .usuario_carrito {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+  }
+}
+@media (min-width: 792px) {
+  .slide-menu {
+    left: -100%;
+    width: 25%;
+  }
+}/*# sourceMappingURL=navbar.css.map */

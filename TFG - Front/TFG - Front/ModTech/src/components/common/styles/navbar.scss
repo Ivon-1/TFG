@@ -1,0 +1,101 @@
+// Variables
+$primary-color: #343a40;
+$secondary-color: #ffffff;
+$font-size: 16px;
+$font-weight-bold: bold;
+$nav-width: 25%; // Ancho del menu en pantallas medianas
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100%;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+// Barra de búsqueda
+.buscar {
+    form {
+        display: flex;
+    }
+
+    .form-control {
+        width: 80%;
+    }
+}
+
+// Estilos de usuario y carrito
+.usuario_carrito {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    .user img,
+    .carrito img {
+        max-height: 40px;
+    }
+}
+
+// Estilos de los links de la barra de navegación
+.navbar-nav {
+    .nav-link {
+        font-size: $font-size;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        &.active {
+            font-weight: $font-weight-bold;
+        }
+    }
+}
+
+// Menú deslizante
+.slide-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: $primary-color;
+    transition: left 0.3s ease;
+    z-index: 1050;
+
+    &.show {
+        left: 0;
+    }
+}
+
+// Cuando el menú se abre (hamburguesa)
+.navbar-toggler {
+    &.collapsed + .navbar-collapse {
+        left: 0; // Desliza hacia la derecha
+    }
+}
+
+// Media Queries - Responsivas
+
+// Tamaño pequeño (hasta 576px)
+@media (max-width: 576px) {
+    .usuario_carrito {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: row;
+    }
+}
+
+// Tamaño mediano (desde 792px)
+@media (min-width: 792px) {
+    .slide-menu {
+        left: -100%; // escondemos menu
+        width: $nav-width; 
+    }
+
+
+}
