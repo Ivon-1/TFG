@@ -1,8 +1,11 @@
 import { useState } from "react";
+import React from 'react';
+
 import './styles/home.css';
 import { Navbar } from "../../components/common/navbar";
 import imagenes_home from "../../data/imagenes_generales_home";
 import ofertas_home from "../../data/ofertas_home";
+import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 export function Home() {
     // poner codigo react aqui despues 
 
@@ -71,7 +74,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_monitores.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Sobremesa</a>
+                    <a href="#" className="btn btn-info text-white">Sobremesa</a>
                 </div>
             </div>
             {/* categorias auriculares */}
@@ -80,7 +83,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_auriculares.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Auriculares</a>
+                    <a href="#" className="btn btn-info text-white">Auriculares</a>
                 </div>
             </div>
 
@@ -90,7 +93,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_moviles.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Móviles</a>
+                    <a href="#" className="btn btn-info text-white">Móviles</a>
                 </div>
             </div>
 
@@ -100,7 +103,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_consolas.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Consolas</a>
+                    <a href="#" className="btn btn-info text-white">Consolas</a>
                 </div>
             </div>
 
@@ -110,7 +113,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_componentes.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Componentes</a>
+                    <a href="#" className="btn btn-info text-white">Componentes</a>
                 </div>
             </div>
 
@@ -120,7 +123,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_televisiones.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-primary">Televisores</a>
+                    <a href="#" className="btn btn-info text-white">Televisores</a>
                 </div>
             </div>
         </div>
@@ -273,39 +276,166 @@ export function Home() {
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
             <div className="todo_mas_vendido">
-                {/* producto mas vendido dos */}
+                {/* producto mas vendido uno */}
                 <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
                     <span className="discount-tag_vendido">-20%</span>
-                    <img src={ofertas_home.portatil_hp.url}
+                    <img src={productos_mas_vendidos.xbox.url}
                         className="card-img-top"
-                        alt={ofertas_home.portatil_hp.alt} />
+                        alt={productos_mas_vendidos.xbox.alt} />
                     <div className="card-body mt-3">
                         <h5 className="card-title">Raton HP</h5>
                         <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
                         </p>
                         <div className="total_precio">
                             <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.portatil_hp.precio} €</p>
+                            <p>Total: {productos_mas_vendidos.xbox.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido dos */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.iphone15.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.iphone15.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">iPhone 15 pro max</h5>
+                        <p className="card-text">Gran potencia, diseño premium, calidad indiscutible y tecnología avanzada, todo en la palma de tu mano.
+                        </p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.iphone15.precio} €</p>
                         </div>
                     </div>
                 </div>
                 {/* producto mas vendido tres */}
                 <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
                     <span className="discount-tag_vendido">-20%</span>
-                    <img src={ofertas_home.portatil_hp.url}
+                    <img src={productos_mas_vendidos.iphone8.url}
                         className="card-img-top"
-                        alt={ofertas_home.portatil_hp.alt} />
+                        alt={productos_mas_vendidos.iphone8.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">iPhone 8</h5>
+                        <p className="card-text">Rendimiento rápido, diseño elegante y una cámara avanzada en un solo dispositivo.</p>
+
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.iphone8.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido cuatro*/}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.raton_msi.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.raton_msi.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Raton MSI</h5>
+                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.</p>
+
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.raton_msi.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido cinco */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.auriculares_corsair.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.auriculares_corsair.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Auriculares Corsair</h5>
+                        <p className="card-text">Auriculares de alta calidad con sonido envolvente, comodidad para largas sesiones y micrófono de precisión.</p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.auriculares_corsair.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido seis */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.portatil_razer.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.portatil_razer.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Portátil Razer</h5>
+                        <p className="card-text">Potencia extrema, diseño elegante y rendimiento de nivel gaming para llevar tu experiencia al siguiente nivel.</p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.portatil_razer.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido siete */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.portatil_msi.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.portatil_msi.alt} />
                     <div className="card-body mt-3">
                         <h5 className="card-title">Raton HP</h5>
                         <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
                         </p>
                         <div className="total_precio">
                             <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.portatil_hp.precio} €</p>
+                            <p>Total: {productos_mas_vendidos.portatil_msi.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido ocho */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={productos_mas_vendidos.tarjeta_grafica.url}
+                        className="card-img-top"
+                        alt={productos_mas_vendidos.tarjeta_grafica.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Raton HP</h5>
+                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                        </p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {productos_mas_vendidos.tarjeta_grafica.precio} €</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+            {/* seccion de nuestro blog */}
+            <section className="nuestro_blog">
+                <h3 className="text-center bg-dark p-2">En nuestro blog</h3>
+                <div className="blogs">
+                    {/* blog uno  */}
+                    <div className="card_blog   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                        <h3 className="text-center bg-dark p-2">Procesadores intel</h3>
+                        <img src={productos_mas_vendidos.tarjeta_grafica.url}
+                            className="card-img-top"
+                            alt={productos_mas_vendidos.tarjeta_grafica.alt} />
+                        <div className="cuerpo_card mt-3">
+                            <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                            </p>
+
+                        </div>
+                    </div>
+
+                    {/* blog uno  */}
+                    <div className="card_blog   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                        <h3 className="text-center bg-dark p-2">Artículos nvidia</h3>
+                        <img src={productos_mas_vendidos.tarjeta_grafica.url}
+                            className="card-img-top"
+                            alt={productos_mas_vendidos.tarjeta_grafica.alt} />
+                        <div className="cuerpo_card mt-3">
+                            <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section >
+
+
     </>
 }

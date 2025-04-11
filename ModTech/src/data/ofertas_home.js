@@ -47,7 +47,7 @@ const ofertas_home = {
         id: 7,
         url: portatil_razer,
         alt: "oferta_portatil_razer",
-        precio: 750
+        precio: 1250
     },
     portatil_hp: {
         id: 8,
@@ -55,8 +55,6 @@ const ofertas_home = {
         alt: "oferta_raton_razer",
         precio: 750
     },
-
-
 }
 
 export default ofertas_home;

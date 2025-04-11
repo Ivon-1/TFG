@@ -7,6 +7,7 @@
 body {
   background: linear-gradient(to bottom, #fffa73, #2d8ab8, #fffa73);
   color: white;
+  /** NUESTRO BLOG */
 }
 body img {
   max-width: 100%;
@@ -17,6 +18,9 @@ body .tarjetas_categorias {
   padding: 5%;
   gap: 80px;
   margin: auto;
+}
+body .tarjetas_categorias .card {
+  width: 90%;
 }
 body .ofertas_home {
   background-color: black;
@@ -56,7 +60,7 @@ body .productos_mas_vendidos .todo_mas_vendido {
 body .productos_mas_vendidos .todo_mas_vendido .card_personalizada {
   position: relative;
 }
-body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .discount-tag_vendidos {
+body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .discount-tag_vendido {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -77,6 +81,12 @@ body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .total_precio
   justify-content: space-around;
   margin-top: 5%;
 }
+body .nuestro_blog .blogs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 80%;
+  margin: auto;
+}
 
 /** 
 media queries 
@@ -88,6 +98,10 @@ media queries
   .tarjetas_categoriashover {
     transition: all 300ms;
     transform: scale(1.05);
+  }
+  .productos_mas_vendidos .todo_mas_vendido {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
   }
   .seccion_ofertas .todas_ofertas {
     grid-template-columns: repeat(3, 1fr) !important;
@@ -105,6 +119,10 @@ media queries
   }
   .tarjetas_categorias {
     width: 80%;
+  }
+  .productos_mas_vendidos .todo_mas_vendido {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
   }
   .seccion_ofertas .todas_ofertas {
     display: grid;

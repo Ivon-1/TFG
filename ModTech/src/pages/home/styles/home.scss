@@ -7,7 +7,6 @@
 body {
     background: linear-gradient(to bottom, #fffa73, #2d8ab8, #fffa73);
     color: white;
-
     img {
         max-width: 100%;
     }
@@ -18,6 +17,9 @@ body {
         padding: 5%;
         gap: 80px;
         margin: auto;
+        .card {
+            width: 90%;
+        }
     }
 
     .ofertas_home {
@@ -63,7 +65,7 @@ body {
             grid-template-columns: repeat(2, 1fr);
             .card_personalizada {
                 position: relative;
-                .discount-tag_vendidos {
+                .discount-tag_vendido {
                     position: absolute;
                     top: 10px;
                     left: 10px;
@@ -88,6 +90,16 @@ body {
             }
         }
     }
+
+    /** NUESTRO BLOG */
+    .nuestro_blog {
+        .blogs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            width: 80%;
+            margin: auto;
+        }
+    }
 }
 
 /** 
@@ -97,6 +109,7 @@ media queries
 }
 
 @media (min-width: 768px) {
+    // categorias
     .tarjetas_categorias {
         grid-template-columns: repeat(3, 1fr) !important;
         &hover {
@@ -104,12 +117,20 @@ media queries
             transform: scale(1.05);
         }
     }
-
+    // mas vendidos
+    .productos_mas_vendidos {
+        .todo_mas_vendido {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    // ofertas
     .seccion_ofertas {
         .todas_ofertas {
             grid-template-columns: repeat(3, 1fr) !important;
         }
     }
+    // seccion blog
 }
 
 @media (min-width: 992px) {
@@ -126,10 +147,20 @@ media queries
         width: 80%;
     }
 
+    // mas vendidos
+    .productos_mas_vendidos {
+        .todo_mas_vendido {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+    // seccion ofertas
     .seccion_ofertas {
         .todas_ofertas {
             display: grid;
             grid-template-columns: repeat(4, 1fr) !important;
         }
     }
+
+    // seccion blog
 }
