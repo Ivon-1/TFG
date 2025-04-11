@@ -55,6 +55,39 @@ body {
             }
         }
     }
+
+    // productos mas vendidos
+    .productos_mas_vendidos {
+        .todo_mas_vendido {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            .card_personalizada {
+                position: relative;
+                .discount-tag_vendidos {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background-color: red;
+                    color: #fff;
+                    padding: 2%;
+                    font-size: 16px;
+                    font-weight: bold;
+                    border-radius: 5px;
+                    transform-origin: center;
+                    z-index: 10; // colcaomaos elemento encima de lso demas
+                    text-transform: uppercase;
+                    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+                }
+
+                .total_precio {
+                    display: flex;
+                    gap: 20px;
+                    justify-content: space-around;
+                    margin-top: 5%;
+                }
+            }
+        }
+    }
 }
 
 /** 
@@ -72,9 +105,9 @@ media queries
         }
     }
 
-    .seccion_ofertas{
-        .todas_ofertas{
-            grid-template-columns: repeat(3,1fr) !important;
+    .seccion_ofertas {
+        .todas_ofertas {
+            grid-template-columns: repeat(3, 1fr) !important;
         }
     }
 }
@@ -93,10 +126,10 @@ media queries
         width: 80%;
     }
 
-    .seccion_ofertas{
-        .todas_ofertas{
+    .seccion_ofertas {
+        .todas_ofertas {
             display: grid;
-            grid-template-columns: repeat(4,1fr) !important;
+            grid-template-columns: repeat(4, 1fr) !important;
         }
     }
 }

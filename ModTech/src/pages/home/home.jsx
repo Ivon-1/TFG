@@ -272,8 +272,40 @@ export function Home() {
         {/* SECCION PRODUCTOS MAS VENDIDOS */}
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
-
-
+            <div className="todo_mas_vendido">
+                {/* producto mas vendido dos */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={ofertas_home.portatil_hp.url}
+                        className="card-img-top"
+                        alt={ofertas_home.portatil_hp.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Raton HP</h5>
+                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                        </p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {ofertas_home.portatil_hp.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+                {/* producto mas vendido tres */}
+                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
+                    <span className="discount-tag_vendido">-20%</span>
+                    <img src={ofertas_home.portatil_hp.url}
+                        className="card-img-top"
+                        alt={ofertas_home.portatil_hp.alt} />
+                    <div className="card-body mt-3">
+                        <h5 className="card-title">Raton HP</h5>
+                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                        </p>
+                        <div className="total_precio">
+                            <a href="#" className="btn btn-primary">Comprar</a>
+                            <p>Total: {ofertas_home.portatil_hp.precio} €</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </>
 }
