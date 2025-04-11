@@ -6,6 +6,7 @@ import { Navbar } from "../../components/common/navbar";
 import imagenes_home from "../../data/imagenes_generales_home";
 import ofertas_home from "../../data/ofertas_home";
 import productos_mas_vendidos from "../../data/productos_mas_vendidos";
+import imagenes_blog from "../../data/informacion_blog";
 export function Home() {
     // poner codigo react aqui despues 
 
@@ -404,35 +405,137 @@ export function Home() {
                 </div>
             </div>
             {/* seccion de nuestro blog */}
+            <h3 className="text-center bg-dark p-2">Nuestros blogs</h3>
             <section className="nuestro_blog">
-                <h3 className="text-center bg-dark p-2">En nuestro blog</h3>
-                <div className="blogs">
-                    {/* blog uno  */}
-                    <div className="card_blog   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                        <h3 className="text-center bg-dark p-2">Procesadores intel</h3>
-                        <img src={productos_mas_vendidos.tarjeta_grafica.url}
-                            className="card-img-top"
-                            alt={productos_mas_vendidos.tarjeta_grafica.alt} />
-                        <div className="cuerpo_card mt-3">
-                            <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
-                            </p>
+                <div id="carouselExample" class="carousel slide">
+                    {/* carousel uno */}
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 1</h3>
+                    <div className="carousel-inner">
+                  
+                        <div className="carousel-item active">
+                            <a href="https://planderecuperacion.gob.es/noticias/que-es-inteligencia-artificial-ia-prtr"
+                                target="blank">
+                                <img src={imagenes_blog.blog_uno.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_uno.alt}
+                                /></a>
+                        </div>
+
+                        <div className="carousel-item">
+                            <a href="https://www.intel.la/content/www/xl/es/processors/processor-numbers.html"
+                                target="blank">
+                                <img src={imagenes_blog.blog_tres.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_tres.alt} />
+                            </a>
+
+                        </div>
+                        <a href="">
+                            <div className="carousel-item">
+                                <a href="https://www.xataka.com/basics/que-vibe-coding-que-ventajas-desventajas-ofrece-este-concepto-programar-usando-inteligencia-artificial"
+                                    target="blank">
+                                    <img src={imagenes_blog.blog_cuatro.url}
+                                        className="d-block w-100"
+                                        alt={imagenes_blog.blog_cuatro.url} />
+                                </a>
+                            </div>
+                        </a>
+
+                    </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </div>
+                {/* carousel dos */}
+                <div id="carouselBlog2" class="carousel slide">
+                <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 2</h3>
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <a href="https://www.xataka.com/tag/nvidia"
+                                target="blank">
+                                <img src={imagenes_blog.blog_dos.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_dos.alt} />
+                            </a>
+
+                        </div>
+                        <div className="carousel-item">
+                            <a href="https://www.eleconomista.es/compras/noticias/12694255/02/24/mejores-ordenadores-portatiles.html"
+                                target="blank">
+                                <img src={imagenes_blog.blog_cinco.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_cinco.alt} />
+                            </a>
+
+                        </div>
+                        <div className="carousel-item">
+                            <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
+                                target="blank">
+                                <img src={imagenes_blog.blog_seis.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_seis.alt} />
+                            </a>
 
                         </div>
                     </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog2" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog2" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </div>
 
-                    {/* blog uno  */}
-                    <div className="card_blog   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                        <h3 className="text-center bg-dark p-2">Artículos nvidia</h3>
-                        <img src={productos_mas_vendidos.tarjeta_grafica.url}
-                            className="card-img-top"
-                            alt={productos_mas_vendidos.tarjeta_grafica.alt} />
-                        <div className="cuerpo_card mt-3">
-                            <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
-                            </p>
+                {/* carousel tres */}
+                <div id="carouselBlog3" class="carousel slide">
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 3</h3>
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <a href="https://www.xataka.com/tag/nvidia"
+                                target="blank">
+                                <img src={imagenes_blog.blog_siete.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_siete.alt} />
+                            </a>
+
+                        </div>
+                        <div className="carousel-item">
+                            <a href="https://es-store.msi.com/products/thin-15-b12uc-1839xes-portatiles"
+                                target="blank">
+                                <img src={imagenes_blog.blog_ocho.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_ocho.alt} />
+                            </a>
+
+                        </div>
+                        <div className="carousel-item">
+                            <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
+                                target="blank">
+                                <img src={imagenes_blog.blog_nueve.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_nueve.alt} />
+                            </a>
+
                         </div>
                     </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog3" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog3" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
                 </div>
             </section>
+
 
         </section >
 
