@@ -97,7 +97,7 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
         padding: 40px;
-        .carousel-inner{
+        .carousel-inner {
             border: 4px solid black;
             border-radius: 40px;
         }
@@ -114,10 +114,9 @@ media queries
 }
 
 @media (min-width: 576px) {
-    
     // seccion blog
     .nuestro_blog {
-        grid-template-columns: repeat(3,1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 
@@ -143,7 +142,6 @@ media queries
             grid-template-columns: repeat(3, 1fr) !important;
         }
     }
-
 }
 
 @media (min-width: 992px) {
@@ -174,5 +172,4 @@ media queries
             grid-template-columns: repeat(4, 1fr) !important;
         }
     }
-
 }

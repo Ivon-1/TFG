@@ -409,9 +409,9 @@ export function Home() {
             <section className="nuestro_blog">
                 <div id="carouselExample" class="carousel slide">
                     {/* carousel uno */}
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 1</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">IA, VibeCoding e Intel</h3>
                     <div className="carousel-inner">
-                  
+
                         <div className="carousel-item active">
                             <a href="https://planderecuperacion.gob.es/noticias/que-es-inteligencia-artificial-ia-prtr"
                                 target="blank">
@@ -453,7 +453,7 @@ export function Home() {
                 </div>
                 {/* carousel dos */}
                 <div id="carouselBlog2" class="carousel slide">
-                <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 2</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Televisores, portátiles y Nvidia</h3>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <a href="https://www.xataka.com/tag/nvidia"
@@ -495,7 +495,7 @@ export function Home() {
 
                 {/* carousel tres */}
                 <div id="carouselBlog3" class="carousel slide">
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Carousel 3</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Gráficas, teclados y RAM</h3>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <a href="https://www.xataka.com/tag/nvidia"
@@ -507,7 +507,7 @@ export function Home() {
 
                         </div>
                         <div className="carousel-item">
-                            <a href="https://es-store.msi.com/products/thin-15-b12uc-1839xes-portatiles"
+                            <a href="https://toptecladosgaming.com/mejores-teclados-msi/"
                                 target="blank">
                                 <img src={imagenes_blog.blog_ocho.url}
                                     className="d-block w-100"
