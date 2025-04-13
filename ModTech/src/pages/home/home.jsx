@@ -3,10 +3,13 @@ import React from 'react';
 
 import './styles/home.css';
 import { Navbar } from "../../components/common/navbar";
+import { Footer } from "../../components/footer";
 import imagenes_home from "../../data/imagenes_generales_home";
 import ofertas_home from "../../data/ofertas_home";
 import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 import imagenes_blog from "../../data/informacion_blog";
+import todas_marcas from "../../data/marcas_colaboradoras";
+
 export function Home() {
     // poner codigo react aqui despues 
 
@@ -409,7 +412,7 @@ export function Home() {
             <section className="nuestro_blog">
                 <div id="carouselExample" class="carousel slide">
                     {/* carousel uno */}
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">IA, VibeCoding e Intel</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Informática</h3>
                     <div className="carousel-inner">
 
                         <div className="carousel-item active">
@@ -453,7 +456,7 @@ export function Home() {
                 </div>
                 {/* carousel dos */}
                 <div id="carouselBlog2" class="carousel slide">
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Televisores, portátiles y Nvidia</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Productos</h3>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <a href="https://www.xataka.com/tag/nvidia"
@@ -495,7 +498,7 @@ export function Home() {
 
                 {/* carousel tres */}
                 <div id="carouselBlog3" class="carousel slide">
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Gráficas, teclados y RAM</h3>
+                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Componentes</h3>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <a href="https://www.xataka.com/tag/nvidia"
@@ -535,6 +538,75 @@ export function Home() {
                     </button>
                 </div>
             </section>
+            {/* nuestras marcas */}
+            <section className="nuestras_marcas">
+                <h3 className="text-center bg-dark text-white p-3">NUESTRAS MARCAS</h3>
+                <div className="marcas">
+                    {/* AMD */}
+                    <div className="amd">
+                        <img src={todas_marcas.amd.url}
+                            alt={todas_marcas.amd.alt} />
+                    </div>
+                    {/* acer */}
+                    <div className="acer">
+                        <img src={todas_marcas.acer.url}
+                            alt={todas_marcas.acer.alt} />
+                    </div>
+                    {/* aoc */}
+                    <div className="aoc">
+                        <img src={todas_marcas.aoc.url}
+                            alt={todas_marcas.aoc.alt} />
+                    </div>
+                    {/* intel */}
+                    <div className="intel">
+                        <img src={todas_marcas.intel.url}
+                            alt={todas_marcas.intel.alt} />
+                    </div>
+                    {/* corsair */}
+                    <div className="corsair">
+                        <img src={todas_marcas.corsair.url}
+                            alt={todas_marcas.corsair.alt} />
+                    </div>
+                    {/* corsair */}
+                    <div className="msi">
+                        <img src={todas_marcas.msi.url}
+                            alt={todas_marcas.msi.alt} />
+                    </div>
+                    {/* lenovo */}
+                    <div className="lenovo">
+                        <img src={todas_marcas.lenovo.url}
+                            alt={todas_marcas.lenovo.alt} />
+                    </div>
+                    {/* asRock */}
+                    <div className="asRock">
+                        <img src={todas_marcas.asRock.url}
+                            alt={todas_marcas.asRock.alt} />
+                    </div>
+                    {/* apple */}
+                    <div className="apple">
+                        <img src={todas_marcas.apple.url}
+                            alt={todas_marcas.apple.alt} />
+                    </div>
+                    {/* nvidia */}
+                    <div className="nvidia">
+                        <img src={todas_marcas.nvidia.url}
+                            alt={todas_marcas.nvidia.alt} />
+                    </div>
+                    {/* kingston */}
+                    <div className="kingston">
+                        <img src={todas_marcas.kingston.url}
+                            alt={todas_marcas.kingston.alt} />
+                    </div>
+                    {/* hp */}
+                    <div className="hp">
+                        <img src={todas_marcas.hp.url}
+                            alt={todas_marcas.hp.alt} />
+                    </div>
+                </div>
+            </section>
+
+            {/* footer */}
+            <Footer/>
 
 
         </section >

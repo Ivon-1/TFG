@@ -102,6 +102,21 @@ body {
             border-radius: 40px;
         }
     }
+
+    /** NUESTRAS MARCAS */
+    .nuestras_marcas {
+        .marcas {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); // cambiar posteriormente
+            gap: 20px;
+            padding: 40px;
+            margin: 40px;
+            img {
+                border-radius: 20px;
+                border: 4px solid #2d8ab8;
+            }
+        }
+    }
 }
 
 /** 
@@ -172,4 +187,21 @@ media queries
             grid-template-columns: repeat(4, 1fr) !important;
         }
     }
+    // nuestras marcas
+    .nuestras_marcas {
+        .marcas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+       // nuestras marcas
+    .nuestras_marcas {
+        .marcas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }     
 }
