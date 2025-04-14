@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+    color: #2d8ab8;
+    font-weight: bold;
+}
+
 body {
     background: linear-gradient(to bottom, #fffa73, #2d8ab8, #fffa73);
     color: white;
@@ -117,6 +123,53 @@ body {
             }
         }
     }
+
+    // footer
+    .informacion_general {
+        .logo_y_modtech {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 5%;
+            .logo {
+                margin-left: 5%;
+                img {
+                    width: 60%;
+                    border-radius: 40px;
+                }
+            }
+            .modtech {
+                text-align: center;
+            }
+        }
+
+        .redes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 60%;
+            margin: auto;
+            gap: 15%;
+            margin-bottom: 5%;
+        }
+
+        .todo {
+            display: grid;
+            gap: 20px;
+        }
+    }
+
+    // formas de pago aceptadas
+    .formas_pago {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        padding: 10%;
+        width: 70%;
+        margin: auto;
+    }
 }
 
 /** 
@@ -197,11 +250,11 @@ media queries
 }
 
 @media (min-width: 1200px) {
-       // nuestras marcas
+    // nuestras marcas
     .nuestras_marcas {
         .marcas {
             display: grid;
             grid-template-columns: repeat(4, 1fr) !important;
         }
-    }     
+    }
 }

@@ -2,7 +2,7 @@
 import logoPrincipal from "../assets/img/General/logo.webp";
 import carrito from "../assets/img/General/carrito-de-compras.png";
 import usuario from "../assets/img/General/usuario.png";
-import lupa from "../assets/img/General/lupa(1).png"
+import lupa from "../assets/img/General/lupa(1).png";
 /** variable con todas las imagenes */
 const todas_imagenes = {
     // imagen logo principal

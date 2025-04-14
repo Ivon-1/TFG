@@ -3,7 +3,7 @@ import React from 'react';
 
 import './styles/home.css';
 import { Navbar } from "../../components/common/navbar";
-import { Footer } from "../../components/footer";
+import { Footer } from "../../components/common/footer";
 import imagenes_home from "../../data/imagenes_generales_home";
 import ofertas_home from "../../data/ofertas_home";
 import productos_mas_vendidos from "../../data/productos_mas_vendidos";
@@ -12,7 +12,7 @@ import todas_marcas from "../../data/marcas_colaboradoras";
 
 export function Home() {
     // poner codigo react aqui despues 
-
+    
 
     /**
      * Nav del menu principal
@@ -604,9 +604,8 @@ export function Home() {
                     </div>
                 </div>
             </section>
-
             {/* footer */}
-            <Footer/>
+            <Footer />
 
 
         </section >

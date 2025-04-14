@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+  color: #2d8ab8;
+  font-weight: bold;
+}
+
 body {
   background: linear-gradient(to bottom, #fffa73, #2d8ab8, #fffa73);
   color: white;
@@ -102,6 +108,45 @@ body .nuestras_marcas .marcas {
 body .nuestras_marcas .marcas img {
   border-radius: 20px;
   border: 4px solid #2d8ab8;
+}
+body .informacion_general .logo_y_modtech {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 5%;
+}
+body .informacion_general .logo_y_modtech .logo {
+  margin-left: 5%;
+}
+body .informacion_general .logo_y_modtech .logo img {
+  width: 60%;
+  border-radius: 40px;
+}
+body .informacion_general .logo_y_modtech .modtech {
+  text-align: center;
+}
+body .informacion_general .redes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 60%;
+  margin: auto;
+  gap: 15%;
+  margin-bottom: 5%;
+}
+body .informacion_general .todo {
+  display: grid;
+  gap: 20px;
+}
+body .formas_pago {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  padding: 10%;
+  width: 70%;
+  margin: auto;
 }
 
 /** 

@@ -8,7 +8,7 @@ import categoria_moviles from "../assets/img/Moviles/Iphone.jpg";
 import categoria_consolas from "../assets/img/General/playStation.jpg";
 import categoria_componentes from "../assets/img/General/componentesvarios.jpeg"
 import categoria_televisiones from "../assets/img/General/television lg.jpeg";
-import categoria_ofertas from "../assets/img/Promociones/ofertas_msi2.jpeg"
+import categoria_ofertas from "../assets/img/Promociones/ofertas_msi2.jpeg";
 const imagenes_home = {
     // imagen torre principal
     ordenador_torre: {
