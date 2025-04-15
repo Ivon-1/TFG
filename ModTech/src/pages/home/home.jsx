@@ -234,8 +234,8 @@ export function Home() {
                         className="card-img-top"
                         alt={ofertas_home.raton_hp_dos.alt} />
                     <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
-                        <p className="card-text">Teclado Corsair con teclas mecánicas y retroiluminación, ideal para jugar y trabajar con comodidad.</p>
+                        <h5 className="card-title">Raton HP v-2</h5>
+                        <p className="card-text">Ratón hp de última generación con las últimas novedades del mercado.</p>
                         <div className="total_precio">
                             <a href="#" className="btn btn-primary">Comprar</a>
                             <p>Total: {ofertas_home.raton_hp_dos.precio} €</p>
@@ -265,7 +265,7 @@ export function Home() {
                         className="card-img-top"
                         alt={ofertas_home.portatil_hp.alt} />
                     <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
+                        <h5 className="card-title">Raton Razer v-4</h5>
                         <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
                         </p>
                         <div className="total_precio">
@@ -287,8 +287,8 @@ export function Home() {
                         className="card-img-top"
                         alt={productos_mas_vendidos.xbox.alt} />
                     <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
-                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
+                        <h5 className="card-title">Xbox One</h5>
+                        <p className="card-text">Ofrece gráficos en alta definición, funciones multimedia y la posibilidad de jugar en línea a través de Xbox Live. 
                         </p>
                         <div className="total_precio">
                             <a href="#" className="btn btn-primary">Comprar</a>

@@ -18,7 +18,7 @@ export function Footer() {
             {/* redes */}
             <div className="redes">
                 <div className="red">
-                    <img src={redes.whatsapp.url} alt={redes.whatsapp.alt} />
+                    <a href="https://www.whatsapp.com/?lang=es_LA" target="blank"><img src={redes.whatsapp.url} alt={redes.whatsapp.alt} /></a>
                 </div>
                 <div className="red">
                     <img src={redes.twitter.url} alt={redes.twitter.alt} />

@@ -139,6 +139,7 @@ body .informacion_general .redes {
 body .informacion_general .todo {
   display: grid;
   gap: 20px;
+  text-align: center;
 }
 body .formas_pago {
   display: grid;
@@ -177,6 +178,11 @@ media queries
   .seccion_ofertas .todas_ofertas {
     grid-template-columns: repeat(3, 1fr) !important;
   }
+  .informacion_general .todo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+  }
 }
 @media (min-width: 992px) {
   #carousel-inner {
@@ -203,10 +209,38 @@ media queries
     display: grid;
     grid-template-columns: repeat(3, 1fr) !important;
   }
+  .informacion_general .logo_y_modtech {
+    margin-left: 6%;
+    margin-bottom: 2% !important;
+    padding: 0;
+  }
+  .informacion_general .logo_y_modtech .logo {
+    width: 50%;
+  }
+  .informacion_general .logo_y_modtech .todo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .informacion_general .redes > div {
+    width: 60%;
+  }
+  .informacion_general .todo {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .informacion_general .formas_pago {
+    grid-template-columns: repeat(4, 1fr) !important;
+    padding: 2%;
+  }
 }
-@media (min-width: 1200px) {
+@media (min-width: 992px) and (min-width: 1200px) {
   .nuestras_marcas .marcas {
     display: grid;
     grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .informacion_general .logo_y_modtech .logo {
+    width: 30%;
+  }
+  .informacion_general .redes > div {
+    width: 50%;
   }
 }/*# sourceMappingURL=home.css.map */
