@@ -240,14 +240,14 @@ media queries
     .productos_mas_vendidos {
         .todo_mas_vendido {
             display: grid;
-            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-columns: repeat(3, 1fr) !important;
         }
     }
     // seccion ofertas
     .seccion_ofertas {
         .todas_ofertas {
             display: grid;
-            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-columns: repeat(3, 1fr) !important;
         }
     }
     // nuestras marcas
@@ -287,15 +287,28 @@ media queries
             width: 30%;
         }
     }
-
-    @media (min-width: 1200px) {
-        // nuestras marcas
-        .nuestras_marcas {
-            .marcas {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr) !important;
-            }
+}
+@media (min-width: 1200px) {
+    // nuestras marcas
+    .nuestras_marcas {
+        .marcas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) !important;
         }
+    }
+
+    // mas vendidos
+    .productos_mas_vendidos {
+        .todo_mas_vendido {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+    // seccion ofertas
+    .seccion_ofertas {
+        .todas_ofertas {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+
         // footer
         .informacion_general {
             .logo_y_modtech {
@@ -303,7 +316,7 @@ media queries
                     width: 30%;
                 }
             }
-            .redes > div{
+            .redes > div {
                 width: 50%;
             }
         }

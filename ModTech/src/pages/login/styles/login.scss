@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+
+body {
+    margin: 5%;
+    .header {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        text-align: center;
+        .logo img {
+            border-radius: 20px;
+            border: 4px solid black;
+        }
+    }
+
+    .correo_contraseña {
+        input {
+            border-radius: 40px;
+            padding: 2%;
+        }
+
+        .contraseña,
+        .correo {
+            input::placeholder {
+                color: white;
+            }
+        }
+    }
+}

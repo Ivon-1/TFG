@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom'
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 
@@ -29,7 +30,7 @@ export function Navbar() {
                     <div className="container-fluid d-flex align-items-center">
 
 
-                        {/* Menú de navegación (barra con fondo primario) */}
+                        {/* Menú de navegación */}
                         <nav className="navbar navbar-dark bg-dark ">
                             <div className="container-fluid mx-auto">
                                 <button className="navbar-toggler"
@@ -79,11 +80,14 @@ export function Navbar() {
 
                         {/* logo principal */}
                         <div className="logo_principal mr-lg-5">
-                            <img
-                                src={todas_imagenes.logo.url}
-                                alt={todas_imagenes.logo.nombre}
-                                className="img-fluid rounded-3"
-                                style={{ height: '60px' }} />
+                            <Link to="/">
+                                <img
+                                    src={todas_imagenes.logo.url}
+                                    alt={todas_imagenes.logo.nombre}
+                                    className="img-fluid rounded-3"
+                                    style={{ height: '60px' }} />
+                            </Link>
+
                         </div>
 
                         {/* Barra de búsqueda */}
@@ -104,11 +108,13 @@ export function Navbar() {
                         {/* Icono del usuario y del carrito */}
                         <div className="usuario_carrito bg-white gap-md-3">
                             <div className="user">
-                                <img
-                                    src={todas_imagenes.imagen_usuario.url}
-                                    alt={todas_imagenes.imagen_usuario.nombre}
-                                    className="img-fluid"
-                                    style={{ height: '40px' }} />
+                                <Link to="/login">
+                                    <img
+                                        src={todas_imagenes.imagen_usuario.url}
+                                        alt={todas_imagenes.imagen_usuario.nombre}
+                                        className="img-fluid"
+                                        style={{ height: '40px' }} />
+                                </Link>
                             </div>
 
                             <div className="carrito">

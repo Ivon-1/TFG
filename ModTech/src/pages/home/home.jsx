@@ -1,6 +1,5 @@
 import { useState } from "react";
 import React from 'react';
-
 import './styles/home.css';
 import { Navbar } from "../../components/common/navbar";
 import { Footer } from "../../components/common/footer";
@@ -606,10 +605,6 @@ export function Home() {
             </section>
             {/* footer */}
             <Footer />
-
-
         </section >
-
-
     </>
 }
