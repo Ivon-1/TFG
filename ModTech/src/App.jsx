@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Home } from './pages/home/home'
 import { FormularioLogin } from './pages/login/formularioLogin';
+import { RegistroPage } from './pages/registro/formularioRegistro';
 function App() {
   // importamos el menu de opciones 
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path='/login' element={<FormularioLogin />} /> 
+          <Route path='/registrarse' element={< RegistroPage />} />
         </Routes>
 
       </BrowserRouter>

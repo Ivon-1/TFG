@@ -1,0 +1,45 @@
+.registro {
+  text-align: center;
+  margin: 5%;
+  background-color: rgb(16, 126, 153);
+  border-radius: 20px;
+  padding: 5%;
+}
+.registro img {
+  margin: auto;
+  border-radius: 20px;
+  border: 4px solid black;
+}
+.registro label {
+  text-align: left !important;
+}
+.registro h4, .registro h2 {
+  font-weight: bold;
+  color: black;
+}
+@media (min-width: 576px) {
+  .registro {
+    margin: 10%;
+  }
+}
+@media (min-width: 768px) {
+  .registro {
+    margin: 15%;
+  }
+}
+@media (min-width: 992px) {
+  .registro {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+}
+@media (min-width: 1200px) {
+  .registro {
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+}/*# sourceMappingURL=registro.module.css.map */
