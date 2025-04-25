@@ -8,6 +8,7 @@ import ofertas_home from "../../data/ofertas_home";
 import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
+import { Facturas } from "../facturas/facturas";
 import { Link } from "react-router-dom";
 
 export function Home() {
@@ -609,8 +610,14 @@ export function Home() {
             {/* footer */}
             <Footer />
         </section >
+        {/* pruebas facturas MODIFICAR LUEGO*/}
+        <section>
+            <Link to="facturas" className="btn btn-danger m-2 p-2">
+                Facturas
+            </Link>
+        </section>
 
 
-        
+
     </>
 }

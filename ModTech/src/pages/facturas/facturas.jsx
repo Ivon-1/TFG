@@ -1,8 +1,10 @@
-import { Facturas } from "../../components/common/facturasComp";
+import { FacturasComp } from "../../components/common/facturasComp";
 export function Facturas() {
-    return <>
-        <div className="facturas">
-            <Facturas />
-        </div>
-    </>
+    return (
+        <>
+            <div className="facturas">
+                <FacturasComp />
+            </div>
+        </>
+    );
 }

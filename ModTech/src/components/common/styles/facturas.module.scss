@@ -1,0 +1,21 @@
+.facturas{
+    margin: 10%;
+    background-color: #FFFA73;
+    padding: 5%;
+    img{
+        max-width: 100%;
+        width: 60%;
+        border-radius: 40px;
+    }
+    .header_facturas{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        align-items: center;
+        gap: 10%;
+        padding: 5%;
+    }
+    h4, p{
+        color: black;
+        font-weight: bold;
+    }
+}

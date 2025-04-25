@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Home } from './pages/home/home'
 import { FormularioLogin } from './pages/login/formularioLogin';
 import { RegistroPage } from './pages/registro/formularioRegistro';
+import { Facturas } from './pages/facturas/facturas';
 function App() {
   // importamos el menu de opciones 
   return (
