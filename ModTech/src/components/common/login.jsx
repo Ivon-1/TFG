@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
 export function Login() {
+    // 
+    
     return <>
         <div className="login">
             <form action="" className="formulario">

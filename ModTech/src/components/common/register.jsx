@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
 export function Registro() {
-
-
+    
     return <>
         <div className="registro">
             <header className="header">

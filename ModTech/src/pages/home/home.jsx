@@ -8,10 +8,11 @@ import ofertas_home from "../../data/ofertas_home";
 import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
+import { Link } from "react-router-dom";
 
 export function Home() {
     // poner codigo react aqui despues 
-    
+
 
     /**
      * Nav del menu principal
@@ -287,7 +288,7 @@ export function Home() {
                         alt={productos_mas_vendidos.xbox.alt} />
                     <div className="card-body mt-3">
                         <h5 className="card-title">Xbox One</h5>
-                        <p className="card-text">Ofrece gráficos en alta definición, funciones multimedia y la posibilidad de jugar en línea a través de Xbox Live. 
+                        <p className="card-text">Ofrece gráficos en alta definición, funciones multimedia y la posibilidad de jugar en línea a través de Xbox Live.
                         </p>
                         <div className="total_precio">
                             <a href="#" className="btn btn-primary">Comprar</a>
@@ -406,6 +407,8 @@ export function Home() {
                     </div>
                 </div>
             </div>
+
+
             {/* seccion de nuestro blog */}
             <h3 className="text-center bg-dark p-2">Nuestros blogs</h3>
             <section className="nuestro_blog">
@@ -606,5 +609,8 @@ export function Home() {
             {/* footer */}
             <Footer />
         </section >
+
+
+        
     </>
 }

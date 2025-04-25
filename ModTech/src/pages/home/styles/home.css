@@ -122,7 +122,7 @@ body .informacion_general .logo_y_modtech .logo {
   margin-left: 5%;
 }
 body .informacion_general .logo_y_modtech .logo img {
-  width: 60%;
+  width: 40%;
   border-radius: 40px;
 }
 body .informacion_general .logo_y_modtech .modtech {
@@ -215,14 +215,14 @@ media queries
     padding: 0;
   }
   .informacion_general .logo_y_modtech .logo {
-    width: 50%;
+    width: 30%;
   }
   .informacion_general .logo_y_modtech .todo {
     display: grid;
     grid-template-columns: repeat(4, 1fr) !important;
   }
   .informacion_general .redes > div {
-    width: 60%;
+    width: 40%;
   }
   .informacion_general .todo {
     grid-template-columns: repeat(4, 1fr);
