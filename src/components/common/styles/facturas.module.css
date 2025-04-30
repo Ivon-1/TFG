@@ -1,1 +1,50 @@
-/*# sourceMappingURL=facturas.module.css.map */
+.facturas {
+  margin: 10%;
+  background-color: #fffca2;
+  padding: 5%;
+}
+.facturas img {
+  max-width: 100%;
+  width: 60%;
+  border-radius: 40px;
+}
+.facturas .header_facturas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 10%;
+  padding: 5%;
+}
+.facturas h4,
+.facturas p {
+  color: black;
+}
+.facturas h4, .facturas h2 {
+  font-weight: bold;
+}
+.facturas .descardescargar_factura {
+  margin-top: 20px;
+}
+
+/*media queries */
+@media (min-width: 768px) {
+  .facturas img {
+    width: 40%;
+  }
+  .facturas .datos_compra {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .facturas {
+    width: 60%;
+    margin: 5% auto;
+  }
+  .facturas header {
+    text-align: center;
+  }
+  .facturas img {
+    width: 30%;
+  }
+}/*# sourceMappingURL=facturas.module.css.map */

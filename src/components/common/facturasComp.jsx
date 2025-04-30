@@ -22,24 +22,39 @@ export function FacturasComp() {
             </header>
             {/* datos generales */}
             <div className={styles.datos_compra}>
-                <div className={styles.fecha_factura}>
-                    <h4>Fecha</h4>
+                <div className={styles.primeros_datos}>
+                    {/* fecha de la factura */}
+                    <div className={styles.fecha_factura}>
+                        <h4>Fecha</h4>
+                        <p>20/10/2024</p>
+                    </div>
+                    {/* numero de facturas */}
+                    <div className={styles.numero_factura}>
+                        <h4>Número de factura</h4>
+                        <p>123456789c</p>
+                    </div>
+                    {/* id_cliente */}
+                    <div className={styles.id_cliente}>
+                        <h4>Id cliente</h4>
+                        <p>123456</p>
+                    </div>
                 </div>
-                {/* numero de facturas */}
-                <div className={styles.numero_factura}>
-                    <h4>Número de factura</h4>
-                </div>
-                {/* id_cliente */}
-                <div className={styles.id_cliente}>
-                    <h4>Número cliente</h4>
-                </div>
+
                 {/* direccion cliente */}
                 <div className={styles.direccion_cliente}>
-                    <h4>Dirección cliente</h4>
                     <div className={styles.datos_direccion}>
-                        <p>Dirección</p>
-                        <p>Teléfono</p>
-                        <p>Email</p>
+                        <div className={styles.direccion}>
+                            <h4>Dirección cliente</h4>
+                            <p>Calle del mono 24</p>
+                        </div>
+                        <div className={styles.contacto}>
+                            <h4>Teléfono</h4>
+                            <p>987987987</p>
+                        </div>
+                        <div className={styles.telefono}>
+                            <h4>Email</h4>
+                            <p>correo@correo.es</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,6 +69,7 @@ export function FacturasComp() {
                         <th className="border border-black">Total</th>
                     </tr>
                 </thead>
+                {/* datos en si */}
                 <tbody className="text-dark">
                     <tr>
                         <td className="border border-black">x</td>
@@ -70,6 +86,8 @@ export function FacturasComp() {
                         <td className="border border-black">800</td>
                     </tr>
                 </tbody>
+
+                {/* total */}
                 <tfoot className="bg-dark text-white">
                     <tr>
                         <th className="text-start p-2">Total</th>
@@ -82,7 +100,12 @@ export function FacturasComp() {
             </table>
 
 
-
+            {/* boton para descargar factura */}
+            <div className={styles.descargar_factura}>
+                <button className="btn btn-info p-2 mt-4" 
+                type="button"
+                style={{ fontWeight: 'bold'}}>Descargar factura</button>
+            </div>
         </div>
     );
 }
