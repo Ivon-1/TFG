@@ -20,20 +20,15 @@ export function Home() {
     const { data: productos, error: error_productos } = useConsumirProductos();
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
 
-    // buscamos ofertas 
-    const productosConOferta = Array.isArray(productos) ? productos.map((producto) => {
-        const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
-
-        if (oferta) {
+    const productosConOferta = Array.isArray(productos) ? productos
+    // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
+        .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
+        .map(producto => {
+            const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
             producto.descuento = oferta.descuento;
             producto.precioConDescuento = producto.precio - (producto.precio * oferta.descuento / 100);
-        } else {
-            producto.descuento = 0;
-            producto.precioConDescuento = producto.precio;
-        }
-
-        return producto;
-    }) : [];
+            return producto;
+        }) : [];
 
     /**
      * Nav del menu principal
@@ -191,7 +186,7 @@ export function Home() {
                 )}
             </div>
         </section >
-        
+
         {/* SECCION PRODUCTOS MAS VENDIDOS */}
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
