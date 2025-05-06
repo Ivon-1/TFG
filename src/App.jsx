@@ -2,6 +2,7 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+// importar env api
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Home } from './pages/home/home'
 import { FormularioLogin } from './pages/login/formularioLogin';

@@ -10,10 +10,30 @@ import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
 import { Facturas } from "../facturas/facturas";
 import { Link } from "react-router-dom";
+import { useConsumirProductos } from "../../consumirAxios";
+import { useConsumirOfertas } from "../../consumirAxios";
 
 export function Home() {
-    // poner codigo react aqui despues 
+    /**
+     * seccion de ofertas
+     */
+    const { data: productos, error: error_productos } = useConsumirProductos();
+    const { data: ofertas, error_ofertas } = useConsumirOfertas();
 
+    // buscamos ofertas 
+    const productosConOferta = Array.isArray(productos) ? productos.map((producto) => {
+        const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
+
+        if (oferta) {
+            producto.descuento = oferta.descuento;
+            producto.precioConDescuento = producto.precio - (producto.precio * oferta.descuento / 100);
+        } else {
+            producto.descuento = 0;
+            producto.precioConDescuento = producto.precio;
+        }
+
+        return producto;
+    }) : [];
 
     /**
      * Nav del menu principal
@@ -37,7 +57,6 @@ export function Home() {
                         <div className="carousel-caption d-none d-md-block">
                             <h5>Odyssey Xtreme 5000</h5>
                             <p>El Odyssey Xtreme 5000 redefine el poder y la eficiencia. Con su innovador diseño y rendimiento de última generación, este ordenador de torre está diseñado para ofrecer una experiencia inigualable.</p>
-
                         </div>
                     </div>
                     <div className="carousel-item">
@@ -145,138 +164,34 @@ export function Home() {
         <section className="seccion_ofertas">
             <h3 className="text-center bg-danger text-white text-uppercase mt-2 p-2">Ofertas</h3>
             <div className="todas_ofertas">
-                {/* Portátil MSI */}
-                <div className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.portatiles.url}
-                        className="card-img-top"
-                        alt={ofertas_home.portatiles.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Portátil MSI</h5>
-                        <p className="card-text">El MSI Gaming GX500 combina potencia y rendimiento con un procesador Intel i7 y una tarjeta gráfica RTX 3060.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.portatiles.precio} €</p>
+                {/* oferta uno */}
+                {error_productos && <p className="text-danger">{error_productos}</p>}
+                {productosConOferta.length > 0 ? (
+                    productosConOferta.map((producto) => (
+                        <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                            {producto.descuento > 0 && (
+                                <span className="discount-tag">{producto.descuento}%</span>
+                            )}
+
+                            <img src={producto.url}
+                                className="card-img-top"
+                                alt={producto.nombre} />
+                            <div className="card-body mt-3">
+                                <h5 className="card-title">{producto.nombre}</h5>
+                                <p className="card-text">{producto.descripcion}</p>
+                                <div className="total_precio">
+                                    <a href="#" className="btn btn-primary">Comprar</a>
+                                    <p>Total: {producto.precioConDescuento} €</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Auriculares Corsair */}
-                <div className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.auriculares.url}
-                        className="card-img-top"
-                        alt={ofertas_home.auriculares.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Auriculares Corsair</h5>
-                        <p className="card-text">Los auriculares Corsair HS60 ofrecen una excelente calidad de sonido y un micrófono ajustable para juegos intensos.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.auriculares.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Raton Razer */}
-                <div className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.raton.url}
-                        className="card-img-top"
-                        alt={ofertas_home.raton.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton Razer</h5>
-                        <p className="card-text">El ratón Razer HyperX X1 ofrece precisión y velocidad con un sensor de 16,000 DPI y una gran bateria.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.raton.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Raton HP */}
-                <div className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.raton_hp.url}
-                        className="card-img-top"
-                        alt={ofertas_home.raton_hp.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
-                        <p className="card-text">Un ratón preciso con diseño ergonómico para largas sesiones de uso y con una gran estética.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.raton_hp.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                {/* teclado corsair */}
-                <div className="card_personalizada  d-lg-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.teclado_home.url}
-                        className="card-img-top"
-                        alt={ofertas_home.teclado_home.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Teclado Corsair</h5>
-                        <p className="card-text">Teclado Corsair mecánico, con retroiluminación y respuesta rápida para un rendimiento óptimo.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.teclado_home.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                {/* portatil hp */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.raton_hp_dos.url}
-                        className="card-img-top"
-                        alt={ofertas_home.raton_hp_dos.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP v-2</h5>
-                        <p className="card-text">Ratón hp de última generación con las últimas novedades del mercado.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.raton_hp_dos.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* portatil razer */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.portatil_razer.url}
-                        className="card-img-top"
-                        alt={ofertas_home.portatil_razer.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Portátil Razer</h5>
-                        <p className="card-text">Un portátil Razer de alto rendimiento con diseño compacto y pantalla de alta resolución.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.portatil_razer.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* raton razer */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag">-20%</span>
-                    <img src={ofertas_home.portatil_hp.url}
-                        className="card-img-top"
-                        alt={ofertas_home.portatil_hp.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton Razer v-4</h5>
-                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
-                        </p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {ofertas_home.portatil_hp.precio} €</p>
-                        </div>
-                    </div>
-                </div>
+                    ))
+                ) : (
+                    <p className="text-light text-center">Cargando productos en oferta</p>
+                )}
             </div>
         </section >
+        
         {/* SECCION PRODUCTOS MAS VENDIDOS */}
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
