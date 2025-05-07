@@ -20,6 +20,15 @@
   text-align: center;
 }
 
+.seccion_productos .todos_productos .card_personalizada {
+  position: relative;
+}
+.seccion_productos .todos_productos .total_precio {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+}
+
 @media (max-width: 576px) {
   .seccion_intermedia .titulo_seccion h1 {
     color: rgb(255, 255, 111);
