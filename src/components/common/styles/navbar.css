@@ -58,12 +58,12 @@
 }
 
 @media (max-width: 576px) {
-  .usuario_carrito {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: row;
+  .buscar{
+    order: 2;
+    width: 100% !important;
+    margin-top: 2%;
   }
+
 }
 @media (min-width: 792px) {
   .slide-menu {

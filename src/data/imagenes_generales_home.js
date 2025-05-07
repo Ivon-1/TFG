@@ -9,6 +9,8 @@ import categoria_consolas from "../assets/img/General/playStation.jpg";
 import categoria_componentes from "../assets/img/General/componentesvarios.jpeg"
 import categoria_televisiones from "../assets/img/General/television lg.jpeg";
 import categoria_ofertas from "../assets/img/Promociones/ofertas_msi2.jpeg";
+import productos_color from "../assets/img/GradientesFondo/01-gradiente.jpg";
+
 const imagenes_home = {
     // imagen torre principal
     ordenador_torre: {
@@ -61,6 +63,11 @@ const imagenes_home = {
         id: 10,
         url: categoria_ofertas,
         alt: "promocion"
+    },
+    productos_color: {
+        id: 11,
+        url: productos_color,
+        alt: "color de la seccion productos"
     }
     
 }

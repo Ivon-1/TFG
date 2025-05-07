@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from 'react';
 import './styles/home.css';
 import { Navbar } from "../../components/common/navbar";
@@ -21,7 +21,7 @@ export function Home() {
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
 
     const productosConOferta = Array.isArray(productos) ? productos
-    // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
+        // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
         .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
         .map(producto => {
             const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
@@ -29,6 +29,24 @@ export function Home() {
             producto.precioConDescuento = producto.precio - (producto.precio * oferta.descuento / 100);
             return producto;
         }) : [];
+
+    /**
+    * productos mas vendidos
+    * Utilizamos sort para ordenador los productos
+    * Slice para limitar el numero de mas vendidos
+    * 
+    const productosMasVendidos = ({ productos }) => {
+        const [productosMasVendidos, setProductosMasVendidos] = useState([]);
+
+        useEffect(() => {
+            if (productos.length > 0) {
+                const productosOrdenados = [...productos].sort((a, b) => b.cantidad_vendida - a.cantidadVendida).slice(0, 3);
+                setProductosMasVendidos(productosOrdenados);
+            }
+        }, [productos]);
+
+    }
+    */
 
     /**
      * Nav del menu principal
@@ -170,7 +188,9 @@ export function Home() {
 
                             <img src={producto.url}
                                 className="card-img-top"
-                                alt={producto.nombre} />
+                                alt={producto.nombre}
+
+                            />
                             <div className="card-body mt-3">
                                 <h5 className="card-title">{producto.nombre}</h5>
                                 <p className="card-text">{producto.descripcion}</p>
@@ -191,335 +211,237 @@ export function Home() {
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
             <div className="todo_mas_vendido">
-                {/* producto mas vendido uno */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.xbox.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.xbox.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Xbox One</h5>
-                        <p className="card-text">Ofrece gráficos en alta definición, funciones multimedia y la posibilidad de jugar en línea a través de Xbox Live.
-                        </p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.xbox.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido dos */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.iphone15.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.iphone15.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">iPhone 15 pro max</h5>
-                        <p className="card-text">Gran potencia, diseño premium, calidad indiscutible y tecnología avanzada, todo en la palma de tu mano.
-                        </p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.iphone15.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido tres */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.iphone8.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.iphone8.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">iPhone 8</h5>
-                        <p className="card-text">Rendimiento rápido, diseño elegante y una cámara avanzada en un solo dispositivo.</p>
+                {/* oferta uno */}
+                {error_productos && <p className="text-danger">{error_productos}</p>}
+                {productosConOferta.length > 0 ? (
+                    productosConOferta.reverse().map((producto) => (
+                        <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                            {producto.descuento > 0 && (
+                                <span className="discount-tag_vendido">{producto.descuento}%</span>
+                            )}
 
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.iphone8.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido cuatro*/}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.raton_msi.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.raton_msi.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton MSI</h5>
-                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.</p>
+                            <img src={producto.url}
+                                className="card-img-top"
+                                alt={producto.nombre}
 
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.raton_msi.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido cinco */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.auriculares_corsair.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.auriculares_corsair.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Auriculares Corsair</h5>
-                        <p className="card-text">Auriculares de alta calidad con sonido envolvente, comodidad para largas sesiones y micrófono de precisión.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.auriculares_corsair.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido seis */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.portatil_razer.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.portatil_razer.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Portátil Razer</h5>
-                        <p className="card-text">Potencia extrema, diseño elegante y rendimiento de nivel gaming para llevar tu experiencia al siguiente nivel.</p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.portatil_razer.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido siete */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.portatil_msi.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.portatil_msi.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
-                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
-                        </p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.portatil_msi.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-                {/* producto mas vendido ocho */}
-                <div className="card_personalizada   d-block bg-dark p-3 m-3 rounded-2 position-relative">
-                    <span className="discount-tag_vendido">-20%</span>
-                    <img src={productos_mas_vendidos.tarjeta_grafica.url}
-                        className="card-img-top"
-                        alt={productos_mas_vendidos.tarjeta_grafica.alt} />
-                    <div className="card-body mt-3">
-                        <h5 className="card-title">Raton HP</h5>
-                        <p className="card-text">Ratón Razer ergonómico, preciso y con diseño optimizado para largas sesiones de juego.
-                        </p>
-                        <div className="total_precio">
-                            <a href="#" className="btn btn-primary">Comprar</a>
-                            <p>Total: {productos_mas_vendidos.tarjeta_grafica.precio} €</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            {/* seccion de nuestro blog */}
-            <h3 className="text-center bg-dark p-2">Nuestros blogs</h3>
-            <section className="nuestro_blog">
-                <div id="carouselExample" class="carousel slide">
-                    {/* carousel uno */}
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Informática</h3>
-                    <div className="carousel-inner">
-
-                        <div className="carousel-item active">
-                            <a href="https://planderecuperacion.gob.es/noticias/que-es-inteligencia-artificial-ia-prtr"
-                                target="blank">
-                                <img src={imagenes_blog.blog_uno.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_uno.alt}
-                                /></a>
-                        </div>
-
-                        <div className="carousel-item">
-                            <a href="https://www.intel.la/content/www/xl/es/processors/processor-numbers.html"
-                                target="blank">
-                                <img src={imagenes_blog.blog_tres.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_tres.alt} />
-                            </a>
-
-                        </div>
-                        <a href="">
-                            <div className="carousel-item">
-                                <a href="https://www.xataka.com/basics/que-vibe-coding-que-ventajas-desventajas-ofrece-este-concepto-programar-usando-inteligencia-artificial"
-                                    target="blank">
-                                    <img src={imagenes_blog.blog_cuatro.url}
-                                        className="d-block w-100"
-                                        alt={imagenes_blog.blog_cuatro.url} />
-                                </a>
+                            />
+                            <div className="card-body mt-3">
+                                <h5 className="card-title">{producto.nombre}</h5>
+                                <p className="card-text">{producto.descripcion}</p>
+                                <div className="total_precio">
+                                    <a href="#" className="btn btn-primary">Comprar</a>
+                                    <p>Total: {producto.precioConDescuento} €</p>
+                                </div>
                             </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-light text-center">Cargando productos en oferta</p>
+                )}
+            </div>
+        </section>
+
+
+        {/* seccion de nuestro blog */}
+        <h3 className="text-center bg-dark p-2">Nuestros blogs</h3>
+        <section className="nuestro_blog">
+            <div id="carouselExample" class="carousel slide">
+                {/* carousel uno */}
+                <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Informática</h3>
+                <div className="carousel-inner">
+
+                    <div className="carousel-item active">
+                        <a href="https://planderecuperacion.gob.es/noticias/que-es-inteligencia-artificial-ia-prtr"
+                            target="blank">
+                            <img src={imagenes_blog.blog_uno.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_uno.alt}
+                            /></a>
+                    </div>
+
+                    <div className="carousel-item">
+                        <a href="https://www.intel.la/content/www/xl/es/processors/processor-numbers.html"
+                            target="blank">
+                            <img src={imagenes_blog.blog_tres.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_tres.alt} />
                         </a>
 
                     </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
+                    <a href="">
+                        <div className="carousel-item">
+                            <a href="https://www.xataka.com/basics/que-vibe-coding-que-ventajas-desventajas-ofrece-este-concepto-programar-usando-inteligencia-artificial"
+                                target="blank">
+                                <img src={imagenes_blog.blog_cuatro.url}
+                                    className="d-block w-100"
+                                    alt={imagenes_blog.blog_cuatro.url} />
+                            </a>
+                        </div>
+                    </a>
+
                 </div>
-                {/* carousel dos */}
-                <div id="carouselBlog2" class="carousel slide">
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Productos</h3>
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <a href="https://www.xataka.com/tag/nvidia"
-                                target="blank">
-                                <img src={imagenes_blog.blog_dos.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_dos.alt} />
-                            </a>
+                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
+            </div>
+            {/* carousel dos */}
+            <div id="carouselBlog2" class="carousel slide">
+                <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Productos</h3>
+                <div className="carousel-inner">
+                    <div className="carousel-item active">
+                        <a href="https://www.xataka.com/tag/nvidia"
+                            target="blank">
+                            <img src={imagenes_blog.blog_dos.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_dos.alt} />
+                        </a>
 
-                        </div>
-                        <div className="carousel-item">
-                            <a href="https://www.eleconomista.es/compras/noticias/12694255/02/24/mejores-ordenadores-portatiles.html"
-                                target="blank">
-                                <img src={imagenes_blog.blog_cinco.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_cinco.alt} />
-                            </a>
+                    </div>
+                    <div className="carousel-item">
+                        <a href="https://www.eleconomista.es/compras/noticias/12694255/02/24/mejores-ordenadores-portatiles.html"
+                            target="blank">
+                            <img src={imagenes_blog.blog_cinco.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_cinco.alt} />
+                        </a>
 
-                        </div>
-                        <div className="carousel-item">
-                            <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
-                                target="blank">
-                                <img src={imagenes_blog.blog_seis.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_seis.alt} />
-                            </a>
+                    </div>
+                    <div className="carousel-item">
+                        <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
+                            target="blank">
+                            <img src={imagenes_blog.blog_seis.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_seis.alt} />
+                        </a>
 
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog2" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog2" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-
-                {/* carousel tres */}
-                <div id="carouselBlog3" class="carousel slide">
-                    <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Componentes</h3>
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <a href="https://www.xataka.com/tag/nvidia"
-                                target="blank">
-                                <img src={imagenes_blog.blog_siete.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_siete.alt} />
-                            </a>
-
-                        </div>
-                        <div className="carousel-item">
-                            <a href="https://toptecladosgaming.com/mejores-teclados-msi/"
-                                target="blank">
-                                <img src={imagenes_blog.blog_ocho.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_ocho.alt} />
-                            </a>
-
-                        </div>
-                        <div className="carousel-item">
-                            <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
-                                target="blank">
-                                <img src={imagenes_blog.blog_nueve.url}
-                                    className="d-block w-100"
-                                    alt={imagenes_blog.blog_nueve.alt} />
-                            </a>
-
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog3" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog3" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </section>
-            {/* nuestras marcas */}
-            <section className="nuestras_marcas">
-                <h3 className="text-center bg-dark text-white p-3">NUESTRAS MARCAS</h3>
-                <div className="marcas">
-                    {/* AMD */}
-                    <div className="amd">
-                        <img src={todas_marcas.amd.url}
-                            alt={todas_marcas.amd.alt} />
-                    </div>
-                    {/* acer */}
-                    <div className="acer">
-                        <img src={todas_marcas.acer.url}
-                            alt={todas_marcas.acer.alt} />
-                    </div>
-                    {/* aoc */}
-                    <div className="aoc">
-                        <img src={todas_marcas.aoc.url}
-                            alt={todas_marcas.aoc.alt} />
-                    </div>
-                    {/* intel */}
-                    <div className="intel">
-                        <img src={todas_marcas.intel.url}
-                            alt={todas_marcas.intel.alt} />
-                    </div>
-                    {/* corsair */}
-                    <div className="corsair">
-                        <img src={todas_marcas.corsair.url}
-                            alt={todas_marcas.corsair.alt} />
-                    </div>
-                    {/* corsair */}
-                    <div className="msi">
-                        <img src={todas_marcas.msi.url}
-                            alt={todas_marcas.msi.alt} />
-                    </div>
-                    {/* lenovo */}
-                    <div className="lenovo">
-                        <img src={todas_marcas.lenovo.url}
-                            alt={todas_marcas.lenovo.alt} />
-                    </div>
-                    {/* asRock */}
-                    <div className="asRock">
-                        <img src={todas_marcas.asRock.url}
-                            alt={todas_marcas.asRock.alt} />
-                    </div>
-                    {/* apple */}
-                    <div className="apple">
-                        <img src={todas_marcas.apple.url}
-                            alt={todas_marcas.apple.alt} />
-                    </div>
-                    {/* nvidia */}
-                    <div className="nvidia">
-                        <img src={todas_marcas.nvidia.url}
-                            alt={todas_marcas.nvidia.alt} />
-                    </div>
-                    {/* kingston */}
-                    <div className="kingston">
-                        <img src={todas_marcas.kingston.url}
-                            alt={todas_marcas.kingston.alt} />
-                    </div>
-                    {/* hp */}
-                    <div className="hp">
-                        <img src={todas_marcas.hp.url}
-                            alt={todas_marcas.hp.alt} />
                     </div>
                 </div>
-            </section>
-            {/* footer */}
-            <Footer />
-        </section >
+                <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog2" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog2" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            {/* carousel tres */}
+            <div id="carouselBlog3" class="carousel slide">
+                <h3 className="titulo_tercer_carousel text-center bg-dark p-2">Componentes</h3>
+                <div className="carousel-inner">
+                    <div className="carousel-item active">
+                        <a href="https://www.xataka.com/tag/nvidia"
+                            target="blank">
+                            <img src={imagenes_blog.blog_siete.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_siete.alt} />
+                        </a>
+
+                    </div>
+                    <div className="carousel-item">
+                        <a href="https://toptecladosgaming.com/mejores-teclados-msi/"
+                            target="blank">
+                            <img src={imagenes_blog.blog_ocho.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_ocho.alt} />
+                        </a>
+
+                    </div>
+                    <div className="carousel-item">
+                        <a href="https://www.xataka.com/basics/tarjeta-grafica-que-que-hay-dentro-como-funciona"
+                            target="blank">
+                            <img src={imagenes_blog.blog_nueve.url}
+                                className="d-block w-100"
+                                alt={imagenes_blog.blog_nueve.alt} />
+                        </a>
+
+                    </div>
+                </div>
+                <button className="carousel-control-prev" type="button" data-bs-target="#carouselBlog3" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#carouselBlog3" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+        {/* nuestras marcas */}
+        <section className="nuestras_marcas">
+            <h3 className="text-center bg-dark text-white p-3">NUESTRAS MARCAS</h3>
+            <div className="marcas">
+                {/* AMD */}
+                <div className="amd">
+                    <img src={todas_marcas.amd.url}
+                        alt={todas_marcas.amd.alt} />
+                </div>
+                {/* acer */}
+                <div className="acer">
+                    <img src={todas_marcas.acer.url}
+                        alt={todas_marcas.acer.alt} />
+                </div>
+                {/* aoc */}
+                <div className="aoc">
+                    <img src={todas_marcas.aoc.url}
+                        alt={todas_marcas.aoc.alt} />
+                </div>
+                {/* intel */}
+                <div className="intel">
+                    <img src={todas_marcas.intel.url}
+                        alt={todas_marcas.intel.alt} />
+                </div>
+                {/* corsair */}
+                <div className="corsair">
+                    <img src={todas_marcas.corsair.url}
+                        alt={todas_marcas.corsair.alt} />
+                </div>
+                {/* corsair */}
+                <div className="msi">
+                    <img src={todas_marcas.msi.url}
+                        alt={todas_marcas.msi.alt} />
+                </div>
+                {/* lenovo */}
+                <div className="lenovo">
+                    <img src={todas_marcas.lenovo.url}
+                        alt={todas_marcas.lenovo.alt} />
+                </div>
+                {/* asRock */}
+                <div className="asRock">
+                    <img src={todas_marcas.asRock.url}
+                        alt={todas_marcas.asRock.alt} />
+                </div>
+                {/* apple */}
+                <div className="apple">
+                    <img src={todas_marcas.apple.url}
+                        alt={todas_marcas.apple.alt} />
+                </div>
+                {/* nvidia */}
+                <div className="nvidia">
+                    <img src={todas_marcas.nvidia.url}
+                        alt={todas_marcas.nvidia.alt} />
+                </div>
+                {/* kingston */}
+                <div className="kingston">
+                    <img src={todas_marcas.kingston.url}
+                        alt={todas_marcas.kingston.alt} />
+                </div>
+                {/* hp */}
+                <div className="hp">
+                    <img src={todas_marcas.hp.url}
+                        alt={todas_marcas.hp.alt} />
+                </div>
+            </div>
+        </section>
+        {/* footer */}
+        <Footer />
+
         {/* pruebas facturas MODIFICAR LUEGO*/}
         <section>
             <Link to="facturas" className="btn btn-danger m-2 p-2">
@@ -527,7 +449,5 @@ export function Home() {
             </Link>
         </section>
 
-
-
-    </>
+    </ >
 }

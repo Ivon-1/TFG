@@ -154,6 +154,14 @@ body .formas_pago {
 media queries 
 */
 @media (max-width: 576px) {
+  .seccion_ofertas .todas_ofertas {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .todo_mas_vendido {
+    display: flex !important;
+    flex-direction: column;
+  }
   .nuestro_blog {
     grid-template-columns: 1fr !important;
   }
@@ -170,13 +178,6 @@ media queries
   .tarjetas_categoriashover {
     transition: all 300ms;
     transform: scale(1.05);
-  }
-  .productos_mas_vendidos .todo_mas_vendido {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-  .seccion_ofertas .todas_ofertas {
-    grid-template-columns: repeat(3, 1fr) !important;
   }
   .informacion_general .todo {
     display: grid;

@@ -28,10 +28,8 @@ export function Navbar() {
                 {/* Barra de navegación principal con logo y búsqueda */}
                 <nav className="navbar navbar-dark bg-white fixed-top">
                     <div className="container-fluid d-flex align-items-center">
-
-
                         {/* Menú de navegación */}
-                        <nav className="navbar navbar-dark bg-dark ">
+                        <nav className="navbar navbar-dark bg-dark rounded ">
                             <div className="container-fluid mx-auto">
                                 <button className="navbar-toggler"
                                     type="button"
@@ -52,25 +50,25 @@ export function Navbar() {
                                     <ul className="navbar-nav">
                                         <h4 className="p-3">Opciones disponibles</h4>
                                         <li className="nav-item">
-                                            <a className="nav-link active" href="#">Inicio</a>
+                                            <Link className="nav-link active" to="/">Inicio</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="#">Productos</a>
+                                            <Link className="nav-link" to="/productos">Productos</Link> 
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="#">Soporte</a>
+                                            <Link className="nav-link"to="">Soporte</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="#">Sobre nosotros</a>
+                                            <Link className="nav-link"to="">Sobre nosotros</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="#">Contáctanos</a>
+                                            <Link className="nav-link"to="">Contáctanos</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link"
+                                            <Link className="nav-link"
                                                 href="#"
                                                 onClick={closeMenu}
-                                            >Volver</a>
+                                            >Volver</Link>
                                         </li>
                                     </ul>
                                 </div>

@@ -1,0 +1,36 @@
+.seccion_intermedia {
+    .titulo_seccion {
+        position: relative;
+        img {
+            width: 100%;
+            height: 900px;
+            display: block;
+        }
+
+        h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            color: rgb(255, 255, 111);
+            text-transform: uppercase;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .seccion_intermedia {
+        .titulo_seccion {
+            h1 {
+                color: rgb(255, 255, 111);
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
