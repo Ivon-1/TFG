@@ -11,7 +11,7 @@ export const useConsumirProductos = () => {
         axios.get(env.url_local + "api/productos")
             .then((response) => {
                 setData(response.data.productos);
-                console.log(response.productos);
+                console.log(response.data.productos);
             })
             .catch((error) => {
                 setError("Error al obtener los productos en oferta");

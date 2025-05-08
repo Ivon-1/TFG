@@ -20,7 +20,10 @@ export function Home() {
     const { data: productos, error: error_productos } = useConsumirProductos();
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
 
-    const productosConOferta = Array.isArray(productos) ? productos
+    const productosConOferta = Array.isArray(productos) && Array.isArray(ofertas) 
+    && productos.length > 0 
+    && ofertas.length > 0 
+    ? productos
         // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
         .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
         .map(producto => {
