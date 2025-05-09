@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
 export function Registro() {
-    
+
     return <>
         <div className="registro">
             <header className="header">
@@ -52,21 +52,12 @@ export function Registro() {
                         placeholder="Repetir contraseña" />
                 </div>
 
-                <div className="mb-3 form-check">
-                    <input type="checkbox"
-                        className="form-check-input"
-                        id="exampleCheck1" />
-                    <label className="form-check-label"
-                        for="exampleCheck1">Acepto la política de privacidad</label>
-                </div>
 
-                <div className="mb-3 form-check">
-                    <input type="checkbox"
-                        className="form-check-input"
-                        id="exampleCheck2" />
-                    <label className="form-check-label"
-                        for="exampleCheck2">Recibir descuentos exclusivos</label>
-                </div>
+                <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Política de privacidad
+                </button>
+
+                
                 <button type="submit"
                     className="btn btn-dark w-100">Crear cuenta</button>
             </form>

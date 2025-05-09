@@ -166,6 +166,11 @@ media queries
     grid-template-columns: 1fr !important;
   }
 }
+@media (max-width: 576px) {
+  .tarjetas_categorias {
+    padding: 2%;
+  }
+}
 @media (min-width: 576px) {
   .nuestro_blog {
     grid-template-columns: repeat(3, 1fr) !important;
@@ -173,11 +178,7 @@ media queries
 }
 @media (min-width: 768px) {
   .tarjetas_categorias {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-  .tarjetas_categoriashover {
-    transition: all 300ms;
-    transform: scale(1.05);
+    grid-template-columns: repeat(4, 1fr) !important;
   }
   .informacion_general .todo {
     display: grid;
@@ -196,7 +197,7 @@ media queries
     height: 100%;
   }
   .tarjetas_categorias {
-    width: 80%;
+    padding: 2% !important;
   }
   .productos_mas_vendidos .todo_mas_vendido {
     display: grid;

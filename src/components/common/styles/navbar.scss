@@ -82,11 +82,10 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
 
 // Tamaño pequeño (hasta 576px)
 @media (max-width: 576px) {
-    .usuario_carrito {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-direction: row;
+    .buscar{
+        order: 3;
+        width: 100% !important;
+        margin-top: 2%;
     }
 }
 

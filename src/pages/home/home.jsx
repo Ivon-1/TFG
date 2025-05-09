@@ -117,55 +117,37 @@ export function Home() {
                     <a href="#" className="btn btn-info text-white">Sobremesa</a>
                 </div>
             </div>
-            {/* categorias auriculares */}
-            <div className="card  " >
-                <img src={imagenes_home.categoria_auriculares.url}
-                    className="card-img-top"
-                    alt={imagenes_home.categoria_auriculares.alt} />
-                <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Auriculares</a>
-                </div>
-            </div>
 
             {/* categorias moviles */}
-            <div className="card" >
-                <img src={imagenes_home.categoria_moviles.url}
-                    className="card-img-top"
-                    alt={imagenes_home.categoria_moviles.alt} />
-                <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Móviles</a>
-                </div>
-            </div>
-
-            {/* categorias consolas */}
-            <div className="card" >
-                <img src={imagenes_home.categoria_consolas.url}
-                    className="card-img-top"
-                    alt={imagenes_home.categoria_consolas.alt} />
-                <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Consolas</a>
-                </div>
-            </div>
-
-            {/* categorias graficas */}
-            <div className="card" >
-                <img src={imagenes_home.categoria_componentes.url}
-                    className="card-img-top"
-                    alt={imagenes_home.categoria_componentes.alt} />
-                <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Componentes</a>
-                </div>
-            </div>
-
-            {/* categorias televisores */}
             <div className="card" >
                 <img src={imagenes_home.categoria_televisiones.url}
                     className="card-img-top"
                     alt={imagenes_home.categoria_televisiones.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Televisores</a>
+                    <a href="#" className="btn btn-info text-white">Portátiles</a>
                 </div>
             </div>
+
+            {/* categorias consolas */}
+            <div className="card" >
+                <img src={imagenes_home.categoria_moviles.url}
+                    className="card-img-top"
+                    alt={imagenes_home.categoria_moviles.alt} />
+                <div className="card-body bg-black text-center">
+                    <a href="#" className="btn btn-info text-white">Teléfonos</a>
+                </div>
+            </div>
+
+            {/* categorias graficas */}
+            <div className="card" >
+                <img src={imagenes_home.categoria_consolas.url}
+                    className="card-img-top"
+                    alt={imagenes_home.categoria_consolas.alt} />
+                <div className="card-body bg-black text-center">
+                    <a href="#" className="btn btn-info text-white">Consola</a>
+                </div>
+            </div>
+
         </div>
 
         {/* seccion precio especial */}
