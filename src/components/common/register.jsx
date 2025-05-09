@@ -42,22 +42,82 @@ export function Registro() {
                     <input type="password"
                         className="form-control"
                         id="exampleInputPassword1"
-                        placeholder="Introducir contraseña" />
+                        placeholder="Introducir contraseña"
+                        autoComplete="new-password"
+                    />
                 </div>
 
                 <div className="mb-3">
                     <input type="password"
                         className="form-control"
-                        id="exampleInputPassword1"
-                        placeholder="Repetir contraseña" />
+                        id="exampleInputPassword2"
+                        placeholder="Repetir contraseña"
+                        autoComplete="new-password"
+                    />
                 </div>
 
 
-                <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Política de privacidad
-                </button>
 
-                
+
+                <div className="form-check mb-3">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="privacyCheck"
+                    />
+                    <label className="form-check-label" htmlFor="privacyCheck">
+                        Acepto la{" "}
+                        <span
+                            className="text-primary text-decoration-underline"
+                            role="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#privacyModal"
+                        >
+                            política de privacidad
+                        </span>
+                    </label>
+                </div>
+
+                {/* politica de privacidad */}
+                <div
+                    className="modal fade"
+                    id="privacyModal"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabIndex="-1"
+                    aria-labelledby="privacyModalLabel"
+                    aria-hidden="true"
+                >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title  text-black" id="privacyModalLabel">
+                                    Política de Privacidad
+                                </h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Cerrar"
+                                ></button>
+                            </div>
+                            <div className="modal-body text-black">
+                                <p>Este sitio web recopila y procesa tus datos personales para brindarte un mejor servicio. Consulta toda la información aquí.</p>
+                                <p>Puedes ejercer tus derechos de acceso, rectificación y eliminación de datos cuando lo desees.</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit"
                     className="btn btn-dark w-100">Crear cuenta</button>
             </form>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
 export function Login() {
     // 
-    
+
     return <>
         <div className="login">
             <form action="" className="formulario">
@@ -38,7 +38,8 @@ export function Login() {
                         <input type="password"
                             className="form-control  text-center"
                             aria-describedby="passwordHelpBlock"
-                            placeholder="Contraseña" />
+                            placeholder="Contraseña"
+                            autoComplete="new-password" />
                     </div>
                 </div>
                 {/* recuperar contraseña */}
@@ -63,7 +64,7 @@ export function Login() {
                     <div className="boton_crear ">
                         <Link to="/registrarse"
                             className="btn btn-dark w-100">
-                            Crear cuenta 
+                            Crear cuenta
                         </Link>
                     </div>
                 </div>

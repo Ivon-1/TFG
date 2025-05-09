@@ -106,7 +106,7 @@ export function Home() {
         </div>
 
         {/* categorias destacadas*/}
-        <h2 className="text-center m-2 p-2 text-black">Categorías destacadas</h2>
+        <h2 className="text-center m-2 p-2 text-black bg-dark text-white p-2">Categorías destacadas</h2>
         <div className="tarjetas_categorias">
             {/* categorias ordenador sobremesa */}
             <div className="card" >
@@ -118,7 +118,7 @@ export function Home() {
                 </div>
             </div>
 
-            {/* categorias moviles */}
+            {/* categorias portatiles */}
             <div className="card" >
                 <img src={imagenes_home.categoria_televisiones.url}
                     className="card-img-top"
@@ -128,7 +128,7 @@ export function Home() {
                 </div>
             </div>
 
-            {/* categorias consolas */}
+            {/* categorias moviles */}
             <div className="card" >
                 <img src={imagenes_home.categoria_moviles.url}
                     className="card-img-top"
@@ -138,7 +138,7 @@ export function Home() {
                 </div>
             </div>
 
-            {/* categorias graficas */}
+            {/* categoria consolas */}
             <div className="card" >
                 <img src={imagenes_home.categoria_consolas.url}
                     className="card-img-top"
