@@ -25,10 +25,11 @@
 
 .seccion_productos {
     .todos_productos {
+        padding: 3%;
         .card_personalizada {
             position: relative;
             /* NO SE ESTA APLICANDO REVISAR*/
-            .descuento_tag {
+            .discount {
                 position: absolute;
                 top: 10px;
                 left: 10px;

@@ -66,7 +66,7 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
     transition: left 0.3s ease;
     z-index: 1050;
 
-    &.show {
+    &.open {
         left: 0;
     }
 }

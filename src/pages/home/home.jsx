@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from 'react';
 import './styles/home.css';
+import styles from '../../components/common/styles/productos.module.css';
 import { Navbar } from "../../components/common/navbar";
 import { Footer } from "../../components/common/footer";
 import imagenes_home from "../../data/imagenes_generales_home";
@@ -9,8 +10,8 @@ import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
 import { Facturas } from "../facturas/facturas";
-import { Link } from "react-router-dom";
-import { useConsumirProductos } from "../../consumirAxios";
+import { Link, Navigate } from "react-router-dom";
+import { useConsumirProductos, useConsumirPorNombre } from "../../consumirAxios";
 import { useConsumirOfertas } from "../../consumirAxios";
 
 export function Home() {
@@ -20,41 +21,38 @@ export function Home() {
     const { data: productos, error: error_productos } = useConsumirProductos();
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
 
-    const productosConOferta = Array.isArray(productos) && Array.isArray(ofertas) 
-    && productos.length > 0 
-    && ofertas.length > 0 
-    ? productos
-        // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
-        .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
-        .map(producto => {
-            const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
-            producto.descuento = oferta.descuento;
-            producto.precioConDescuento = producto.precio - (producto.precio * oferta.descuento / 100);
-            return producto;
-        }) : [];
 
-    /**
-    * productos mas vendidos
-    * Utilizamos sort para ordenador los productos
-    * Slice para limitar el numero de mas vendidos
-    * 
-    const productosMasVendidos = ({ productos }) => {
-        const [productosMasVendidos, setProductosMasVendidos] = useState([]);
+  
 
-        useEffect(() => {
-            if (productos.length > 0) {
-                const productosOrdenados = [...productos].sort((a, b) => b.cantidad_vendida - a.cantidadVendida).slice(0, 3);
-                setProductosMasVendidos(productosOrdenados);
-            }
-        }, [productos]);
+    // obtener todos los productos tengan oferta o no 
+    const productosConOferta = Array.isArray(productos) && Array.isArray(ofertas)
+        && productos.length > 0
+        && ofertas.length > 0
+        ? productos
+            // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
+            .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
+            .map(producto => {
+                const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
+                const descuento = oferta.descuento;
+                const precioConDescuento = parseFloat( // parseamos directamente porque tofixed devuelve string y usamos tofixed para limitarlo a 2 decimales
+                    (producto.precio - (producto.precio * descuento / 100)).toFixed(2)
+                );
 
-    }
-    */
+                return {
+                    ...producto,
+                    descuento,
+                    precioConDescuento
+                };
+            })
+        : [];
 
-    /**
-     * Nav del menu principal
-     */
+
+
+
+
     return <>
+
+
         <div className="navbar">
             {/* menu de opciones */}
             <Navbar />
@@ -172,7 +170,7 @@ export function Home() {
                             )}
 
                             <img src={producto.url}
-                                className="card-img-top"
+                                className="card-img-top p-2"
                                 alt={producto.nombre}
 
                             />
@@ -215,7 +213,7 @@ export function Home() {
                                 <p className="card-text">{producto.descripcion}</p>
                                 <div className="total_precio">
                                     <a href="#" className="btn btn-primary">Comprar</a>
-                                    <p>Total: {producto.precioConDescuento} €</p>
+                                    <p>Total: {producto.precioConDescuento || producto.precio} €</p>
                                 </div>
                             </div>
                         </div>
