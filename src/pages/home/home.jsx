@@ -10,7 +10,7 @@ import productos_mas_vendidos from "../../data/productos_mas_vendidos";
 import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
 import { Facturas } from "../facturas/facturas";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useConsumirProductos, useConsumirPorNombre } from "../../consumirAxios";
 import { useConsumirOfertas } from "../../consumirAxios";
 
@@ -20,10 +20,10 @@ export function Home() {
      */
     const { data: productos, error: error_productos } = useConsumirProductos();
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
-
-
-  
-
+    /**
+     * filtro de productos
+     */
+    const [busqueda, setBusqueda] = useState("");
     // obtener todos los productos tengan oferta o no 
     const productosConOferta = Array.isArray(productos) && Array.isArray(ofertas)
         && productos.length > 0
@@ -46,16 +46,12 @@ export function Home() {
             })
         : [];
 
-
-
-
-
     return <>
 
 
         <div className="navbar">
             {/* menu de opciones */}
-            <Navbar />
+            <Navbar busqueda={busqueda} setBusqueda={setBusqueda}/>
             {/* carousel de imagenes principal */}
             <div id="carouselExampleCaptions" className="carousel slide">
                 <div className="carousel-indicators">

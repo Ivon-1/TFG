@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import styles from "./styles/productos.module.scss";
-import imagenes_home from "../../data/imagenes_generales_home";
 import { useConsumirOfertas, useConsumirProductos } from "../../consumirAxios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Productos = () => {
     const [busqueda, setBusqueda] = useState("");
     const { data: productos, error: error_productos } = useConsumirProductos();
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
+    const location = useLocation();
+    const navigate = useNavigate();
 
+    // obtenemos valor url
+    const parametros = new URLSearchParams(location.search);
+    const busquedaProductos = parametros.get("search");
+
+    // Filtrar productos según la búsqueda
     const productosFiltrados = (productos, busqueda) => {
         if (!busqueda) return productos;
         return productos.filter((producto) =>
@@ -17,6 +24,16 @@ export const Productos = () => {
         );
     };
 
+    // configuramos para q al actualizar o darle a buscar salgan todos
+    useEffect(() => {
+        if (busquedaProductos) {
+            setBusqueda(busquedaProductos); 
+        } else {
+            setBusqueda(""); 
+        }
+    }, [busquedaProductos]); 
+
+    // Recalcular productos con oferta
     const productosConOferta =
         Array.isArray(productos) && Array.isArray(ofertas)
             ? productosFiltrados(productos, busqueda).map((producto) => {
@@ -36,20 +53,24 @@ export const Productos = () => {
             })
             : [];
 
+    // Función de búsqueda en el navbar (esto debería estar en el Navbar.js, pero lo dejo aquí como referencia)
+    const handleBuscar = (e) => {
+        e.preventDefault();
+        if (busqueda.trim() !== "") {
+            navigate(`/productos?search=${encodeURIComponent(busqueda)}`); // asegurmaos q el url se pase correctamente
+        }
+    };
+
     return (
         <>
-            
             <header>
-                <Navbar className={styles.navbar} busqueda={busqueda} setBusqueda={setBusqueda} />
+                <Navbar
+                    className={styles.navbar}
+                    busqueda={busqueda}
+                    setBusqueda={setBusqueda}
+                    handleBuscar={handleBuscar} // le pasamos para q lo q escribamos lo vaya cargando
+                />
             </header>
-
-            <section className={styles.seccion_intermedia}>
-                <div className={styles.titulo_seccion}>
-                    <img src={imagenes_home.productos_color.url}
-                        alt={imagenes_home.productos_color.alt} />
-                    <h1>Nuestros Productos</h1>
-                </div>
-            </section>
 
             <section className={styles.seccion_productos}>
                 <h3 className="text-black p-2">{productosConOferta.length} Productos encontrados</h3>

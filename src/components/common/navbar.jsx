@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 
 export function Navbar({ busqueda, setBusqueda }) {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
@@ -20,7 +21,10 @@ export function Navbar({ busqueda, setBusqueda }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // No se hace nada más, porque `Productos` ya usará `busqueda`
+        if (busqueda.trim() !== "") {
+            navigate(`/productos?search=${encodeURIComponent(busqueda)}`); // garantizar q parametro se pase bien
+        }
+
     };
 
     return (
