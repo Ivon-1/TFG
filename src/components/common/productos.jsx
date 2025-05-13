@@ -3,6 +3,7 @@ import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import styles from "./styles/productos.module.scss";
 import { useConsumirOfertas, useConsumirProductos } from "../../consumirAxios";
+import InfiniteScroll from "react-infinite-scroll-component"; // libreria para el scroll infinito
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Productos = () => {
@@ -11,7 +12,12 @@ export const Productos = () => {
     const { data: ofertas, error_ofertas } = useConsumirOfertas();
     const location = useLocation();
     const navigate = useNavigate();
+    // scroll infinito
+    const [visible, setVisible] = useState(12);
 
+    const cargarScroll = () => {
+        setVisible((prev) => prev + 12);
+    }
     // obtenemos valor url
     const parametros = new URLSearchParams(location.search);
     const busquedaProductos = parametros.get("search");
@@ -27,11 +33,11 @@ export const Productos = () => {
     // configuramos para q al actualizar o darle a buscar salgan todos
     useEffect(() => {
         if (busquedaProductos) {
-            setBusqueda(busquedaProductos); 
+            setBusqueda(busquedaProductos);
         } else {
-            setBusqueda(""); 
+            setBusqueda("");
         }
-    }, [busquedaProductos]); 
+    }, [busquedaProductos]);
 
     // Recalcular productos con oferta
     const productosConOferta =
@@ -74,42 +80,55 @@ export const Productos = () => {
 
             <section className={styles.seccion_productos}>
                 <h3 className="text-black p-2">{productosConOferta.length} Productos encontrados</h3>
-                <div className={styles.todos_productos}>
-                    {error_productos && <p className="text-danger">{error_productos}</p>}
-                    {productosConOferta.length > 0 ? (
-                        productosConOferta.reverse().map((producto) => (
-                            <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                                {producto.descuento > 0 && (
-                                    <span className={styles.discount}>
-                                        {producto.descuento}%
-                                    </span>
-                                )}
-                                <img src={producto.url}
-                                    className="card-img-top p-2"
-                                    alt={producto.nombre} />
+                {error_productos && <p className="text-danger">{error_productos}</p>}
 
-                                <div className="card-body mt-3">
-                                    <h5 className="card-title">{producto.nombre}</h5>
-                                    <p className="card-text">{producto.descripcion}</p>
-                                    <div className="total_precio">
-                                        <a href="#" className="btn btn-primary">Comprar</a>
-                                        <div className="precios mt-2">
-                                            <p>Antes: {producto.precio} €</p>
-                                            {producto.descuento > 0 && (
-                                                <p className="text-danger">
-                                                    Total: {producto.precioConDescuento} €
-                                                </p>
-                                            )}
+                {productosConOferta.length > 0 ? (
+                    <InfiniteScroll // componente para el infinite scroll 
+                        dataLength={visible}
+                        next={cargarScroll}
+                        hasMore={visible < productosConOferta.length}
+                        loader={<h4 className="text-light text-center">Cargando más productos...</h4>}
+                        endMessage={<p className="text-light text-center">No hay más productos</p>}
+                    >
+                        <div className={styles.todos_productos}>
+                            {productosConOferta
+                                .slice(0, visible)
+                                .map((producto) => (
+                                    <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                                        {producto.descuento > 0 && (
+                                            <span className={styles.discount}>
+                                                {producto.descuento}%
+                                            </span>
+                                        )}
+                                        <img
+                                            src={producto.url}
+                                            className="card-img-top p-2 w-100"
+                                            alt={producto.nombre}
+                                        />
+                                        <div className="card-body mt-3">
+                                            <h5 className="card-title">{producto.nombre}</h5>
+                                            <p className="card-text">{producto.descripcion}</p>
+                                            <div className="total_precio">
+                                                <a href="#" className="btn btn-primary">Comprar</a>
+                                                <div className="precios mt-2">
+                                                    <p>Antes: {producto.precio} €</p>
+                                                    {producto.descuento > 0 && (
+                                                        <p className="text-danger">
+                                                            Total: {producto.precioConDescuento} €
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-light text-center">No se encontraron productos</p>
-                    )}
-                </div>
+                                ))}
+                        </div>
+                    </InfiniteScroll>
+                ) : (
+                    <p className="text-light text-center">No se encontraron productos</p>
+                )}
             </section>
+
 
             <footer>
                 <Footer />

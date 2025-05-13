@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
+import { useConsumirPorUsuario } from "../../consumirAxios";
 
-export function Navbar({ busqueda, setBusqueda }) {
+export function Navbar({ busqueda, setBusqueda, email, password }) {
+    // axios
+    const { token, userName } = useConsumirPorUsuario(email, password);
+
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
 
+    // manejar loguin
+    const [logueado, setLogueado] = useState(false);
+    const [nombreUsuario, setNombreUsuario] = useState("");
+
+    const navigate = useNavigate();
+    // apertura y cierre menu
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
     };
@@ -15,16 +24,46 @@ export function Navbar({ busqueda, setBusqueda }) {
         setIsOpen(false);
     };
 
+    // Función para actualizar la búsqueda
     const handleChange = (e) => {
         setBusqueda(e.target.value);
     };
 
+    // formulario
     const handleSubmit = (e) => {
         e.preventDefault();
         if (busqueda.trim() !== "") {
-            navigate(`/productos?search=${encodeURIComponent(busqueda)}`); // garantizar q parametro se pase bien
+            navigate(`/productos?search=${encodeURIComponent(busqueda)}`);
         }
+    };
 
+    // ver si hay token
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        const nombre_usuario_storage = localStorage.getItem('userName');
+        if (token && nombre_usuario_storage) {
+            setLogueado(true);
+            setNombreUsuario(nombre_usuario_storage);
+        }
+    }, []);
+
+    // Almacenamos el token y el nombre de usuario 
+    useEffect(() => {
+        if (token && userName) {
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('userName', userName);
+            setLogueado(true);
+            setNombreUsuario(userName);
+        }
+    }, [token, userName]);
+
+    // Función para manejar el cierre de sesión
+    const handleSalir = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userName');
+        setLogueado(false);
+        setNombreUsuario("");
+        navigate('/');
     };
 
     return (
@@ -43,7 +82,7 @@ export function Navbar({ busqueda, setBusqueda }) {
                                 <span className="navbar-toggler-icon"></span>
                             </button>
                             <div className="d-none d-md-block">
-                                <h4 className="titulos mx-2 ">Secciones</h4>
+                                <h4 className="titulos mx-2">Secciones</h4>
                             </div>
 
                             <div className={"navbar-collapse slide-menu " + (isOpen ? 'open' : '')}>
@@ -85,11 +124,16 @@ export function Navbar({ busqueda, setBusqueda }) {
                     {/* Usuario y carrito */}
                     <div className="usuario_carrito bg-white gap-md-3">
                         <div className="user">
-                            <Link to="/login">
+                            {logueado ? (
+                                <div className="nombre_usuario">
+                                    <span className="iniciado text-black">{nombreUsuario}</span>
+                                </div>
+                            ) : <Link to="/login">
                                 <img src={todas_imagenes.imagen_usuario.url}
                                     alt={todas_imagenes.imagen_usuario.nombre}
                                     className="img-fluid" style={{ height: '40px' }} />
-                            </Link>
+                            </Link>}
+
                         </div>
                         <div className="carrito">
                             <img src={todas_imagenes.imagen_carrito.url}
