@@ -11,31 +11,53 @@ import imagenes_blog from "../../data/informacion_blog";
 import todas_marcas from "../../data/marcas_colaboradoras";
 import { Facturas } from "../facturas/facturas";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useConsumirProductos, useConsumirPorNombre } from "../../consumirAxios";
-import { useConsumirOfertas } from "../../consumirAxios";
+import { useFetchData } from "../../consumirAxios";
 
 export function Home() {
     /**
      * seccion de ofertas
      */
-    const { data: productos, error: error_productos } = useConsumirProductos();
-    const { data: ofertas, error_ofertas } = useConsumirOfertas();
+
+    const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
+    const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
+
+    /** 
+     * desestructuramos los arrays para poder mostrar correctamente los productos
+     */
+    const { productos: array_productos = [] } = productos_datos ?? {};
+    const { ofertas: array_ofertas = [] } = ofertas_datos ?? {};
+
+    useEffect(() => {
+        if (loading_ofertas) {
+            console.log('Cargando ofertas');
+        }
+    }, [loading_ofertas]);
+
+
+
     /**
      * filtro de productos
      */
     const [busqueda, setBusqueda] = useState("");
     // obtener todos los productos tengan oferta o no 
-    const productosConOferta = Array.isArray(productos) && Array.isArray(ofertas)
-        && productos.length > 0
-        && ofertas.length > 0
-        ? productos
-            // filtramos los productos en funcion de si tienen oferta o no y mostramos solo los q tienen oferta
-            .filter(producto => ofertas.some(oferta => oferta.id_producto === producto.id))
+    const productosConOferta = (
+        Array.isArray(array_productos) &&
+        Array.isArray(array_ofertas) &&
+        array_productos.length > 0 &&
+        array_ofertas.length > 0
+    )
+        ? array_productos // array desestructurado
+            // filtramos los productos en función de si tienen oferta
+            .filter(producto =>
+                array_ofertas.some(oferta => oferta.id_producto === producto.id)
+            )
             .map(producto => {
-                const oferta = ofertas.find(oferta => oferta.id_producto === producto.id);
+                const oferta = array_ofertas.find(
+                    oferta => oferta.id_producto === producto.id
+                );
                 const descuento = oferta.descuento;
-                const precioConDescuento = parseFloat( // parseamos directamente porque tofixed devuelve string y usamos tofixed para limitarlo a 2 decimales
-                    (producto.precio - (producto.precio * descuento / 100)).toFixed(2)
+                const precioConDescuento = parseFloat(
+                    (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
                 );
 
                 return {
@@ -51,7 +73,7 @@ export function Home() {
 
         <div className="navbar">
             {/* menu de opciones */}
-            <Navbar busqueda={busqueda} setBusqueda={setBusqueda}/>
+            <Navbar busqueda={busqueda} setBusqueda={setBusqueda} />
             {/* carousel de imagenes principal */}
             <div id="carouselExampleCaptions" className="carousel slide">
                 <div className="carousel-indicators">
@@ -175,7 +197,14 @@ export function Home() {
                                 <p className="card-text">{producto.descripcion}</p>
                                 <div className="total_precio">
                                     <a href="#" className="btn btn-primary">Comprar</a>
-                                    <p>Total: {producto.precioConDescuento} €</p>
+                                    {producto.descuento > 0 ? (
+                                        <>
+                                            <p>Antes: {producto.precio}€</p>
+                                            <p className="text-danger">Total: {producto.precioConDescuento}€</p>
+                                        </>
+                                    ) : (
+                                        <p>Total: {producto.precio} €</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -209,7 +238,14 @@ export function Home() {
                                 <p className="card-text">{producto.descripcion}</p>
                                 <div className="total_precio">
                                     <a href="#" className="btn btn-primary">Comprar</a>
-                                    <p>Total: {producto.precioConDescuento || producto.precio} €</p>
+                                    {producto.descuento > 0 ? (
+                                        <>
+                                            <p>Antes: {producto.precio} €</p>
+                                            <p className="text-danger">Total: {producto.precioConDescuento}€</p>
+                                        </>
+                                    ) : (
+                                        <p>Total: {producto.precio} €</p>
+                                    )}
                                 </div>
                             </div>
                         </div>

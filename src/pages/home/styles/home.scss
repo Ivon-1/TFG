@@ -36,6 +36,7 @@ body {
         .todas_ofertas {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            padding: 3%;
             .card_personalizada {
                 position: relative;
                 .discount-tag {
@@ -55,9 +56,10 @@ body {
                 }
 
                 .total_precio {
-                    display: flex;
+                    display: grid;
+                    text-align: start;
                     gap: 20px;
-                    justify-content: space-around;
+                    justify-content: start;
                     margin-top: 5%;
                 }
             }

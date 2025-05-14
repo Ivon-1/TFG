@@ -2,16 +2,26 @@ import { useEffect, useState } from "react";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import styles from "./styles/productos.module.scss";
-import { useConsumirOfertas, useConsumirProductos } from "../../consumirAxios";
+import { useFetchData } from "../../consumirAxios";
 import InfiniteScroll from "react-infinite-scroll-component"; // libreria para el scroll infinito
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Productos = () => {
     const [busqueda, setBusqueda] = useState("");
-    const { data: productos, error: error_productos } = useConsumirProductos();
-    const { data: ofertas, error_ofertas } = useConsumirOfertas();
     const location = useLocation();
     const navigate = useNavigate();
+
+    /**
+     * obtenemos productos y ofertas
+     */
+    const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
+    const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
+    /** 
+    * desestructuramos los arrays para poder mostrar correctamente los productos
+    */
+    const { productos: array_productos = [] } = productos_datos ?? {};
+    const { ofertas: array_ofertas = [] } = ofertas_datos ?? {};
+
     // scroll infinito
     const [visible, setVisible] = useState(12);
 
@@ -39,31 +49,40 @@ export const Productos = () => {
         }
     }, [busquedaProductos]);
 
-    // Recalcular productos con oferta
-    const productosConOferta =
-        Array.isArray(productos) && Array.isArray(ofertas)
-            ? productosFiltrados(productos, busqueda).map((producto) => {
-                const oferta = ofertas.find(o => o.id_producto === producto.id);
-                if (oferta) {
-                    const descuento = oferta.descuento;
-                    const precioConDescuento = parseFloat(
-                        (producto.precio - (producto.precio * descuento / 100)).toFixed(2)
-                    );
-                    return {
-                        ...producto,
-                        descuento,
-                        precioConDescuento,
-                    };
-                }
-                return producto;
-            })
-            : [];
+    // filtrar productos que tienen oferta
+    const productosConOferta = Array.isArray(array_productos) && Array.isArray(array_ofertas)
+        ? array_productos.map(({ id, nombre, descripcion, precio, url }) => {
 
-    // Función de búsqueda en el navbar (esto debería estar en el Navbar.js, pero lo dejo aquí como referencia)
+            const oferta = array_ofertas.find(({ id_producto }) => id_producto === id);
+            // si hay oferta ponmeos descuento sino 0
+            const descuento = oferta?.descuento ?? 0;
+            // precio con descuento
+            const precioConDescuento = parseFloat(
+                (precio - (precio * descuento) / 100).toFixed(2)
+            );
+
+            // retornamos el producto con los campos
+            return {
+                id,
+                nombre,
+                descripcion,
+                precio,
+                url,
+                descuento,
+                precioConDescuento,
+            };
+        })
+        : [];
+
+    // funcion busqueda navbar
     const handleBuscar = (e) => {
         e.preventDefault();
         if (busqueda.trim() !== "") {
             navigate(`/productos?search=${encodeURIComponent(busqueda)}`); // asegurmaos q el url se pase correctamente
+        }
+
+        if (loading_productos) {
+            return <p className="text-light text-center">Cargando productos y ofertas ...</p>
         }
     };
 
@@ -91,7 +110,7 @@ export const Productos = () => {
                         endMessage={<p className="text-light text-center">No hay más productos</p>}
                     >
                         <div className={styles.todos_productos}>
-                            {productosConOferta
+                            {productosFiltrados(productosConOferta, busqueda)
                                 .slice(0, visible)
                                 .map((producto) => (
                                     <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
@@ -111,12 +130,17 @@ export const Productos = () => {
                                             <div className="total_precio">
                                                 <a href="#" className="btn btn-primary">Comprar</a>
                                                 <div className="precios mt-2">
-                                                    <p>Antes: {producto.precio} €</p>
-                                                    {producto.descuento > 0 && (
-                                                        <p className="text-danger">
-                                                            Total: {producto.precioConDescuento} €
-                                                        </p>
+                                                    {producto.descuento > 0 ? (
+                                                        <>
+                                                            <p>Antes: {producto.precio} € </p>
+                                                            <p className="text-danger">Total: {producto.precioConDescuento} € </p>
+                                                        </>
+                                                    ) : (
+                                                        <p>Total: {producto.precio} € </p>
                                                     )}
+
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -128,7 +152,6 @@ export const Productos = () => {
                     <p className="text-light text-center">No se encontraron productos</p>
                 )}
             </section>
-
 
             <footer>
                 <Footer />

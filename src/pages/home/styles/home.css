@@ -35,6 +35,7 @@ body .ofertas_home {
 body .seccion_ofertas .todas_ofertas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  padding: 3%;
 }
 body .seccion_ofertas .todas_ofertas .card_personalizada {
   position: relative;
@@ -55,9 +56,10 @@ body .seccion_ofertas .todas_ofertas .card_personalizada .discount-tag {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 body .seccion_ofertas .todas_ofertas .card_personalizada .total_precio {
-  display: flex;
+  display: grid;
+  text-align: start;
   gap: 20px;
-  justify-content: space-around;
+  justify-content: start;
   margin-top: 5%;
 }
 body .productos_mas_vendidos .todo_mas_vendido {

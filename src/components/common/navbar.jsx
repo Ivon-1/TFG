@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
-import { useConsumirPorUsuario } from "../../consumirAxios";
 
-export function Navbar({ busqueda, setBusqueda, email, password }) {
-    // axios
-    const { token, userName } = useConsumirPorUsuario(email, password);
+export function Navbar({ busqueda, setBusqueda}) {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -37,34 +34,6 @@ export function Navbar({ busqueda, setBusqueda, email, password }) {
         }
     };
 
-    // ver si hay token
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        const nombre_usuario_storage = localStorage.getItem('userName');
-        if (token && nombre_usuario_storage) {
-            setLogueado(true);
-            setNombreUsuario(nombre_usuario_storage);
-        }
-    }, []);
-
-    // Almacenamos el token y el nombre de usuario 
-    useEffect(() => {
-        if (token && userName) {
-            localStorage.setItem('authToken', token);
-            localStorage.setItem('userName', userName);
-            setLogueado(true);
-            setNombreUsuario(userName);
-        }
-    }, [token, userName]);
-
-    // Función para manejar el cierre de sesión
-    const handleSalir = () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userName');
-        setLogueado(false);
-        setNombreUsuario("");
-        navigate('/');
-    };
 
     return (
         <div className="header">
@@ -109,7 +78,9 @@ export function Navbar({ busqueda, setBusqueda, email, password }) {
 
                     {/* Buscador */}
                     <div className="buscar w-50 mx-lg-5">
-                        <form className="d-flex" role="search" onSubmit={handleSubmit}>
+                        <form className="d-flex" 
+                        role="search" 
+                        onSubmit={handleSubmit}>
                             <input
                                 className="form-control me-2"
                                 type="search"

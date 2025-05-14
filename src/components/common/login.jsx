@@ -1,48 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
-import { useConsumirPorUsuario } from "../../consumirAxios";
+import { useFetchData } from "../../consumirAxios";
 import { useState, useEffect } from "react";
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    // redirigir
     const navigate = useNavigate();
 
-    // axios
-    const { data, error: error_login } = useConsumirPorUsuario(email, password);
-
-    // funcion enviar formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         e.preventDefault();
 
-
-        if (!email || !password) {
-            setError("Error. Debe introducir los datos correctamente o faltan campos por rellenar");
-            return;
-        }
     }
-
-    // Redirigir y guardar token en localStorage cuando el token esté disponible
-    useEffect(() => {
-        if (data?.token) {
-            localStorage.setItem('authToken', data.token);
-            navigate('/'); // Redirigir al home
-        }
-    }, [data, navigate]);
-
-    // Manejar errores
-    useEffect(() => {
-        if (error_login) {
-            setError(error_login);
-        }
-    }, [error_login]);
-
 
     return (
         <>
             <div className="login">
-                <form action="" className="formulario" onSubmit={handleSubmit}>
+                <form action="" className="formulario" >
                     <header className="header">
                         <div className="titulo">
                             <h2 className="text-center bold text-black">ModTech</h2>
@@ -72,8 +48,8 @@ export function Login() {
                                 className="form-control text-center"
                                 aria-describedby="passwordHelpBlock"
                                 placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)} // Corregido para actualizar el estado
+                                
+                                // Corregido para actualizar el estado
                             />
                         </div>
 
@@ -84,8 +60,8 @@ export function Login() {
                                 aria-describedby="passwordHelpBlock"
                                 placeholder="Contraseña"
                                 autoComplete="new-password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)} // Corregido para actualizar el estado
+                                
+                                // Corregido para actualizar el estado
                             />
                         </div>
                     </div>
