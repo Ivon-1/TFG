@@ -221,59 +221,37 @@ export function Home() {
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
             <div className="todo_mas_vendido">
+                {/* oferta uno */}
                 {error_productos && <p className="text-danger">{error_productos}</p>}
-                {array_productos.length > 0 ? (
-                    array_productos
-                        .slice() // para no mutar el original con reverse si quieres invertir orden
-                        .reverse()
-                        .map((producto) => {
-                            const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
-                            const ahora = new Date();
+                {productosConOferta.length > 0 ? (
+                    productosConOferta.reverse().map((producto) => (
+                        <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                            {producto.descuento > 0 && (
+                                <span className="discount-tag-vendido">{producto.descuento}%</span>
+                            )}
 
-                            let descuento = 0;
-                            let precioConDescuento = producto.precio;
+                            <img src={producto.url}
+                                className="card-img-top p-2"
+                                alt={producto.nombre}
 
-                            if (oferta) {
-                                const inicio = new Date(oferta.fecha_inicio);
-                                const fin = new Date(oferta.fecha_fin);
-
-                                if (ahora >= inicio && ahora <= fin) {
-                                    descuento = oferta.descuento;
-                                    precioConDescuento = parseFloat(
-                                        (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
-                                    );
-                                }
-                            }
-
-                            return (
-                                <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                                    {descuento > 0 && (
-                                        <span className="discount-tag_vendido">{descuento}%</span>
+                            />
+                            <div className="card-body mt-3">
+                                <h5 className="card-title">{producto.nombre}</h5>
+                                <p className="card-text">{producto.descripcion}</p>
+                                <div className="total_precio">
+                                    <a href="#" className="btn btn-primary">Comprar</a>
+                                    {producto.descuento > 0 ? (
+                                        <>
+                                            <p>Antes: {producto.precio}€</p>
+                                            <p className="text-danger">Total: {producto.precioConDescuento}€</p>
+                                        </>
+                                    ) : (
+                                        <p>Total: {producto.precio} €</p>
                                     )}
-
-                                    <img
-                                        src={producto.url}
-                                        className="card-img-top"
-                                        alt={producto.nombre}
-                                    />
-                                    <div className="card-body mt-3">
-                                        <h5 className="card-title">{producto.nombre}</h5>
-                                        <p className="card-text">{producto.descripcion}</p>
-                                        <div className="total_precio">
-                                            <a href="#" className="btn btn-primary">Comprar</a>
-                                            {descuento > 0 ? (
-                                                <>
-                                                    <p>Antes: {producto.precio} €</p>
-                                                    <p className="text-danger">Total: {precioConDescuento}€</p>
-                                                </>
-                                            ) : (
-                                                <p>Total: {producto.precio} €</p>
-                                            )}
-                                        </div>
-                                    </div>
                                 </div>
-                            );
-                        })
+                            </div>
+                        </div>
+                    ))
                 ) : (
                     <p className="text-light text-center">Cargando productos en oferta</p>
                 )}
