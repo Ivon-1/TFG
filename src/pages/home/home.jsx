@@ -34,31 +34,31 @@ export function Home() {
     }, [loading_ofertas]);
 
 
-
     /**
      * filtro de productos
      */
     const [busqueda, setBusqueda] = useState("");
     // obtener todos los productos tengan oferta o no 
-    const productosConOferta = (
-        Array.isArray(array_productos) &&
-        Array.isArray(array_ofertas) &&
-        array_productos.length > 0 &&
-        array_ofertas.length > 0
-    )
-        ? array_productos // array desestructurado
-            // filtramos los productos en función de si tienen oferta
-            .filter(producto =>
-                array_ofertas.some(oferta => oferta.id_producto === producto.id)
-            )
+    const productosConOferta = Array.isArray(array_productos) && Array.isArray(array_ofertas)
+        ? array_productos
             .map(producto => {
-                const oferta = array_ofertas.find(
-                    oferta => oferta.id_producto === producto.id
-                );
-                const descuento = oferta.descuento;
-                const precioConDescuento = parseFloat(
-                    (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
-                );
+                const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
+                const ahora = new Date();
+
+                let descuento = 0;
+                let precioConDescuento = producto.precio;
+
+                if (oferta) {
+                    const inicio = new Date(oferta.fecha_inicio);
+                    const fin = new Date(oferta.fecha_fin);
+
+                    if (ahora >= inicio && ahora <= fin) { // IMPORTANTE PARA QUE SE ACTUALICEN CORRECTAMENTE
+                        descuento = oferta.descuento;
+                        precioConDescuento = parseFloat(
+                            (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
+                        );
+                    }
+                }
 
                 return {
                     ...producto,
@@ -66,7 +66,9 @@ export function Home() {
                     precioConDescuento
                 };
             })
+            .filter(producto => producto && producto.descuento > 0)
         : [];
+
 
     return <>
 
@@ -219,37 +221,59 @@ export function Home() {
         <section className="productos_mas_vendidos">
             <h3 className="text-center bg-dark p-2 mt-2">Productos más vendidos</h3>
             <div className="todo_mas_vendido">
-                {/* oferta uno */}
                 {error_productos && <p className="text-danger">{error_productos}</p>}
-                {productosConOferta.length > 0 ? (
-                    productosConOferta.reverse().map((producto) => (
-                        <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                            {producto.descuento > 0 && (
-                                <span className="discount-tag_vendido">{producto.descuento}%</span>
-                            )}
+                {array_productos.length > 0 ? (
+                    array_productos
+                        .slice() // para no mutar el original con reverse si quieres invertir orden
+                        .reverse()
+                        .map((producto) => {
+                            const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
+                            const ahora = new Date();
 
-                            <img src={producto.url}
-                                className="card-img-top"
-                                alt={producto.nombre}
+                            let descuento = 0;
+                            let precioConDescuento = producto.precio;
 
-                            />
-                            <div className="card-body mt-3">
-                                <h5 className="card-title">{producto.nombre}</h5>
-                                <p className="card-text">{producto.descripcion}</p>
-                                <div className="total_precio">
-                                    <a href="#" className="btn btn-primary">Comprar</a>
-                                    {producto.descuento > 0 ? (
-                                        <>
-                                            <p>Antes: {producto.precio} €</p>
-                                            <p className="text-danger">Total: {producto.precioConDescuento}€</p>
-                                        </>
-                                    ) : (
-                                        <p>Total: {producto.precio} €</p>
+                            if (oferta) {
+                                const inicio = new Date(oferta.fecha_inicio);
+                                const fin = new Date(oferta.fecha_fin);
+
+                                if (ahora >= inicio && ahora <= fin) {
+                                    descuento = oferta.descuento;
+                                    precioConDescuento = parseFloat(
+                                        (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
+                                    );
+                                }
+                            }
+
+                            return (
+                                <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                                    {descuento > 0 && (
+                                        <span className="discount-tag_vendido">{descuento}%</span>
                                     )}
+
+                                    <img
+                                        src={producto.url}
+                                        className="card-img-top"
+                                        alt={producto.nombre}
+                                    />
+                                    <div className="card-body mt-3">
+                                        <h5 className="card-title">{producto.nombre}</h5>
+                                        <p className="card-text">{producto.descripcion}</p>
+                                        <div className="total_precio">
+                                            <a href="#" className="btn btn-primary">Comprar</a>
+                                            {descuento > 0 ? (
+                                                <>
+                                                    <p>Antes: {producto.precio} €</p>
+                                                    <p className="text-danger">Total: {precioConDescuento}€</p>
+                                                </>
+                                            ) : (
+                                                <p>Total: {producto.precio} €</p>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))
+                            );
+                        })
                 ) : (
                     <p className="text-light text-center">Cargando productos en oferta</p>
                 )}

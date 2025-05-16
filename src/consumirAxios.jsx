@@ -9,7 +9,7 @@ export function useFetchData(url = null) {
 
     useEffect(() => {
         if (!url) return;
-        axios.get(env.url_local + url)
+        axios.get(env.url_produccion + url)
             .then(response => {
                 setData(response.data);
                 setLoading(false);

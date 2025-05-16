@@ -51,25 +51,29 @@ export const Productos = () => {
 
     // filtrar productos que tienen oferta
     const productosConOferta = Array.isArray(array_productos) && Array.isArray(array_ofertas)
-        ? array_productos.map(({ id, nombre, descripcion, precio, url }) => {
+        ? array_productos.map(producto => {
+            const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
+            const ahora = new Date();
 
-            const oferta = array_ofertas.find(({ id_producto }) => id_producto === id);
-            // si hay oferta ponmeos descuento sino 0
-            const descuento = oferta?.descuento ?? 0;
-            // precio con descuento
-            const precioConDescuento = parseFloat(
-                (precio - (precio * descuento) / 100).toFixed(2)
-            );
+            let descuento = 0;
+            let precioConDescuento = producto.precio;
 
-            // retornamos el producto con los campos
+            if (oferta) {
+                const inicio = new Date(oferta.fecha_inicio);
+                const fin = new Date(oferta.fecha_fin);
+
+                if (ahora >= inicio && ahora <= fin) {
+                    descuento = oferta.descuento;
+                    precioConDescuento = parseFloat(
+                        (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
+                    );
+                }
+            }
+
             return {
-                id,
-                nombre,
-                descripcion,
-                precio,
-                url,
+                ...producto,
                 descuento,
-                precioConDescuento,
+                precioConDescuento
             };
         })
         : [];
