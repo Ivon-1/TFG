@@ -62,7 +62,7 @@ export function useRegistro() {
         setLoading(true);
         setError("");
 
-        axios.post(env.url_produccion + "/registrarse", credenciales)
+        axios.post(env.url_produccion + "users/register", credenciales)
             .then(response => {
                 setData(response.data);
             })

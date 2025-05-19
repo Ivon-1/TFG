@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
 import { useRegistro } from "../../consumirAxios";
 
@@ -10,6 +10,8 @@ export function Registro() {
     const [confirmarPassword, setConfirmarPassword] = useState("");
     const [politicaPrivacidad, setPoliticaPrivacidad] = useState(false);
     const [error, setError] = useState("");
+    // naavigate
+    const navigate = useNavigate();
 
     // consumir registro
     const { data, loading, error: errorRegistro, registro } = useRegistro();
@@ -57,8 +59,10 @@ export function Registro() {
         // limpiamos error
         setError("");
 
+
         // llamamos funcion con parametros (no enviamos confirmarPassword al backend)
         registro({ nombre, email, password });
+    
     };
 
     return (
