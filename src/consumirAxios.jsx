@@ -22,8 +22,62 @@ export function useFetchData(url = null) {
             })
     }, [url])
 
-    return {data, loading, error}
+    return { data, loading, error }
 }
+// funcion login
+export function useLogin() {
+    const [data, setData] = useState(""); 
+    const [loading, setLoading] = useState(false); 
+    const [error, setError] = useState(""); 
+
+
+    const login = (credenciales) => {
+        setLoading(true);
+        setError("");
+
+        axios.post(env.url_produccion + "/login", credenciales)
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(() => {
+                setError("Usuario o contraseña incorrectos");
+                setData(null);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    return { data, loading, error, login };
+}
+
+// funcion registro
+export function useRegistro() {
+    const [data, setData] = useState(""); 
+    const [loading, setLoading] = useState(false); 
+    const [error, setError] = useState(""); 
+
+
+    const registro = (credenciales) => {
+        setLoading(true);
+        setError("");
+
+        axios.post(env.url_produccion + "/registrarse", credenciales)
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(() => {
+                setError("Faltan campos por rellenar o los campos son inválidos");
+                setData(null);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    return { data, loading, error, registro };
+}
+
 
 
 
