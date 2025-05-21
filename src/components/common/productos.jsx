@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const Productos = () => {
     const [busqueda, setBusqueda] = useState("");
+    const [categoriaElegida, setCategoriaElegida] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -39,6 +40,36 @@ export const Productos = () => {
             producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
         );
     };
+
+    /**
+     * Filtrar productos por categoria
+     */
+    const handleChangeCategoria = (e) => {
+        setCategoriaElegida(e.target.value);
+    }
+
+    // filtrar por categoria
+    const filtrarPorCategoria = (productos, categoriaId) => {
+        if (!categoriaId) return productos;
+        return productos.filter((producto) => BigInt(producto.id_categoria) === BigInt(categoriaId)); // convertimos valor a bigint
+    };
+
+    // funcion para filtrar productos por categoria y busqueda
+    const productosFiltradosCategoria = () => {
+        let productos = productosConOferta;
+
+        if (categoriaElegida) {
+            productos = filtrarPorCategoria(productos, categoriaElegida);
+        }
+
+        if (busqueda) {
+            productos = productosFiltrados(productos, busqueda);
+        }
+
+        return productos;
+    }
+
+
 
     // configuramos para q al actualizar o darle a buscar salgan todos
     useEffect(() => {
@@ -101,6 +132,8 @@ export const Productos = () => {
                 />
             </header>
 
+
+
             <section className={styles.seccion_productos}>
                 <h3 className="text-black p-2">{productosConOferta.length} Productos encontrados</h3>
                 {error_productos && <p className="text-danger">{error_productos}</p>}
@@ -114,7 +147,7 @@ export const Productos = () => {
                         endMessage={<p className="text-light text-center">No hay más productos</p>}
                     >
                         <div className={styles.todos_productos}>
-                            {productosFiltrados(productosConOferta, busqueda)
+                            {productosFiltradosCategoria()
                                 .slice(0, visible)
                                 .map((producto) => (
                                     <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
@@ -156,6 +189,23 @@ export const Productos = () => {
                     <p className="text-light text-center">No se encontraron productos</p>
                 )}
             </section>
+
+            {/* filtro por categorias */}
+            <div className="filtro_por_categoria">
+                <select class="form-select"
+                    aria-label="Default select example"
+                    onChange={handleChangeCategoria}
+                    value={categoriaElegida.toString()}>
+                    <option selected>Seleccionar categoria</option>
+                    <option value="1">Ordenadores</option>
+                    <option value="2">Portatiles</option>
+                    <option value="3">Telefonos</option>
+                    <option value="4">Consolas</option>
+                </select>
+            </div>
+
+
+
 
             <footer>
                 <Footer />

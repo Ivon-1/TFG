@@ -35,7 +35,7 @@ export function useLogin() {
         setLoading(true);
         setError("");
 
-        axios.post(env.url_produccion + "/login", credenciales)
+        axios.post(env.url_produccion + "api/login", credenciales)
             .then(response => {
                 setData(response.data);
             })
@@ -62,7 +62,7 @@ export function useRegistro() {
         setLoading(true);
         setError("");
 
-        axios.post(env.url_produccion + "users/register", credenciales)
+        axios.post(env.url_produccion + "api/registro", credenciales)
             .then(response => {
                 setData(response.data);
             })

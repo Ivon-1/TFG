@@ -11,6 +11,8 @@ export function Navbar({ busqueda, setBusqueda}) {
     const [logueado, setLogueado] = useState(false);
     const [nombreUsuario, setNombreUsuario] = useState("");
 
+    
+
     const navigate = useNavigate();
     // apertura y cierre menu
     const toggleMenu = () => {

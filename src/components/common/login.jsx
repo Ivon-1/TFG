@@ -19,7 +19,7 @@ export function Login() {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             setError("");
-            navigate("/home");
+            navigate("/");
         } else if (loginError) {
             setError(loginError);
         }
@@ -33,6 +33,7 @@ export function Login() {
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     }
+    
 
     // enviar formulario
     const handleSubmit = (e) => {

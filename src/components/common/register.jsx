@@ -5,7 +5,7 @@ import { useRegistro } from "../../consumirAxios";
 
 export function Registro() {
     const [email, setEmail] = useState("");
-    const [nombre, setNombre] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmarPassword, setConfirmarPassword] = useState("");
     const [politicaPrivacidad, setPoliticaPrivacidad] = useState(false);
@@ -18,7 +18,7 @@ export function Registro() {
 
     // funciones campos
     const handleChangeNombre = (e) => {
-        setNombre(e.target.value);
+        setName(e.target.value);
     };
 
     const handleChangeEmail = (e) => {
@@ -41,7 +41,7 @@ export function Registro() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!nombre || !email || !password || !confirmarPassword) {
+        if (!name || !email || !password || !confirmarPassword) {
             setError("Faltan campos por rellenar");
             return;
         }
@@ -61,7 +61,7 @@ export function Registro() {
 
 
         // llamamos funcion con parametros (no enviamos confirmarPassword al backend)
-        registro({ nombre, email, password });
+        registro({ name, email, password });
     
     };
 
@@ -92,7 +92,7 @@ export function Registro() {
                             type="text"
                             className="form-control"
                             placeholder="Introducir nombre"
-                            value={nombre}
+                            value={name}
                             onChange={handleChangeNombre}
                         />
                     </div>
