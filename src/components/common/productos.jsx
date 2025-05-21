@@ -65,7 +65,6 @@ export const Productos = () => {
         if (busqueda) {
             productos = productosFiltrados(productos, busqueda);
         }
-
         return productos;
     }
 
@@ -132,6 +131,19 @@ export const Productos = () => {
                 />
             </header>
 
+              {/* filtro por categorias */}
+            <div className={styles.filtrarPorCategoria}>
+                <select class="form-select"
+                    aria-label="Default select example"
+                    onChange={handleChangeCategoria}
+                    value={categoriaElegida.toString()}>
+                    <option value="" selected className="text-center">Seleccionar categoria</option>
+                    <option value="1">Ordenadores</option>
+                    <option value="2">Portatiles</option>
+                    <option value="3">Telefonos</option>
+                    <option value="4">Consolas</option>
+                </select>
+            </div>
 
 
             <section className={styles.seccion_productos}>
@@ -190,19 +202,7 @@ export const Productos = () => {
                 )}
             </section>
 
-            {/* filtro por categorias */}
-            <div className="filtro_por_categoria">
-                <select class="form-select"
-                    aria-label="Default select example"
-                    onChange={handleChangeCategoria}
-                    value={categoriaElegida.toString()}>
-                    <option selected>Seleccionar categoria</option>
-                    <option value="1">Ordenadores</option>
-                    <option value="2">Portatiles</option>
-                    <option value="3">Telefonos</option>
-                    <option value="4">Consolas</option>
-                </select>
-            </div>
+          
 
 
 
