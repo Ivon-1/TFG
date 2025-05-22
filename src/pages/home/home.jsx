@@ -14,6 +14,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useFetchData } from "../../consumirAxios";
 
 export function Home() {
+
     /**
      * seccion de ofertas
      */
@@ -21,6 +22,11 @@ export function Home() {
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
     const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
 
+    /** 
+     * carrito
+     */
+    const [carrito, setCarrito] = useState([]);
+    const [openCarrito, setOpenCarrito] = useState(false);
     /** 
      * desestructuramos los arrays para poder mostrar correctamente los productos
      */
@@ -68,6 +74,10 @@ export function Home() {
             })
             .filter(producto => producto && producto.descuento > 0)
         : [];
+
+        // retornamos objetos añadidos carrito
+        
+
 
 
     return <>

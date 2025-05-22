@@ -11,6 +11,7 @@ import { Facturas } from './pages/facturas/facturas';
 import { Productos } from './components/common/productos';
 function App() {
   // importamos el menu de opciones 
+  
   return (
     <>
       <BrowserRouter>

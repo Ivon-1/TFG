@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
+import { useFetchData } from "../../consumirAxios";
 
-export function Navbar({ busqueda, setBusqueda}) {
+export function Navbar({ busqueda, setBusqueda  }) {
 
     const [isOpen, setIsOpen] = useState(false);
+    // conexion axios desestructurando el array
+    const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
 
     // manejar loguin
     const [logueado, setLogueado] = useState(false);
     const [nombreUsuario, setNombreUsuario] = useState("");
+    // variables carrito
+    const [openCarrito, setOpenCarrito] = useState(false);
 
-    
 
     const navigate = useNavigate();
     // apertura y cierre menu
@@ -35,6 +39,15 @@ export function Navbar({ busqueda, setBusqueda}) {
             navigate(`/productos?search=${encodeURIComponent(busqueda)}`);
         }
     };
+
+    // manejar toggle carrito
+    const handleToggleCarrito = () => {
+        setOpenCarrito(prev => !prev);
+    }
+
+    const handleCloseCarrito = () => {
+        setOpenCarrito(false);
+    }
 
 
     return (
@@ -70,6 +83,46 @@ export function Navbar({ busqueda, setBusqueda}) {
                         </div>
                     </nav>
 
+                    {/* toggle carrito */}
+                    {openCarrito && (
+                        <div className="carrito_toggle text-dark">
+                            <button className="close-btn text-red" onClick={handleCloseCarrito}>X</button>
+
+                            <div className="carrito_contenido">
+                                <h2>Tu carrito</h2>
+                                {/* validaciones y mostrar productos */}
+                                {loading_productos && <p>Cargando productos...</p>}
+
+                                {error_productos && <p>{error_productos.message}</p>}
+
+                                {!loading_productos && productos_datos.length > 0 && (
+                                    <div className="productos_carrito">
+                                        {productos_datos.map((producto) => (
+                                            <div key={producto.id}
+                                                className="producto_objeto"
+                                                style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+
+
+                                                <img src={producto.url}
+                                                    alt={producto.nombre}
+                                                    style={{ width: '60px', height: '60px', objectFit: 'cover', marginRight: '10px' }}
+                                                />
+
+                                                <div>
+                                                    <div style={{ fontWeight: 'bold' }}>{producto.nombre}</div>
+                                                    <div style={{ fontWeight: 'bold' }}>{producto.precio.tofixed(2)}</div>
+                                                </div>
+
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                )}
+
+                            </div>
+                        </div>
+                    )}
+
                     {/* Logo */}
                     <div className="logo_principal mr-lg-5">
                         <Link to="/">
@@ -80,9 +133,9 @@ export function Navbar({ busqueda, setBusqueda}) {
 
                     {/* Buscador */}
                     <div className="buscar w-50 mx-lg-5">
-                        <form className="d-flex" 
-                        role="search" 
-                        onSubmit={handleSubmit}>
+                        <form className="d-flex"
+                            role="search"
+                            onSubmit={handleSubmit}>
                             <input
                                 className="form-control me-2"
                                 type="search"
@@ -111,11 +164,12 @@ export function Navbar({ busqueda, setBusqueda}) {
                         <div className="carrito">
                             <img src={todas_imagenes.imagen_carrito.url}
                                 alt={todas_imagenes.imagen_carrito.nombre}
+                                onClick={handleToggleCarrito}
                                 className="img-fluid" style={{ height: '40px' }} />
                         </div>
                     </div>
                 </div>
-            </nav>
-        </div>
+            </nav >
+        </div >
     );
 }

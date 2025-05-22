@@ -15,7 +15,7 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
     width: 100%;
 }
 
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,6 +29,34 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
 
     .form-control {
         width: 80%;
+    }
+}
+
+// estilos toggle carrito
+.carrito_toggle {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    box-shadow: -3px 0 8px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 1050;
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: red;
+    }
+
+    .close-btn:hover{
+        color: black;
     }
 }
 
@@ -82,7 +110,7 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
 
 // Tamaño pequeño (hasta 576px)
 @media (max-width: 576px) {
-    .buscar{
+    .buscar {
         order: 3;
         width: 100% !important;
         margin-top: 2%;
@@ -93,8 +121,6 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
 @media (min-width: 792px) {
     .slide-menu {
         left: -100%; // escondemos menu
-        width: $nav-width; 
+        width: $nav-width;
     }
-
-
 }
