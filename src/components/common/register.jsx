@@ -38,7 +38,7 @@ export function Registro() {
     };
 
     // funcion para enviar formulario
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
 
         if (!name || !email || !password || !confirmarPassword) {
@@ -48,6 +48,11 @@ export function Registro() {
 
         if (password !== confirmarPassword) {
             setError("Las contraseñas no coinciden");
+            return;
+        }
+
+        if (password.length < 8) {
+            setError('La contraseña debe tener al menos 8 caracteres');
             return;
         }
 
