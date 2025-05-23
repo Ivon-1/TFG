@@ -63,6 +63,7 @@ export function Registro() {
 
         // limpiamos error
         setError("");
+        navigate("/");
 
 
         // llamamos funcion con parametros. password_confirmation para verificar campo
