@@ -65,8 +65,8 @@ export function Registro() {
         setError("");
 
 
-        // llamamos funcion con parametros (no enviamos confirmarPassword al backend)
-        registro({ name, email, password });
+        // llamamos funcion con parametros. password_confirmation para verificar campo
+        registro({ name, email, password, password_confirmation: confirmarPassword });
     
     };
 
