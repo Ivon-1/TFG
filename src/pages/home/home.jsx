@@ -21,13 +21,22 @@ export function Home() {
 
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
     const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
-    /** 
-     * carrito
-     */
-    const [carrito, setCarrito] = useState([]);
+
+
+    // carrito con localstorage
+    const [carrito, setCarrito] = useState(() => {
+        const carritoGuardado = localStorage.getItem('carrito');
+        const carritoInicial = carritoGuardado ? JSON.parse(carritoGuardado) : [];
+        
+        // Reconstruir las URLs de las imágenes para cada producto
+        return carritoInicial.map(producto => ({
+            ...producto,
+            url: producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg'
+        }));
+    });
     const [openCarrito, setOpenCarrito] = useState(false);
 
-    // Funciones para manejar el carrito
+    // funciones carrito
     const handleAddToCartLocal = (producto) => {
         // Construir la URL completa de la imagen
         const imagenUrl = producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg';
@@ -35,17 +44,69 @@ export function Home() {
         const nuevoProducto = {
             ...producto,
             precioConDescuento: producto.precioConDescuento || producto.precio,
-            url: imagenUrl // Usar la URL completa
+            url: imagenUrl, 
+            cantidad: 1 
         };
-        setCarrito(prev => [...prev, nuevoProducto]);
+        
+        // actualizamos carrito y guardamos
+        setCarrito(prev => {
+            const nuevoCarrito = [...prev, nuevoProducto];
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito)); // guardamos en localstorage
+            return nuevoCarrito;
+        });
         setOpenCarrito(true);
     };
 
-    const handleToggleCarritoNavbar = () => {
+    const eliminarDelCarrito = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.filter(item => item.id !== productoId);
+            // Reconstruir las URLs de las imágenes para los productos restantes
+            const carritoConUrls = nuevoCarrito.map(producto => ({
+                ...producto,
+                url: producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg'
+            }));
+            localStorage.setItem('carrito', JSON.stringify(carritoConUrls));
+            return carritoConUrls;
+        });
+    };
+
+    const incrementarCantidad = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.map(item => {
+                if (item.id === productoId) {
+                    return {
+                        ...item,
+                        cantidad: item.cantidad + 1
+                    };
+                }
+                return item;
+            });
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+    };
+
+    const decrementarCantidad = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.map(item => {
+                if (item.id === productoId && item.cantidad > 1) {
+                    return {
+                        ...item,
+                        cantidad: item.cantidad - 1
+                    };
+                }
+                return item;
+            });
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+    };
+
+    const toggleCarritoNavbar = () => {
         setOpenCarrito(prev => !prev);
     };
 
-    const handleCloseCarritoNavbar = () => {
+    const closeCarritoNavbar = () => {
         setOpenCarrito(false);
     };
 
@@ -105,10 +166,13 @@ export function Home() {
                 busqueda={busqueda} 
                 setBusqueda={setBusqueda} 
                 handleAddToCartLocal={handleAddToCartLocal}
+                handleEliminarCantidad={eliminarDelCarrito}
+                handleSumarCantidad={incrementarCantidad}
+                handleRestarCantidad={decrementarCantidad}
                 openCarrito={openCarrito}
                 carrito ={carrito}
-                handleToggleCarritoNavbar={handleToggleCarritoNavbar}
-                handleCloseCarritoNavbar={handleCloseCarritoNavbar}
+                handleToggleCarritoNavbar={toggleCarritoNavbar}
+                handleCloseCarritoNavbar={closeCarritoNavbar}
             />
             {/* carousel de imagenes principal */}
             <div id="carouselExampleCaptions" className="carousel slide">

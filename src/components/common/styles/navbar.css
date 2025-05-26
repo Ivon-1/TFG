@@ -22,7 +22,7 @@
 }
 
 .carrito_toggle {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   width: 100%;
@@ -94,5 +94,13 @@
   .slide-menu {
     left: -100%;
     width: 25%;
+  }
+  .carrito_toggle {
+    width: 40%;
+  }
+}
+@media (min-width: 1200px) {
+  .carrito_toggle {
+    width: 30%;
   }
 }/*# sourceMappingURL=navbar.css.map */

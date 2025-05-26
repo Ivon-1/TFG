@@ -4,7 +4,18 @@ import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 import { useFetchData } from "../../consumirAxios";
 
-export const Navbar = ({ busqueda, setBusqueda, handleToggleCarritoNavbar, handleCloseCarritoNavbar, handleAddToCartLocal, openCarrito, carrito }) => {
+export const Navbar = ({ 
+    busqueda, 
+    setBusqueda, 
+    handleToggleCarritoNavbar, 
+    handleCloseCarritoNavbar, 
+    handleAddToCartLocal,
+    handleEliminarCantidad,
+    handleSumarCantidad,
+    handleRestarCantidad,
+    openCarrito, 
+    carrito 
+}) => {
 
     const [isOpen, setIsOpen] = useState(false);
     // estado del carrito
@@ -105,18 +116,48 @@ export const Navbar = ({ busqueda, setBusqueda, handleToggleCarritoNavbar, handl
                                                         }}
                                                     />
                                                 </div>
-                                                <div>
-                                                    <div style={{ // aplicamos los estilos en general
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ 
                                                         fontWeight: 'bold', 
                                                         fontSize: '16px',
                                                         marginBottom: '5px'
                                                     }}>{producto.nombre}</div>
-                                                    <div style={{  
+                                                    <div style={{ 
                                                         fontWeight: 'bold', 
                                                         color: '#dc3545',
                                                         fontSize: '18px'
                                                     }}>
                                                         {(producto.precioConDescuento ?? producto.precio).toFixed(2)} €
+                                                    </div>
+                                                    <div style={{ 
+                                                        display: 'flex', 
+                                                        alignItems: 'center',
+                                                        marginTop: '5px'
+                                                    }}>
+                                                        <button 
+                                                            onClick={() => handleRestarCantidad(producto.id)}
+                                                            className="btn btn-outline-danger btn-sm me-2"
+                                                            disabled={producto.cantidad <= 1}
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <span style={{ 
+                                                            fontWeight: 'bold',
+                                                            fontSize: '16px',
+                                                            marginRight: '10px'
+                                                        }}>{producto.cantidad}</span>
+                                                        <button 
+                                                            onClick={() => handleSumarCantidad(producto.id)}
+                                                            className="btn btn-outline-success btn-sm me-2"
+                                                        >
+                                                            +
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => handleEliminarCantidad(producto.id)}
+                                                            className="btn btn-danger btn-sm"
+                                                        >
+                                                            Eliminar
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,13 +172,16 @@ export const Navbar = ({ busqueda, setBusqueda, handleToggleCarritoNavbar, handl
                                     <div className="d-flex justify-content-between align-items-center">
                                         <span className="fw-bold">Total:</span>
                                         <span className="fw-bold text-danger h4">
-                                            {carrito.reduce((total, producto) => total + (producto.precioConDescuento ?? producto.precio), 0).toFixed(2)} €
+                                            {carrito.reduce((total, producto) => // reduce para acumular resultado
+                                                total + (producto.precioConDescuento ?? producto.precio) * producto.cantidad, 
+                                                0
+                                            ).toFixed(2)} €
                                         </span>
                                     </div>
                                 </div>
                                 <div className="mt-3">
                                     <Link to="/cesta" className="btn btn-primary btn-lg w-100">
-                                        Ir a la cesta
+                                        Confirmar compra
                                     </Link>
                                 </div>
                             </div>

@@ -10,6 +10,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const Productos = () => {
     const [busqueda, setBusqueda] = useState("");
     const [categoriaElegida, setCategoriaElegida] = useState("");
+    const [openCarrito, setOpenCarrito] = useState(false);
+
+    // Estado del carrito con carga inicial desde localStorage
+    const [carrito, setCarrito] = useState(() => {
+        const carritoGuardado = localStorage.getItem('carrito');
+        return carritoGuardado ? JSON.parse(carritoGuardado) : [];
+    });
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -47,7 +55,67 @@ export const Productos = () => {
      */
     const handleChangeCategoria = (e) => {
         setCategoriaElegida(e.target.value);
-    }
+    };
+
+    // Funciones del carrito
+    const handleAddToCartLocal = (producto) => {
+        // Construir la URL completa de la imagen
+        const imagenUrl = producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg';
+
+        const nuevoProducto = {
+            ...producto,
+            precioConDescuento: producto.precioConDescuento || producto.precio,
+            url: imagenUrl,
+            cantidad: 1
+        };
+
+        setCarrito(prev => {
+            const nuevoCarrito = [...prev, nuevoProducto];
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+        setOpenCarrito(true);
+    };
+
+    const eliminarDelCarrito = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.filter(item => item.id !== productoId);
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+    };
+
+    const incrementarCantidad = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.map(item => {
+                if (item.id === productoId) {
+                    return {
+                        ...item,
+                        cantidad: item.cantidad + 1
+                    };
+                }
+                return item;
+            });
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+    };
+
+    const decrementarCantidad = (productoId) => {
+        setCarrito(prev => {
+            const nuevoCarrito = prev.map(item => {
+                if (item.id === productoId && item.cantidad > 1) {
+                    return {
+                        ...item,
+                        cantidad: item.cantidad - 1
+                    };
+                }
+                return item;
+            });
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
+        });
+    };
 
     // filtrar por categoria
     const filtrarPorCategoria = (productos, categoriaId) => {
@@ -128,11 +196,19 @@ export const Productos = () => {
                     className={styles.navbar}
                     busqueda={busqueda}
                     setBusqueda={setBusqueda}
+                    handleToggleCarritoNavbar={() => setOpenCarrito(true)}
+                    handleCloseCarritoNavbar={() => setOpenCarrito(false)}
+                    handleAddToCartLocal={handleAddToCartLocal}
+                    handleEliminarCantidad={eliminarDelCarrito}
+                    handleSumarCantidad={incrementarCantidad}
+                    handleRestarCantidad={decrementarCantidad}
+                    openCarrito={openCarrito}
+                    carrito={carrito}
                     handleBuscar={handleBuscar} // le pasamos para q lo q escribamos lo vaya cargando
                 />
             </header>
 
-              {/* filtro por categorias */}
+            {/* filtro por categorias */}
             <div className={styles.filtrarPorCategoria}>
                 <select class="form-select"
                     aria-label="Default select example"
@@ -178,7 +254,7 @@ export const Productos = () => {
                                             <h5 className="card-title">{producto.nombre}</h5>
                                             <p className="card-text">{producto.descripcion}</p>
                                             <div className="total_precio">
-                                                <a href="#" className="btn btn-primary">Comprar</a>
+                                                <button onClick={() => handleAddToCartLocal(producto)} href="#" className="btn btn-primary">Comprar</button>
                                                 <div className="precios mt-2">
                                                     {producto.descuento > 0 ? (
                                                         <>
@@ -188,9 +264,6 @@ export const Productos = () => {
                                                     ) : (
                                                         <p>Total: {producto.precio} € </p>
                                                     )}
-
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -202,11 +275,6 @@ export const Productos = () => {
                     <p className="text-light text-center">No se encontraron productos</p>
                 )}
             </section>
-
-          
-
-
-
 
             <footer>
                 <Footer />

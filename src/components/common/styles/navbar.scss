@@ -34,7 +34,7 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
 
 // estilos toggle carrito
 .carrito_toggle {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     width: 100%;
@@ -44,6 +44,7 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
     padding: 20px;
     z-index: 1050;
     color: black;
+
 
     .close-btn {
         position: absolute;
@@ -123,5 +124,15 @@ $nav-width: 25%; // Ancho del menu en pantallas medianas
     .slide-menu {
         left: -100%; // escondemos menu
         width: $nav-width;
+    }
+
+    .carrito_toggle {
+        width: 40%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .carrito_toggle{
+        width: 30%;
     }
 }
