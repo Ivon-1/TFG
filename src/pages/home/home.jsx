@@ -21,12 +21,34 @@ export function Home() {
 
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
     const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
-
     /** 
      * carrito
      */
     const [carrito, setCarrito] = useState([]);
     const [openCarrito, setOpenCarrito] = useState(false);
+
+    // Funciones para manejar el carrito
+    const handleAddToCartLocal = (producto) => {
+        // Construir la URL completa de la imagen
+        const imagenUrl = producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg';
+        
+        const nuevoProducto = {
+            ...producto,
+            precioConDescuento: producto.precioConDescuento || producto.precio,
+            url: imagenUrl // Usar la URL completa
+        };
+        setCarrito(prev => [...prev, nuevoProducto]);
+        setOpenCarrito(true);
+    };
+
+    const handleToggleCarritoNavbar = () => {
+        setOpenCarrito(prev => !prev);
+    };
+
+    const handleCloseCarritoNavbar = () => {
+        setOpenCarrito(false);
+    };
+
     /** 
      * desestructuramos los arrays para poder mostrar correctamente los productos
      */
@@ -76,16 +98,18 @@ export function Home() {
         : [];
 
         // retornamos objetos añadidos carrito
-        
-
-
-
     return <>
-
-
         <div className="navbar">
             {/* menu de opciones */}
-            <Navbar busqueda={busqueda} setBusqueda={setBusqueda} />
+            <Navbar 
+                busqueda={busqueda} 
+                setBusqueda={setBusqueda} 
+                handleAddToCartLocal={handleAddToCartLocal}
+                openCarrito={openCarrito}
+                carrito ={carrito}
+                handleToggleCarritoNavbar={handleToggleCarritoNavbar}
+                handleCloseCarritoNavbar={handleCloseCarritoNavbar}
+            />
             {/* carousel de imagenes principal */}
             <div id="carouselExampleCaptions" className="carousel slide">
                 <div className="carousel-indicators">
@@ -208,11 +232,13 @@ export function Home() {
                                 <h5 className="card-title">{producto.nombre}</h5>
                                 <p className="card-text">{producto.descripcion}</p>
                                 <div className="total_precio">
-                                    <a href="#" className="btn btn-primary">Comprar</a>
+                                    <button 
+                                    className="btn btn-primary" 
+                                    onClick={() => handleAddToCartLocal(producto)}>Comprar</button>
                                     {producto.descuento > 0 ? (
                                         <>
                                             <p>Antes: {producto.precio}€</p>
-                                            <p className="text-danger">Total: {producto.precioConDescuento}€</p>
+                                            <p className="text-danger">Total: {producto.precioConDescuento.toFixed(2)}€</p>
                                         </>
                                     ) : (
                                         <p>Total: {producto.precio} €</p>
@@ -239,7 +265,6 @@ export function Home() {
                             {producto.descuento > 0 && (
                                 <span className="discount-tag">{producto.descuento}%</span>
                             )}
-
                             <img src={producto.url}
                                 className="card-img-top p-2"
                                 alt={producto.nombre}
@@ -248,7 +273,7 @@ export function Home() {
                                 <h5 className="card-title">{producto.nombre}</h5>
                                 <p className="card-text">{producto.descripcion}</p>
                                 <div className="total_precio">
-                                    <a href="#" className="btn btn-primary">Comprar</a>
+                                    <button className="btn btn-primary" onClick={() => handleAddToCartLocal(producto)}>Comprar</button>
                                     {producto.descuento > 0 ? (
                                         <>
                                             <p>Antes: {producto.precio}€</p>

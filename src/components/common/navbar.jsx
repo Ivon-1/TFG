@@ -4,18 +4,17 @@ import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 import { useFetchData } from "../../consumirAxios";
 
-export function Navbar({ busqueda, setBusqueda  }) {
+export const Navbar = ({ busqueda, setBusqueda, handleToggleCarritoNavbar, handleCloseCarritoNavbar, handleAddToCartLocal, openCarrito, carrito }) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    // estado del carrito
+    const [productosCarrito, setProductosCarrito] = useState([]);
     // conexion axios desestructurando el array
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
 
     // manejar loguin
     const [logueado, setLogueado] = useState(false);
     const [nombreUsuario, setNombreUsuario] = useState("");
-    // variables carrito
-    const [openCarrito, setOpenCarrito] = useState(false);
-
 
     const navigate = useNavigate();
     // apertura y cierre menu
@@ -32,6 +31,7 @@ export function Navbar({ busqueda, setBusqueda  }) {
         setBusqueda(e.target.value);
     };
 
+
     // formulario
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,15 +39,6 @@ export function Navbar({ busqueda, setBusqueda  }) {
             navigate(`/productos?search=${encodeURIComponent(busqueda)}`);
         }
     };
-
-    // manejar toggle carrito
-    const handleToggleCarrito = () => {
-        setOpenCarrito(prev => !prev);
-    }
-
-    const handleCloseCarrito = () => {
-        setOpenCarrito(false);
-    }
 
 
     return (
@@ -86,39 +77,69 @@ export function Navbar({ busqueda, setBusqueda  }) {
                     {/* toggle carrito */}
                     {openCarrito && (
                         <div className="carrito_toggle text-dark">
-                            <button className="close-btn text-red" onClick={handleCloseCarrito}>X</button>
+                            <button className="close-btn text-red" onClick={handleCloseCarritoNavbar}>X</button>
 
                             <div className="carrito_contenido">
                                 <h2>Tu carrito</h2>
-                                {/* validaciones y mostrar productos */}
-                                {loading_productos && <p>Cargando productos...</p>}
 
-                                {error_productos && <p>{error_productos.message}</p>}
-
-                                {!loading_productos && productos_datos.length > 0 && (
+                                {carrito.length === 0 ? (
+                                    <p>No hay productos en tu carrito.</p>
+                                ) : (
                                     <div className="productos_carrito">
-                                        {productos_datos.map((producto) => (
-                                            <div key={producto.id}
+                                        {carrito.map((producto, index) => (
+                                            <div
+                                                key={index}
                                                 className="producto_objeto"
-                                                style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-
-
-                                                <img src={producto.url}
-                                                    alt={producto.nombre}
-                                                    style={{ width: '60px', height: '60px', objectFit: 'cover', marginRight: '10px' }}
-                                                />
-
-                                                <div>
-                                                    <div style={{ fontWeight: 'bold' }}>{producto.nombre}</div>
-                                                    <div style={{ fontWeight: 'bold' }}>{producto.precio.tofixed(2)}</div>
+                                                style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', padding: '10px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}
+                                            >
+                                                <div style={{ marginRight: '15px' }}>
+                                                    <img
+                                                        src={producto.url}
+                                                        alt={producto.nombre}
+                                                        style={{
+                                                            width: '80px',
+                                                            height: '80px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px',
+                                                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                                        }}
+                                                    />
                                                 </div>
-
+                                                <div>
+                                                    <div style={{ // aplicamos los estilos en general
+                                                        fontWeight: 'bold', 
+                                                        fontSize: '16px',
+                                                        marginBottom: '5px'
+                                                    }}>{producto.nombre}</div>
+                                                    <div style={{  
+                                                        fontWeight: 'bold', 
+                                                        color: '#dc3545',
+                                                        fontSize: '18px'
+                                                    }}>
+                                                        {(producto.precioConDescuento ?? producto.precio).toFixed(2)} €
+                                                    </div>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
-
                                 )}
-
+                            </div>
+                            
+                            {/* Sección de total y botón */}
+                            <div className="total_y_boton mt-4">
+                                <div className="total">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <span className="fw-bold">Total:</span>
+                                        <span className="fw-bold text-danger h4">
+                                            {carrito.reduce((total, producto) => total + (producto.precioConDescuento ?? producto.precio), 0).toFixed(2)} €
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="mt-3">
+                                    <Link to="/cesta" className="btn btn-primary btn-lg w-100">
+                                        Ir a la cesta
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -164,7 +185,7 @@ export function Navbar({ busqueda, setBusqueda  }) {
                         <div className="carrito">
                             <img src={todas_imagenes.imagen_carrito.url}
                                 alt={todas_imagenes.imagen_carrito.nombre}
-                                onClick={handleToggleCarrito}
+                                onClick={handleToggleCarritoNavbar}
                                 className="img-fluid" style={{ height: '40px' }} />
                         </div>
                     </div>
