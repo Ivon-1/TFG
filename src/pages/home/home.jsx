@@ -234,16 +234,15 @@ export function Home() {
                 {/* oferta uno */}
                 {error_productos && <p className="text-danger">{error_productos}</p>}
                 {productosConOferta.length > 0 ? (
-                    productosConOferta.reverse().map((producto) => (
+                    productosConOferta.slice().reverse().map((producto) => (
                         <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
                             {producto.descuento > 0 && (
-                                <span className="discount-tag-vendido">{producto.descuento}%</span>
+                                <span className="discount-tag">{producto.descuento}%</span>
                             )}
 
                             <img src={producto.url}
                                 className="card-img-top p-2"
                                 alt={producto.nombre}
-
                             />
                             <div className="card-body mt-3">
                                 <h5 className="card-title">{producto.nombre}</h5>

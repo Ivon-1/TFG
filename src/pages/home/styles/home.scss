@@ -71,9 +71,10 @@ body {
         .todo_mas_vendido {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            padding: 3%;
             .card_personalizada {
                 position: relative;
-                .discount-tag_vendido {
+                .discount-tag{
                     position: absolute;
                     top: 10px;
                     left: 10px;

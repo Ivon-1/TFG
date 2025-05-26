@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import styles from "./styles/productos.module.scss";
+import "./styles/discount.css";
 import { useFetchData } from "../../consumirAxios";
 import InfiniteScroll from "react-infinite-scroll-component"; // libreria para el scroll infinito
 import { useLocation, useNavigate } from "react-router-dom";
@@ -164,7 +165,7 @@ export const Productos = () => {
                                 .map((producto) => (
                                     <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
                                         {producto.descuento > 0 && (
-                                            <span className={styles.discount}>
+                                            <span className="discount">
                                                 {producto.descuento}%
                                             </span>
                                         )}

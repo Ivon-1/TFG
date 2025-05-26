@@ -1,0 +1,16 @@
+.discount {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    background-color: red !important;
+    color: #fff !important;
+    padding: 2% !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    border-radius: 5px !important;
+    transform-origin: center !important;
+    z-index: 10 !important;
+    text-transform: uppercase !important;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2) !important;
+    display: inline-block !important;
+}
