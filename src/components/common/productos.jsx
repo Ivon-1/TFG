@@ -228,7 +228,7 @@ export const Productos = () => {
                 {error_productos && <p className="text-danger">{error_productos}</p>}
 
                 {productosConOferta.length > 0 ? (
-                    <InfiniteScroll // componente para el infinite scroll 
+                    <InfiniteScroll // componente para el infinite scroll a la hora de cargar productos
                         dataLength={visible}
                         next={cargarScroll}
                         hasMore={visible < productosConOferta.length}
