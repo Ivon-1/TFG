@@ -26,9 +26,9 @@ export function useFetchData(url = null) {
 }
 // funcion login
 export function useLogin() {
-    const [data, setData] = useState(""); 
-    const [loading, setLoading] = useState(false); 
-    const [error, setError] = useState(""); 
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
 
     const login = (credenciales) => {
@@ -53,9 +53,9 @@ export function useLogin() {
 
 // funcion registro
 export function useRegistro() {
-    const [data, setData] = useState(""); 
-    const [loading, setLoading] = useState(false); 
-    const [error, setError] = useState(""); 
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
 
     const registro = (credenciales) => {
@@ -78,6 +78,35 @@ export function useRegistro() {
     return { data, loading, error, registro };
 }
 
+// funcion recuperar contraseña
+export function useRecuperarPassword() {
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
+    const recuperarPassword = (email) => {
+        setLoading(true);
+        setError("");
+        setSuccess(false);
+
+        axios.post(env.url_produccion + "forgot-password", {
+            email: email
+        })
+            .then(response => {
+                setData(response.data);
+                setSuccess(true);
+            })
+            .catch((error) => {
+                setError(error.response.data.message || "Error al enviar el correo de recuperación");
+                setSuccess(false);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    return { data, loading, error, success, recuperarPassword };
+}
 
 

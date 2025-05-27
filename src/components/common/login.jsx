@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import todas_imagenes from "../../data/imagenes";
-import { useLogin } from "../../consumirAxios";
+import { useLogin, useRecuperarPassword } from "../../consumirAxios";
 import { useState, useEffect } from "react";
 
 export function Login() {
@@ -8,10 +8,16 @@ export function Login() {
     const [password, setPassword] = useState("");
     const [loggued, setLoggued] = useState(false);
     const [error, setError] = useState("");
+    
+    // Estados para recuperación de contraseña
+    const [emailRecuperar, setEmailRecuperar] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    
     // redirigir
     const navigate = useNavigate();
 
     const { data, loading, error: loginError, login } = useLogin();
+    const { loading: loadingRecuperar, error: errorRecuperar, success: successRecuperar, recuperarPassword } = useRecuperarPassword();
 
     // verificamos el token sino error
     useEffect(() => {
@@ -33,7 +39,10 @@ export function Login() {
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     }
-    
+
+    const handleChangeEmailRecuperar = (e) => {
+        setEmailRecuperar(e.target.value);
+    }
 
     // enviar formulario
     const handleSubmit = (e) => {
@@ -46,7 +55,23 @@ export function Login() {
 
         // llamamos al login con email y password
         login({email, password});
+    }
 
+    // Manejar recuperación de contraseña
+    const handleRecuperarPassword = (e) => {
+        e.preventDefault();
+        if (!emailRecuperar) {
+            return;
+        }
+        recuperarPassword(emailRecuperar);
+    }
+
+    // Cerrar modal y limpiar estado
+    const handleCloseModal = () => {
+        setShowModal(false);
+        if (successRecuperar) {
+            setEmailRecuperar("");
+        }
     }
 
     return (
@@ -84,8 +109,6 @@ export function Login() {
                                 placeholder="Email"
                                 onChange={handleChangeEmail}
                                 value={email}
-
-                            // Corregido para actualizar el estado
                             />
                         </div>
 
@@ -98,7 +121,6 @@ export function Login() {
                                 autoComplete="new-password"
                                 onChange={handleChangePassword}
                                 value={password}
-                            // Corregido para actualizar el estado
                             />
                         </div>
                     </div>
@@ -106,9 +128,13 @@ export function Login() {
                     {/* recuperar contraseña */}
                     <div className="mb-3">
                         <div className="text-start mt-2">
-                            <Link to="/recuperar" className="text-decoration text-black">
+                            <button 
+                                type="button" 
+                                className="btn btn-link text-black text-decoration-none p-0"
+                                onClick={() => setShowModal(true)}
+                            >
                                 He olvidado mi contraseña
-                            </Link>
+                            </button>
                         </div>
                     </div>
 
@@ -134,6 +160,63 @@ export function Login() {
                     </div>
                 </form>
             </div>
+
+            {/* Modal de recuperación de contraseña */}
+            <div 
+                className={`modal fade ${showModal ? 'show' : ''}`} 
+                style={{ display: showModal ? 'block' : 'none' }}
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="recuperarPasswordModal"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Recuperar contraseña</h5>
+                            <button 
+                                type="button" 
+                                className="btn-close" 
+                                onClick={handleCloseModal}
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <p className="text-dark">Introducir correo para recuperación de contraseña</p>
+                            <form onSubmit={handleRecuperarPassword}>
+                                <div className="mb-3">
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        placeholder="Correo electrónico"
+                                        value={emailRecuperar}
+                                        onChange={handleChangeEmailRecuperar}
+                                        required
+                                    />
+                                </div>
+                                {errorRecuperar && (
+                                    <div className="alert alert-danger">{errorRecuperar}</div>
+                                )}
+                                {successRecuperar && (
+                                    <div className="alert alert-success">
+                                        Se ha enviado un correo con las instrucciones para restablecer tu contraseña.
+                                    </div>
+                                )}
+                                <div className="d-grid gap-2">
+                                    <button 
+                                        type="submit" 
+                                        className="btn btn-primary"
+                                        disabled={loadingRecuperar}
+                                    >
+                                        {loadingRecuperar ? 'Correo enviado' : 'Enviar correo'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {showModal && <div className="modal-backdrop fade show" onClick={handleCloseModal}></div>}
         </>
     );
 }

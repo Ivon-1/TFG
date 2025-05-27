@@ -4,20 +4,21 @@ import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 import { useFetchData } from "../../consumirAxios";
 
-export const Navbar = ({ 
-    busqueda, 
-    setBusqueda, 
-    handleToggleCarritoNavbar, 
-    handleCloseCarritoNavbar, 
+export const Navbar = ({
+    busqueda,
+    setBusqueda,
+    handleToggleCarritoNavbar,
+    handleCloseCarritoNavbar,
     handleAddToCartLocal,
     handleEliminarCantidad,
     handleSumarCantidad,
     handleRestarCantidad,
-    openCarrito, 
-    carrito 
+    openCarrito,
+    carrito
 }) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [openUserMenu, setOpenUserMenu] = useState(false);
     // estado del carrito
     const [productosCarrito, setProductosCarrito] = useState([]);
     // conexion axios desestructurando el array
@@ -26,6 +27,18 @@ export const Navbar = ({
     // manejar loguin
     const [logueado, setLogueado] = useState(false);
     const [nombreUsuario, setNombreUsuario] = useState("");
+    const [emailUsuario, setEmailUsuario] = useState("");
+
+    // comprobamos si estamos logueados
+    useEffect(() => {
+        const usuarioGuardado = localStorage.getItem('user');
+        if (usuarioGuardado) {
+            const usuario = JSON.parse(usuarioGuardado);
+            setLogueado(true);
+            setNombreUsuario(usuario.name || usuario.email);
+            setEmailUsuario(usuario.email);
+        }
+    }, []);
 
     const navigate = useNavigate();
     // apertura y cierre menu
@@ -37,11 +50,20 @@ export const Navbar = ({
         setIsOpen(false);
     };
 
+    // Toggle del menú de usuario
+    const toggleUserMenu = () => {
+        setOpenUserMenu(prev => !prev);
+        if (openCarrito) handleCloseCarritoNavbar();
+    };
+
+    const closeUserMenu = () => {
+        setOpenUserMenu(false);
+    };
+
     // Función para actualizar la búsqueda
     const handleChange = (e) => {
         setBusqueda(e.target.value);
     };
-
 
     // formulario
     const handleSubmit = (e) => {
@@ -51,6 +73,23 @@ export const Navbar = ({
         }
     };
 
+    // funcion para manejar el cierre de sesión
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setLogueado(false);
+        setNombreUsuario("");
+        setEmailUsuario("");
+        setOpenUserMenu(false);
+        navigate('/');
+    };
+
+    // Función para limpiar la URL
+    const getLimpiarUrl = (url) => {
+        if (!url) return '';
+        // Buscar la URL de DigitalOcean
+        const match = url.match(/(https:\/\/.*\.digitaloceanspaces\.com\/.*\.jpg)/);
+        return match ? match[1] : url;
+    };
 
     return (
         <div className="header">
@@ -101,11 +140,16 @@ export const Navbar = ({
                                             <div
                                                 key={index}
                                                 className="producto_objeto"
-                                                style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', padding: '10px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}
+                                                style={{ display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    marginBottom: '15px', 
+                                                    padding: '10px', 
+                                                    backgroundColor: '#f8f9fa', 
+                                                    borderRadius: '8px' }}
                                             >
                                                 <div style={{ marginRight: '15px' }}>
                                                     <img
-                                                        src={producto.url}
+                                                        src={producto.url.replace('http://localhost:5173/api', '')} // replace porque se me duplicaba la url y no cargaba
                                                         alt={producto.nombre}
                                                         style={{
                                                             width: '80px',
@@ -116,43 +160,44 @@ export const Navbar = ({
                                                         }}
                                                     />
                                                 </div>
+                                                {console.log(producto.url)}
                                                 <div style={{ flex: 1 }}>
-                                                    <div style={{ 
-                                                        fontWeight: 'bold', 
+                                                    <div style={{
+                                                        fontWeight: 'bold',
                                                         fontSize: '16px',
                                                         marginBottom: '5px'
                                                     }}>{producto.nombre}</div>
-                                                    <div style={{ 
-                                                        fontWeight: 'bold', 
+                                                    <div style={{
+                                                        fontWeight: 'bold',
                                                         color: '#dc3545',
                                                         fontSize: '18px'
                                                     }}>
                                                         {(producto.precioConDescuento ?? producto.precio).toFixed(2)} €
                                                     </div>
-                                                    <div style={{ 
-                                                        display: 'flex', 
+                                                    <div style={{
+                                                        display: 'flex',
                                                         alignItems: 'center',
                                                         marginTop: '5px'
                                                     }}>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleRestarCantidad(producto.id)}
                                                             className="btn btn-outline-danger btn-sm me-2"
                                                             disabled={producto.cantidad <= 1}
                                                         >
                                                             -
                                                         </button>
-                                                        <span style={{ 
+                                                        <span style={{
                                                             fontWeight: 'bold',
                                                             fontSize: '16px',
                                                             marginRight: '10px'
                                                         }}>{producto.cantidad}</span>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleSumarCantidad(producto.id)}
                                                             className="btn btn-outline-success btn-sm me-2"
                                                         >
                                                             +
                                                         </button>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleEliminarCantidad(producto.id)}
                                                             className="btn btn-danger btn-sm"
                                                         >
@@ -165,7 +210,7 @@ export const Navbar = ({
                                     </div>
                                 )}
                             </div>
-                            
+
                             {/* Sección de total y botón */}
                             <div className="total_y_boton mt-4">
                                 <div className="total">
@@ -173,7 +218,7 @@ export const Navbar = ({
                                         <span className="fw-bold">Total:</span>
                                         <span className="fw-bold text-danger h4">
                                             {carrito.reduce((total, producto) => // reduce para acumular resultado
-                                                total + (producto.precioConDescuento ?? producto.precio) * producto.cantidad, 
+                                                total + (producto.precioConDescuento ?? producto.precio) * producto.cantidad,
                                                 0
                                             ).toFixed(2)} €
                                         </span>
@@ -216,15 +261,18 @@ export const Navbar = ({
                     <div className="usuario_carrito bg-white gap-md-3">
                         <div className="user">
                             {logueado ? (
-                                <div className="nombre_usuario">
-                                    <span className="iniciado text-black">{nombreUsuario}</span>
+                                <div className="nombre_usuario" onClick={toggleUserMenu}>
+                                    <div className="user-avatar">
+                                        {nombreUsuario.charAt(0).toUpperCase()}
+                                    </div>
                                 </div>
-                            ) : <Link to="/login">
-                                <img src={todas_imagenes.imagen_usuario.url}
-                                    alt={todas_imagenes.imagen_usuario.nombre}
-                                    className="img-fluid" style={{ height: '40px' }} />
-                            </Link>}
-
+                            ) : (
+                                <Link to="/login">
+                                    <img src={todas_imagenes.imagen_usuario.url}
+                                        alt={todas_imagenes.imagen_usuario.nombre}
+                                        className="img-fluid" style={{ height: '40px' }} />
+                                </Link>
+                            )}
                         </div>
                         <div className="carrito">
                             <img src={todas_imagenes.imagen_carrito.url}
@@ -233,6 +281,28 @@ export const Navbar = ({
                                 className="img-fluid" style={{ height: '40px' }} />
                         </div>
                     </div>
+
+                    {/* Toggle del menú de usuario */}
+                    {openUserMenu && (
+                        <div className="user_toggle open">
+                            <button className="close-btn" onClick={closeUserMenu}>X</button>
+                            <div className="user-header">
+                                <div className="user-avatar">
+                                    {nombreUsuario.charAt(0).toUpperCase()}
+                                </div>
+                                <div className="user-info">
+                                    <h3>{nombreUsuario}</h3>
+                                    <p>{emailUsuario}</p>
+                                </div>
+                            </div>
+                            <div className="user-options">
+                                <button onClick={handleLogout} className="logout-button">
+                                    <i className="fas fa-sign-out-alt"></i>
+                                    Cerrar sesión
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </nav >
         </div >
