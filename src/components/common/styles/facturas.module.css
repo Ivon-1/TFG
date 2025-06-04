@@ -1,50 +1,271 @@
+@charset "UTF-8";
 .facturas {
-  margin: 10%;
-  background-color: #fffca2;
-  padding: 5%;
+  margin: 2rem auto;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  color: #333;
 }
-.facturas img {
-  max-width: 100%;
-  width: 60%;
-  border-radius: 40px;
+@media print {
+  .facturas {
+    background-color: white;
+    box-shadow: none;
+    margin: 0;
+    padding: 20px;
+  }
 }
 .facturas .header_facturas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-  gap: 10%;
-  padding: 5%;
+  align-items: start;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #eee;
 }
-.facturas h4,
-.facturas p {
-  color: black;
+.facturas .header_facturas .logo_facturas img {
+  max-width: 200px;
+  height: auto;
 }
-.facturas h4, .facturas h2 {
-  font-weight: bold;
+.facturas .header_facturas .empresa_info {
+  text-align: right;
 }
-.facturas .descardescargar_factura {
-  margin-top: 20px;
+.facturas .header_facturas .empresa_info h2 {
+  color: #2563eb;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.facturas .header_facturas .empresa_info p {
+  margin: 0.25rem 0;
+  color: #666;
+}
+.facturas .documento_info {
+  margin-bottom: 2rem;
+}
+.facturas .documento_info .tipo_documento h1 {
+  color: #2563eb;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.facturas .documento_info .tipo_documento .factura_detalles {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.facturas .documento_info .tipo_documento .factura_detalles p {
+  margin: 0.5rem 0;
+}
+.facturas .documento_info .tipo_documento .factura_detalles p strong {
+  color: #333;
+  margin-right: 0.5rem;
+}
+.facturas .datos_compra {
+  margin-bottom: 2rem;
+}
+.facturas .datos_compra .cliente_info {
+  background-color: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 6px;
+}
+.facturas .datos_compra .cliente_info h3 {
+  color: #2563eb;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.facturas .datos_compra .cliente_info .cliente_detalles p {
+  margin: 0.5rem 0;
+}
+.facturas .datos_compra .cliente_info .cliente_detalles p strong {
+  color: #333;
+  margin-right: 0.5rem;
+}
+.facturas .tabla_container {
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+.facturas .tabla_container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.facturas .tabla_container table th, .facturas .tabla_container table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+.facturas .tabla_container table thead {
+  background-color: #f8fafc;
+}
+.facturas .tabla_container table thead th {
+  font-weight: 600;
+  color: #2563eb;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.facturas .tabla_container table tbody tr:hover {
+  background-color: #f8fafc;
+}
+.facturas .tabla_container table tbody tr .producto_detalle small {
+  display: block;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.facturas .tabla_container table tfoot tr td {
+  padding: 1rem;
+  font-weight: 600;
+}
+.facturas .tabla_container table tfoot tr.subtotal {
+  background-color: #f8fafc;
+}
+.facturas .tabla_container table tfoot tr.iva {
+  background-color: #f1f5f9;
+}
+.facturas .tabla_container table tfoot tr.total {
+  background-color: #2563eb;
+  color: white;
+  font-size: 1.1rem;
+}
+.facturas .tabla_container table tfoot tr.total td {
+  padding: 1.25rem 1rem;
+}
+.facturas .factura_footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eee;
+}
+.facturas .factura_footer .terminos {
+  margin-bottom: 2rem;
+}
+.facturas .factura_footer .terminos h4 {
+  color: #2563eb;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.facturas .factura_footer .terminos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.facturas .factura_footer .terminos ul li {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+.facturas .factura_footer .terminos ul li:before {
+  content: "•";
+  color: #2563eb;
+  margin-right: 0.5rem;
+}
+.facturas .factura_footer .agradecimiento {
+  text-align: center;
+  margin: 2rem 0;
+  font-style: italic;
+  color: #666;
+}
+.facturas .factura_footer .descargar_factura {
+  text-align: center;
+}
+.facturas .factura_footer .descargar_factura button {
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+  background-color: #2563eb;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.facturas .factura_footer .descargar_factura button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+.facturas .factura_footer .descargar_factura button i {
+  margin-right: 0.5rem;
 }
 
-/*media queries */
-@media (min-width: 768px) {
-  .facturas img {
-    width: 40%;
-  }
-  .facturas .datos_compra {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1200px) {
+@media (max-width: 768px) {
   .facturas {
-    width: 60%;
-    margin: 5% auto;
+    padding: 1.5rem;
+    margin: 1rem;
   }
-  .facturas header {
+  .facturas .header_facturas {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+  }
+  .facturas .header_facturas .empresa_info {
     text-align: center;
   }
-  .facturas img {
-    width: 30%;
+  .facturas .tabla_container table {
+    font-size: 0.9rem;
+  }
+  .facturas .tabla_container table th, .facturas .tabla_container table td {
+    padding: 0.75rem;
+  }
+}
+@media (max-width: 400px) {
+  .facturas {
+    padding: 1rem;
+    margin: 0.5rem;
+    font-size: 0.9rem;
+  }
+  .facturas .header_facturas .logo_facturas img {
+    max-width: 150px;
+  }
+  .facturas .header_facturas .empresa_info h2 {
+    font-size: 1.5rem;
+  }
+  .facturas .header_facturas .empresa_info p {
+    font-size: 0.85rem;
+  }
+  .facturas .documento_info .tipo_documento h1 {
+    font-size: 1.5rem;
+  }
+  .facturas .documento_info .tipo_documento .factura_detalles p {
+    font-size: 0.85rem;
+  }
+  .facturas .datos_compra .cliente_info {
+    padding: 1rem;
+  }
+  .facturas .datos_compra .cliente_info h3 {
+    font-size: 1.1rem;
+  }
+  .facturas .datos_compra .cliente_info .cliente_detalles p {
+    font-size: 0.85rem;
+  }
+  .facturas .tabla_container table {
+    font-size: 0.8rem;
+  }
+  .facturas .tabla_container table th, .facturas .tabla_container table td {
+    padding: 0.5rem;
+  }
+  .facturas .tabla_container table thead th {
+    font-size: 0.75rem;
+  }
+  .facturas .tabla_container table tbody .producto_detalle small {
+    font-size: 0.75rem;
+  }
+  .facturas .tabla_container table tfoot tr.total {
+    font-size: 1rem;
+  }
+  .facturas .factura_footer {
+    margin-top: 2rem;
+  }
+  .facturas .factura_footer .terminos h4 {
+    font-size: 0.9rem;
+  }
+  .facturas .factura_footer .terminos ul li {
+    font-size: 0.8rem;
+  }
+  .facturas .factura_footer .agradecimiento {
+    font-size: 0.85rem;
+  }
+  .facturas .factura_footer .descargar_factura button {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
   }
 }/*# sourceMappingURL=facturas.module.css.map */

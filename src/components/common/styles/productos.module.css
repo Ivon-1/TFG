@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 10px; /* o lo que necesites */
+  padding: 10px;
   background-color: white;
 }
 .filtrarPorCategoria select {
@@ -53,7 +53,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 10px; /* o lo que necesites */
+    padding: 10px;
     background-color: white;
   }
   .seccion_intermedia .titulo_seccion h1 {

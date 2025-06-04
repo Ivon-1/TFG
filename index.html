@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self';
+      script-src 'unsafe-inline' 'self' https://*.paypal.com https://*.paypalobjects.com;
+      style-src 'unsafe-inline' 'self' https://*.paypal.com;
+      connect-src 'self' https://*.paypal.com https://tfg-final-1-main-awmj2t.laravel.cloud;
+      frame-src 'self' https://*.paypal.com;
+      img-src * data: 'self' https: http: https://tfg-final-1-main-awmj2t.laravel.cloud">
     <title>Vite + React</title>
   </head>
   <body>

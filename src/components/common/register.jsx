@@ -38,7 +38,7 @@ export function Registro() {
     };
 
     // funcion para enviar formulario
-    const handleSubmit =  (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name || !email || !password || !confirmarPassword) {
@@ -63,12 +63,42 @@ export function Registro() {
 
         // limpiamos error
         setError("");
-        navigate("/");
 
+        try {
+            // llamamos funcion con parametros
+            registro({ 
+                name, 
+                email, 
+                password, 
+                password_confirmation: confirmarPassword 
+            });
 
-        // llamamos funcion con parametros. password_confirmation para verificar campo
-        registro({ name, email, password, password_confirmation: confirmarPassword });
-    
+            // Esperamos a que se complete el registro
+            const checkRegistration = setInterval(() => {
+                const userData = localStorage.getItem('user');
+                if (userData) {
+                    clearInterval(checkRegistration);
+                    // Mostramos mensaje de éxito
+                    alert("¡Registro exitoso! Redirigiendo al inicio...");
+                    navigate("/");
+                } else if (errorRegistro) {
+                    clearInterval(checkRegistration);
+                    setError(errorRegistro);
+                }
+            }, 500);
+
+            // Limpiamos el intervalo después de 5 segundos si no hay respuesta
+            setTimeout(() => {
+                clearInterval(checkRegistration);
+                if (!localStorage.getItem('user')) {
+                    setError("Tiempo de espera agotado. Vuelva a intentarlo");
+                }
+            }, 5000);
+
+        } catch (err) {
+            console.error("Error en el proceso de registro:", err);
+            setError("Error en el proceso de registro");
+        }
     };
 
     return (
@@ -90,6 +120,15 @@ export function Registro() {
                     </div>
                 </header>
                 <h4 className="text-black m-2 p-2">Registrarse</h4>
+
+                {/* Mostrar errores del servidor o validación */}
+                {(error || errorRegistro) && (
+                    <div className="alert alert-danger mx-3" role="alert">
+                        <i className="fas fa-exclamation-circle me-2"></i>
+                        {error || errorRegistro}
+                    </div>
+                )}
+
                 {/* registro en si mismo */}
                 <form className="formulario" onSubmit={handleSubmit}>
                     {/* nombre */}
@@ -111,6 +150,11 @@ export function Registro() {
                             value={email}
                             onChange={handleChangeEmail}
                         />
+                        {errorRegistro && errorRegistro.includes("email") && (
+                            <small className="text-danger">
+                                Este correo ya está registrado
+                            </small>
+                        )}
                     </div>
 
                     <div className="mb-3">
@@ -203,11 +247,30 @@ export function Registro() {
                         </div>
                     </div>
 
-                    {error && <p className="text-warning">{error}</p>}
-
-                    <button type="submit" className="btn btn-dark w-100">
-                        Crear cuenta
+                    <button 
+                        type="submit" 
+                        className="btn btn-dark w-100"
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <>
+                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Creando cuenta...
+                            </>
+                        ) : (
+                            'Crear cuenta'
+                        )}
                     </button>
+
+                    {/* Enlace para iniciar sesión si ya tiene cuenta */}
+                    <div className="text-center mt-3">
+                        <p className="mb-0">
+                            ¿Ya tienes cuenta? {" "}
+                            <Link to="/login" className="text-primary text-decoration-none">
+                                Inicia sesión
+                            </Link>
+                        </p>
+                    </div>
                 </form>
             </div>
         </>

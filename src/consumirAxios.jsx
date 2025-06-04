@@ -57,17 +57,58 @@ export function useRegistro() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-
     const registro = (credenciales) => {
         setLoading(true);
         setError("");
+        
+        console.log('Enviando datos de registro:', credenciales);
 
         axios.post(env.url_produccion + "api/registro", credenciales)
             .then(response => {
+                console.log('Respuesta del servidor:', response.data);
                 setData(response.data);
+                
+                if (response.data && response.data.usuario) {
+                    // Guardamos los datos del usuario en localStorage
+                    const userData = {
+                        name: response.data.usuario.name,
+                        email: response.data.usuario.email,
+                        id: response.data.usuario.id
+                    };
+                    console.log('Guardando datos del usuario:', userData);
+                    localStorage.setItem('user', JSON.stringify(userData));
+                } else {
+                    console.error('Respuesta del servidor no contiene datos de usuario:', response.data);
+                    setError("Error en el formato de respuesta del servidor");
+                }
             })
-            .catch(() => {
-                setError("Faltan campos por rellenar o los campos son inválidos");
+            .catch((error) => {
+                console.error('Error en el registro:', error);
+                if (error.response && error.response.data) {
+                    console.error('Datos del error:', error.response.data);
+                    
+                    // manejo de errores
+                    if (error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        if (errors.email && errors.email.includes("The email has already been taken.")) {
+                            setError("Este correo electrónico ya está registrado.");
+                        } else {
+                            // si hay mas de un error los mostramos todos
+                            const errorMessages = Object.values(errors)
+                                .flat()
+                                .join(". ");
+                            setError(errorMessages);
+                        }
+                    } else {
+                        setError(error.response.data.mensaje || "Error en el registro");
+                    }
+                } else if (error.request) {
+                    console.error('No se recibio respuesta:', error.request);
+                    setError("No se pudo conectar con el servidor.");
+                } else {
+                    console.error('Error de configuración:', error.message);
+                    setError("Error al procesar la solicitud. Por favor, inténtalo de nuevo.");
+                }
                 setData(null);
             })
             .finally(() => {

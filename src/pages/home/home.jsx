@@ -31,27 +31,24 @@ export function Home() {
         // Reconstruir las URLs de las imágenes para cada producto
         return carritoInicial.map(producto => ({
             ...producto,
-            url: producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg'
+            url: producto.url // Mantener la URL original sin modificar
         }));
     });
     const [openCarrito, setOpenCarrito] = useState(false);
 
     // funciones carrito
     const handleAddToCartLocal = (producto) => {
-        // Construir la URL completa de la imagen
-        const imagenUrl = producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg';
-        
         const nuevoProducto = {
             ...producto,
             precioConDescuento: producto.precioConDescuento || producto.precio,
-            url: imagenUrl, 
+            url: producto.url, // Mantener la URL original sin modificar
             cantidad: 1 
         };
         
         // actualizamos carrito y guardamos
         setCarrito(prev => {
             const nuevoCarrito = [...prev, nuevoProducto];
-            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito)); // guardamos en localstorage
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
             return nuevoCarrito;
         });
         setOpenCarrito(true);
@@ -60,13 +57,9 @@ export function Home() {
     const eliminarDelCarrito = (productoId) => {
         setCarrito(prev => {
             const nuevoCarrito = prev.filter(item => item.id !== productoId);
-            // Reconstruir las URLs de las imágenes para los productos restantes
-            const carritoConUrls = nuevoCarrito.map(producto => ({
-                ...producto,
-                url: producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg'
-            }));
-            localStorage.setItem('carrito', JSON.stringify(carritoConUrls));
-            return carritoConUrls;
+            // almacenamos en localstorage
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
         });
     };
 

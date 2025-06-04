@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
 import { useFetchData } from "../../consumirAxios";
+import Checkout from "../checkout/Checkout";
 
 export const Navbar = ({
     busqueda,
@@ -19,6 +20,7 @@ export const Navbar = ({
 
     const [isOpen, setIsOpen] = useState(false);
     const [openUserMenu, setOpenUserMenu] = useState(false);
+    const [showCheckout, setShowCheckout] = useState(false);
     // estado del carrito
     const [productosCarrito, setProductosCarrito] = useState([]);
     // conexion axios desestructurando el array
@@ -89,6 +91,20 @@ export const Navbar = ({
         // Buscar la URL de DigitalOcean
         const match = url.match(/(https:\/\/.*\.digitaloceanspaces\.com\/.*\.jpg)/);
         return match ? match[1] : url;
+    };
+
+    const handleCheckoutSuccess = (details) => {
+        console.log('Pago completado:', details);
+        setShowCheckout(false);
+        handleCloseCarritoNavbar();
+        // Aquí podrías limpiar el carrito después del pago exitoso
+    };
+
+    const calcularTotal = () => {
+        return carrito.reduce((total, producto) => 
+            total + (producto.precioConDescuento ?? producto.precio) * producto.cantidad,
+            0
+        );
     };
 
     return (
@@ -217,17 +233,24 @@ export const Navbar = ({
                                     <div className="d-flex justify-content-between align-items-center">
                                         <span className="fw-bold">Total:</span>
                                         <span className="fw-bold text-danger h4">
-                                            {carrito.reduce((total, producto) => // reduce para acumular resultado
-                                                total + (producto.precioConDescuento ?? producto.precio) * producto.cantidad,
-                                                0
-                                            ).toFixed(2)} €
+                                            {calcularTotal().toFixed(2)} €
                                         </span>
                                     </div>
-                                </div>
+                                </div> {/* paypal */}
                                 <div className="mt-3">
-                                    <Link to="/cesta" className="btn btn-primary btn-lg w-100">
-                                        Confirmar compra
-                                    </Link>
+                                    {showCheckout ? (
+                                        <Checkout 
+                                            total={calcularTotal()} 
+                                            onSuccess={handleCheckoutSuccess}
+                                        />
+                                    ) : (
+                                        <button 
+                                            className="btn btn-primary btn-lg w-100"
+                                            onClick={() => setShowCheckout(true)}
+                                        >
+                                            Confirmar compra
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

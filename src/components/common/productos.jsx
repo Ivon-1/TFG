@@ -59,13 +59,10 @@ export const Productos = () => {
 
     // Funciones del carrito
     const handleAddToCartLocal = (producto) => {
-        // Construir la URL completa de la imagen
-        const imagenUrl = producto.url ? `${window.location.origin}/api${producto.url}` : '/default-product-image.jpg';
-
         const nuevoProducto = {
             ...producto,
             precioConDescuento: producto.precioConDescuento || producto.precio,
-            url: imagenUrl,
+            url: producto.url, // Mantener la URL original sin modificar
             cantidad: 1
         };
 
