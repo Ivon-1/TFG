@@ -2,10 +2,45 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./styles/facturas.module.scss";
 import todas_imagenes from "../../data/imagenes";
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
-export function FacturasComp() {
+export function FacturasComp({detallesCompra, productos, total}) {
+    const fecha = new Date().toLocaleDateString();
+    // genera el año actual, un numero aleatorio entre 0 y 1000000
+    const numeroFactura = `MOD-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000000)}`;
+    // calculamos iva y subtotal
+    const iva = total * 0.21;
+    const subtotal = total - iva;
+
+    // funcion para generar factura en pdf
+    const generarFacturaPdf = async () => {
+        try {
+            const element = document.getElementById('factura-pdf');
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: true
+            });
+            
+            const pdf = new jsPDF('p', 'mm', 'a4'); // formato de pagina 
+            const imgData = canvas.toDataURL('image/png'); // convertimos el canvas a imagen
+            const imgProps = pdf.getImageProperties(imgData); // obtenemos las propiedades de la imagen
+            const pdfWidth = pdf.internal.pageSize.getWidth(); // obtenemos el ancho de la pagina
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // calculamos la altura de la imagen
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight); // añadimos la imagen al pdf
+            pdf.save(`factura-${numeroFactura}.pdf`); // guardamos el pdf
+        } catch (error) {
+            console.error('Error al generar el PDF:', error);
+        }
+    };
+
+    
+    }
+
     return (
-        <div className={styles.facturas}>
+        <div className={styles.facturas} id="factura-pdf">
             {/* HEADER */}
             <header className={styles.header_facturas}>
                 <div className={styles.logo_facturas}>
@@ -28,23 +63,23 @@ export function FacturasComp() {
                 <div className={styles.tipo_documento}>
                     <h1>FACTURA</h1>
                     <div className={styles.factura_detalles}>
-                        <p><strong>Nº Factura:</strong> MOD-2024-123456</p>
-                        <p><strong>Fecha:</strong> 20/10/2024</p>
-                        <p><strong>Método de pago:</strong> Tarjeta de crédito</p>
+                        <p><strong>Nº Factura:</strong> {numeroFactura}</p>
+                        <p><strong>Fecha:</strong> {fecha}</p>
+                        <p><strong>Método de pago:</strong> PayPal</p>
                     </div>
                 </div>
             </div>
 
-            {/* datos cliente */}
+            {/* datos cliente. PAYER viene de la aplicacion de paypal para poder acceder a las propiedades */}
             <div className={styles.datos_compra}>
                 <div className={styles.cliente_info}>
                     <h3>DATOS DEL CLIENTE</h3>
                     <div className={styles.cliente_detalles}>
-                        <p><strong>Cliente:</strong> Juan Pérez García</p>
-                        <p><strong>NIF/CIF:</strong> 12345678A</p>
-                        <p><strong>Dirección:</strong> Calle del Mono 24, 28002 Madrid</p>
-                        <p><strong>Teléfono:</strong> 987 987 987</p>
-                        <p><strong>Email:</strong> correo@correo.es</p>
+                        <p><strong>Cliente:</strong> {detallesCompra?.payer?.name?.given_name} {detallesCompra?.payer?.name?.surname}</p>
+                        <p><strong>Email:</strong> {detallesCompra?.payer?.email_address}</p>
+                        {detallesCompra?.payer?.address && (
+                            <p><strong>Dirección:</strong> {`${detallesCompra.payer.address.address_line_1}, ${detallesCompra.payer.address.admin_area_2}`}</p>
+                        )}
                     </div>
                 </div>
             </div>
@@ -63,45 +98,34 @@ export function FacturasComp() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>RTX4080-MSI</td>
-                            <td>
-                                <div className={styles.producto_detalle}>
-                                    MSI GeForce RTX 4080 GAMING X TRIO 16GB GDDR6X
-                                    <small>S/N: MSI-2024-123456</small>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>1.299,99 €</td>
-                            <td>5%</td>
-                            <td>1.234,99 €</td>
-                        </tr>
-                        <tr>
-                            <td>RAM32-COR</td>
-                            <td>
-                                <div className={styles.producto_detalle}>
-                                    Corsair Vengeance RGB 32GB (2x16GB) DDR4
-                                    <small>S/N: COR-2024-789012</small>
-                                </div>
-                            </td>
-                            <td>1</td>
-                            <td>149,99 €</td>
-                            <td>0%</td>
-                            <td>149,99 €</td>
-                        </tr>
+                        {productos.map((producto) => (
+                            <tr key={producto.id}>
+                                <td>{producto.id}</td>
+                                <td>
+                                    <div className={styles.producto_detalle}>
+                                        {producto.nombre}
+                                        <small>REF: {producto.id}</small>
+                                    </div>
+                                </td>
+                                <td>{producto.cantidad}</td>
+                                <td>{producto.precio.toFixed(2)} €</td>
+                                <td>{producto.descuento || 0}%</td>
+                                <td>{(producto.precioConDescuento * producto.cantidad).toFixed(2)} €</td>
+                            </tr>
+                        ))}
                     </tbody>
                     <tfoot>
                         <tr className={styles.subtotal}>
                             <td colSpan="5">Subtotal</td>
-                            <td>1.384,98 €</td>
+                            <td>{subtotal.toFixed(2)} €</td>
                         </tr>
                         <tr className={styles.iva}>
                             <td colSpan="5">IVA (21%)</td>
-                            <td>290,85 €</td>
+                            <td>{iva.toFixed(2)} €</td>
                         </tr>
                         <tr className={styles.total}>
                             <td colSpan="5">TOTAL</td>
-                            <td>1.675,83 €</td>
+                            <td>{total.toFixed(2)} €</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -122,7 +146,9 @@ export function FacturasComp() {
                 </div>
 
                 <div className={styles.descargar_factura}>
-                    <button className="btn btn-info" type="button">
+                    <button className="btn btn-info" 
+                    type="button"
+                    onClick={generarFacturaPdf}>
                         <i className="fas fa-download me-2"></i>
                         Descargar Factura PDF
                     </button>

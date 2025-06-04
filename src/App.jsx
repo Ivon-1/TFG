@@ -12,7 +12,7 @@ import { Productos } from './components/common/productos';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const initialOptions = {
-    "client-id": "ATWuuu2wVXBco02sG4klxOUBa1R9Qfoxs3RbihocUCjVFDgxZoVAxxVXdahG91V_6VLFda_vLUGmeKc4",
+    "client-id": "AcRzM45YO6o3I81ryPk-n65mlDxRLe6NJC6baYNeVBVbCIVLClZJpkjAMoNLi2nraSH1pNz_0TrG8GhO",
     currency: "EUR",
     intent: "capture",
     components: "buttons",

@@ -28,10 +28,10 @@ export function Home() {
         const carritoGuardado = localStorage.getItem('carrito');
         const carritoInicial = carritoGuardado ? JSON.parse(carritoGuardado) : [];
         
-        // Reconstruir las URLs de las imágenes para cada producto
+        // reconstruimos url de las fotos para cada productos
         return carritoInicial.map(producto => ({
             ...producto,
-            url: producto.url // Mantener la URL original sin modificar
+            url: producto.url 
         }));
     });
     const [openCarrito, setOpenCarrito] = useState(false);
@@ -41,7 +41,7 @@ export function Home() {
         const nuevoProducto = {
             ...producto,
             precioConDescuento: producto.precioConDescuento || producto.precio,
-            url: producto.url, // Mantener la URL original sin modificar
+            url: producto.url, // url original
             cantidad: 1 
         };
         

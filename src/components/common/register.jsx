@@ -78,8 +78,8 @@ export function Registro() {
                 const userData = localStorage.getItem('user');
                 if (userData) {
                     clearInterval(checkRegistration);
-                    // Mostramos mensaje de éxito
-                    alert("¡Registro exitoso! Redirigiendo al inicio...");
+                    // mensaje de exito
+                    alert("Registrado correctamente. Volviendo a la página principal...");
                     navigate("/");
                 } else if (errorRegistro) {
                     clearInterval(checkRegistration);
@@ -87,7 +87,7 @@ export function Registro() {
                 }
             }, 500);
 
-            // Limpiamos el intervalo después de 5 segundos si no hay respuesta
+            // si no hay respuesta limpieza de buffer
             setTimeout(() => {
                 clearInterval(checkRegistration);
                 if (!localStorage.getItem('user')) {
@@ -121,7 +121,7 @@ export function Registro() {
                 </header>
                 <h4 className="text-black m-2 p-2">Registrarse</h4>
 
-                {/* Mostrar errores del servidor o validación */}
+                {/* error de servidor o  registro */}
                 {(error || errorRegistro) && (
                     <div className="alert alert-danger mx-3" role="alert">
                         <i className="fas fa-exclamation-circle me-2"></i>

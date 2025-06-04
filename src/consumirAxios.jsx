@@ -91,7 +91,7 @@ export function useRegistro() {
                     if (error.response.data.errors) {
                         const errors = error.response.data.errors;
                         if (errors.email && errors.email.includes("The email has already been taken.")) {
-                            setError("Este correo electrónico ya está registrado.");
+                            setError("El correo ya existe");
                         } else {
                             // si hay mas de un error los mostramos todos
                             const errorMessages = Object.values(errors)

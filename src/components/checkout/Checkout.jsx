@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { useNavigate } from 'react-router-dom';
 
-const Checkout = ({ total, onSuccess }) => {
+const Checkout = ({ total, carrito, onSuccess }) => {
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
     const [currency, setCurrency] = useState(options.currency);
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
     const onCurrencyChange = ({ target: { value } }) => {
         setCurrency(value);
@@ -17,25 +20,71 @@ const Checkout = ({ total, onSuccess }) => {
     }
 
     const onCreateOrder = (data, actions) => {
-        return actions.order.create({
-            purchase_units: [
-                {
-                    amount: {
-                        value: total.toString(),
+        try {
+            // calculamos subtotal de los items
+            const itemTotal = carrito.reduce((sum, item) => {
+                return sum + (parseFloat(item.precioConDescuento) * item.cantidad);
+            }, 0).toFixed(2);
+
+            return actions.order.create({
+                purchase_units: [
+                    {
+                        amount: {
+                            currency_code: currency,
+                            value: total.toString(),
+                            breakdown: {
+                                item_total: {
+                                    currency_code: currency,
+                                    value: itemTotal
+                                }
+                            }
+                        },
+                        items: carrito.map(item => ({
+                            name: item.nombre,
+                            unit_amount: {
+                                currency_code: currency,
+                                value: item.precioConDescuento.toString()
+                            },
+                            quantity: item.cantidad.toString()
+                        }))
                     },
-                },
-            ],
-        });
+                ],
+            });
+        } catch (error) {
+            console.error("Error al crear la orden:", error);
+            setError("Error al crear la orden de PayPal");
+            return null;
+        }
     }
 
-    const onApproveOrder = (data, actions) => {
-        return actions.order.capture().then((details) => {
-            const name = details.payer.name.given_name;
-            alert(`Transacción completada por ${name}`);
+    const onApproveOrder = async (data, actions) => {
+        try {
+            const details = await actions.order.capture();
+            
+            // Primero notificamos el éxito
             if (onSuccess) {
                 onSuccess(details);
             }
-        });
+
+            // Limpiamos el localStorage
+            localStorage.removeItem('carrito');
+            
+            // Finalmente redirigimos a la página de facturas
+            navigate('/facturas', { 
+                state: { 
+                    detallesCompra: details,
+                    productos: carrito,
+                    total: total
+                }
+            });
+        } catch (error) {
+            console.error("Error al procesar el pago:", error);
+            setError("Error al procesar el pago con PayPal");
+        }
+    }
+
+    if (error) {
+        return <div className="alert alert-danger">{error}</div>;
     }
 
     return (
@@ -56,6 +105,10 @@ const Checkout = ({ total, onSuccess }) => {
                         style={{ layout: "vertical" }}
                         createOrder={(data, actions) => onCreateOrder(data, actions)}
                         onApprove={(data, actions) => onApproveOrder(data, actions)}
+                        onError={(err) => {
+                            console.error("Error en PayPal:", err);
+                            setError("Error en el proceso de pago con PayPal");
+                        }}
                     />
                 </>
             )}

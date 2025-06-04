@@ -21,8 +21,6 @@ export const Navbar = ({
     const [isOpen, setIsOpen] = useState(false);
     const [openUserMenu, setOpenUserMenu] = useState(false);
     const [showCheckout, setShowCheckout] = useState(false);
-    // estado del carrito
-    const [productosCarrito, setProductosCarrito] = useState([]);
     // conexion axios desestructurando el array
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
 
@@ -95,9 +93,6 @@ export const Navbar = ({
 
     const handleCheckoutSuccess = (details) => {
         console.log('Pago completado:', details);
-        setShowCheckout(false);
-        handleCloseCarritoNavbar();
-        // Aquí podrías limpiar el carrito después del pago exitoso
     };
 
     const calcularTotal = () => {
@@ -241,6 +236,7 @@ export const Navbar = ({
                                     {showCheckout ? (
                                         <Checkout 
                                             total={calcularTotal()} 
+                                            carrito={carrito}
                                             onSuccess={handleCheckoutSuccess}
                                         />
                                     ) : (
