@@ -21,7 +21,7 @@ export function Home() {
 
     const { data: productos_datos, loading: loading_productos, error: error_productos } = useFetchData('api/productos');
     const { data: ofertas_datos, loading: loading_ofertas, error: error_ofertas } = useFetchData('api/ofertas');
-
+    const navigate = useNavigate();
 
     // carrito con localstorage
     const [carrito, setCarrito] = useState(() => {
@@ -283,7 +283,8 @@ export function Home() {
                             <img src={producto.url}
                                 className="card-img-top p-2"
                                 alt={producto.nombre}
-
+                                onClick={() => navigate(`/producto/${producto.id}`)}
+                                style={{ cursor: 'pointer' }}
                             />
                             <div className="card-body mt-3">
                                 <h5 className="card-title">{producto.nombre}</h5>
@@ -325,6 +326,8 @@ export function Home() {
                             <img src={producto.url}
                                 className="card-img-top p-2"
                                 alt={producto.nombre}
+                                onClick={() => navigate(`/producto/${producto.id}`)}
+                                style={{ cursor: 'pointer' }}
                             />
                             <div className="card-body mt-3">
                                 <h5 className="card-title">{producto.nombre}</h5>

@@ -6,6 +6,7 @@ import "./styles/discount.css";
 import { useFetchData } from "../../consumirAxios";
 import InfiniteScroll from "react-infinite-scroll-component"; // libreria para el scroll infinito
 import { useLocation, useNavigate } from "react-router-dom";
+import { DetalleProducto } from "./detalleProducto";
 
 export const Productos = () => {
     const [busqueda, setBusqueda] = useState("");
@@ -246,6 +247,21 @@ export const Productos = () => {
                                             src={producto.url}
                                             className="card-img-top p-2 w-100"
                                             alt={producto.nombre}
+                                            onClick={() => navigate(`/producto/${producto.id}`, {
+                                                state: {
+                                                    carrito,
+                                                    openCarrito,
+                                                    handleToggleCarritoNavbar,
+                                                    handleCloseCarritoNavbar,
+                                                    handleAddToCartLocal,
+                                                    handleEliminarCantidad,
+                                                    handleSumarCantidad,
+                                                    handleRestarCantidad,
+                                                    busqueda,
+                                                    setBusqueda,
+                                                }
+                                            })}
+                                            style={{ cursor: 'pointer' }}
                                         />
                                         <div className="card-body mt-3">
                                             <h5 className="card-title">{producto.nombre}</h5>

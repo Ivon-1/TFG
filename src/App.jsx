@@ -10,7 +10,10 @@ import { RegistroPage } from './pages/registro/formularioRegistro';
 import { Facturas } from './pages/facturas/facturas';
 import { Productos } from './components/common/productos';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { DetalleProducto } from './components/common/detalleProducto';
 
+
+// paypal
 const initialOptions = {
     "client-id": "AcRzM45YO6o3I81ryPk-n65mlDxRLe6NJC6baYNeVBVbCIVLClZJpkjAMoNLi2nraSH1pNz_0TrG8GhO",
     currency: "EUR",
@@ -36,6 +39,7 @@ function App() {
           <Route path='/registrarse' element={< RegistroPage />} />
           <Route path='/facturas' element={<Facturas />} />
           <Route path='/productos' element={<Productos />} />
+          <Route path='/producto/:id' element={<DetalleProducto />} />
         </Routes>
       </BrowserRouter>
     </PayPalScriptProvider>

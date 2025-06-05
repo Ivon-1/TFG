@@ -83,7 +83,7 @@ export const Navbar = ({
         navigate('/');
     };
 
-    // Función para limpiar la URL
+    // funcion para limpiar url
     const getLimpiarUrl = (url) => {
         if (!url) return '';
         // Buscar la URL de DigitalOcean

@@ -24,7 +24,7 @@ const Checkout = ({ total, carrito, onSuccess }) => {
                 throw new Error('No hay usuario logueado');
             }
 
-            // Primero vaciamos el carrito actual
+            // vaciamos el carrito actual de la bbdd
             await axios.delete(env.url_produccion + 'api/carrito/vaciar', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -32,7 +32,7 @@ const Checkout = ({ total, carrito, onSuccess }) => {
                 }
             });
 
-            // Luego agregamos los productos uno por uno
+            // agregamos los productos 1 a 1
             for (const item of carrito) {
                 await axios.post(env.url_produccion + 'api/carrito/agregar', {
                     id_producto: item.id,
@@ -45,7 +45,7 @@ const Checkout = ({ total, carrito, onSuccess }) => {
                 });
             }
 
-            // Verificamos que el carrito se guardó correctamente
+            // comprobamos que el carrito se guarde 
             const carritoResponse = await axios.get(env.url_produccion + 'api/carrito', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -70,7 +70,7 @@ const Checkout = ({ total, carrito, onSuccess }) => {
             setIsProcessing(true);
             setError(null);
 
-            // Primero guardamos los productos en la BD
+            // guardamos los productos en la bbdd
             await guardarProductosEnBD();
 
             const details = await actions.order.capture();
@@ -83,12 +83,12 @@ const Checkout = ({ total, carrito, onSuccess }) => {
                 throw new Error('No hay usuario logueado');
             }
 
-            // Obtenemos la dirección de PayPal
+            // direccion que tenemos indicada en paypal
             const direccion = details.purchase_units[0]?.shipping?.address?.address_line_1 || 
                             details.payer?.address?.address_line_1 || 
                             'Sin dirección especificada';
 
-            // Preparamos los datos para enviar al backend
+            // datos para enviar al back
             const datosCompra = {
                 direccion: direccion
             };
