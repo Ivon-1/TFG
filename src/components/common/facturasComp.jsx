@@ -5,7 +5,7 @@ import todas_imagenes from "../../data/imagenes";
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
-export function FacturasComp({detallesCompra, productos, total}) {
+export function FacturasComp({ detallesCompra, productos, total }) {
     const fecha = new Date().toLocaleDateString();
     // genera el año actual, un numero aleatorio entre 0 y 1000000
     const numeroFactura = `MOD-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000000)}`;
@@ -22,13 +22,13 @@ export function FacturasComp({detallesCompra, productos, total}) {
                 useCORS: true,
                 logging: true
             });
-            
+
             const pdf = new jsPDF('p', 'mm', 'a4'); // formato de pagina 
             const imgData = canvas.toDataURL('image/png'); // convertimos el canvas a imagen
             const imgProps = pdf.getImageProperties(imgData); // obtenemos las propiedades de la imagen
             const pdfWidth = pdf.internal.pageSize.getWidth(); // obtenemos el ancho de la pagina
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // calculamos la altura de la imagen
-            
+
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight); // añadimos la imagen al pdf
             pdf.save(`factura-${numeroFactura}.pdf`); // guardamos el pdf
         } catch (error) {
@@ -36,8 +36,7 @@ export function FacturasComp({detallesCompra, productos, total}) {
         }
     };
 
-    
-    }
+
 
     return (
         <div className={styles.facturas} id="factura-pdf">
@@ -46,7 +45,7 @@ export function FacturasComp({detallesCompra, productos, total}) {
                 <div className={styles.logo_facturas}>
                     <Link to="/">
                         <img src={todas_imagenes.logo.url}
-                        className="w-25 rounded-3"
+                            className="w-25 rounded-3"
                             alt={todas_imagenes.logo.nombre} />
                     </Link>
                 </div>
@@ -140,15 +139,15 @@ export function FacturasComp({detallesCompra, productos, total}) {
                         <li>Soporte técnico gratuito</li>
                     </ul>
                 </div>
-                
+
                 <div className={styles.agradecimiento}>
                     <p>Gracias por confiar en ModTech</p>
                 </div>
 
                 <div className={styles.descargar_factura}>
-                    <button className="btn btn-info" 
-                    type="button"
-                    onClick={generarFacturaPdf}>
+                    <button className="btn btn-info"
+                        type="button"
+                        onClick={generarFacturaPdf}>
                         <i className="fas fa-download me-2"></i>
                         Descargar Factura PDF
                     </button>

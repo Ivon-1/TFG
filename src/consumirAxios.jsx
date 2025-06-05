@@ -60,16 +60,16 @@ export function useRegistro() {
     const registro = (credenciales) => {
         setLoading(true);
         setError("");
-        
+
         console.log('Enviando datos de registro:', credenciales);
 
         axios.post(env.url_produccion + "api/registro", credenciales)
             .then(response => {
                 console.log('Respuesta del servidor:', response.data);
                 setData(response.data);
-                
+
                 if (response.data && response.data.usuario) {
-                    // Guardamos los datos del usuario en localStorage
+                    // guardamos datos en localstorage
                     const userData = {
                         name: response.data.usuario.name,
                         email: response.data.usuario.email,
@@ -86,7 +86,7 @@ export function useRegistro() {
                 console.error('Error en el registro:', error);
                 if (error.response && error.response.data) {
                     console.error('Datos del error:', error.response.data);
-                    
+
                     // manejo de errores
                     if (error.response.data.errors) {
                         const errors = error.response.data.errors;
@@ -95,7 +95,7 @@ export function useRegistro() {
                         } else {
                             // si hay mas de un error los mostramos todos
                             const errorMessages = Object.values(errors)
-                                .flat()
+                                .flat() // si un array dentro de otro me devuelve uno solo
                                 .join(". ");
                             setError(errorMessages);
                         }
@@ -126,20 +126,48 @@ export function useRecuperarPassword() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
 
-    const recuperarPassword = (email) => {
+    const recuperarPassword = (token, email, password, password_confirmation) => {
         setLoading(true);
         setError("");
         setSuccess(false);
 
-        axios.post(env.url_produccion + "forgot-password", {
-            email: email
-        })
+        // obtenemos token
+        axios.get(env.url_produccion + 'sanctum/csrf-cookie')
+
+            .then(() => {
+                // pedimos recuperacion
+                return axios.post(`${env.url_produccion}reset-password/${token}`, {
+                    email: email,
+                }, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                });
+            })
             .then(response => {
                 setData(response.data);
                 setSuccess(true);
+                setError("");
             })
             .catch((error) => {
-                setError(error.response.data.message || "Error al enviar el correo de recuperación");
+                console.error('Error al recuperar la contraseña:', error);
+                let errorMessage;
+
+                if (error.response?.data?.errors?.email) {
+                    // error de validacion en email
+                    errorMessage = error.response.data.errors.email[0];
+                } else if (error.response?.data?.message) {
+                    // errores en general
+                    errorMessage = error.response.data.message;
+                } else {
+                    // error principal
+                    errorMessage = "Error al enviar el correo de recuperación";
+                }
+
+                setError(errorMessage);
                 setSuccess(false);
             })
             .finally(() => {
