@@ -1,1 +1,1 @@
-{"version":3,"sources":["detalleProducto.module.scss","detalleProducto.module.css"],"names":[],"mappings":"AAAA;EACI,UAAA;EACA,YAAA;EACA,uBAAA;ACCJ","file":"detalleProducto.module.css"}
+{"version":3,"sources":["detalleProducto.module.scss","detalleProducto.module.css"],"names":[],"mappings":"AAAA;EACI,UAAA;EACA,YAAA;EACA,uBAAA;ACCJ;;ADEA;EAEQ;IACI,UAAA;ECAV;AACF","file":"detalleProducto.module.css"}

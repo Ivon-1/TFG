@@ -178,4 +178,26 @@ export function useRecuperarPassword() {
     return { data, loading, error, success, recuperarPassword };
 }
 
+// funcion para obtener reseñas de los productos
+export function useFetchResenas(id){
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        axios.get(env.url_produccion + `api/resena/producto/${id}`)
+        .then(response => {
+            setData(response.data);
+            setLoading(false);
+            console.log(response.data);
+        })
+        .catch((error) => {
+            setError('Error al obtener las reseñas', error.response?.data?.message);
+            setLoading(false);
+        })
+    }, [id]) // cada vez que cambie el id se ejecuta
+
+    return {data, loading, error}
+}
+
 
