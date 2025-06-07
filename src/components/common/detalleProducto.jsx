@@ -11,8 +11,12 @@ export function DetalleProducto() {
     const { data: productos_datos, loading, error } = useFetchData('api/productos');
     const { data: resenas_datos, loading: loadingResenas, error: errorResenas } = useFetchResenas(id);
     const { productos = [] } = productos_datos ?? {};
+   
+
     // reseñas
     const resenas = resenas_datos?.reseña ?? []; // accedemos con los ? para que no de error si no hay
+    const [nuevaResena, setNuevaResena] = useState('');
+    const [nuevaValoracion, setNuevaValoracion] = useState(5);
 
     const producto = productos.find(p => p.id === parseInt(id));
     // funcionalidad reseñas
@@ -27,20 +31,38 @@ export function DetalleProducto() {
     const [estadoResenas, setEstadoResenas] = useState([]);
 
     useEffect(() => {
-        if (resenas && resenas.length > 0) {
+        const resenasStorage = localStorage.getItem('resenas');
+        if (resenasStorage) {
+            setEstadoResenas(JSON.parse(resenasStorage));
+        } else if (resenas && resenas.length > 0) {
             setEstadoResenas(resenas);
+            localStorage.setItem('resenas', JSON.stringify(resenas));
         }
     }, [resenas]);
 
     const handleLike = (id) => {
-        setEstadoResenas(prev => prev.map(resena => resena.id === id  ? 
-            {...resena, contador_likes: resena.contador_likes + 1} : resena))
-    }
+        setEstadoResenas(prev => {
+            const resenasActualizadas = prev.map(resena =>
+                resena.id === id
+                    ? { ...resena, contador_likes: resena.contador_likes + 1 }
+                    : resena
+            );
+            localStorage.setItem('resenas', JSON.stringify(resenasActualizadas));
+            return resenasActualizadas;
+        });
+    };
 
     const handleDislike = (id) => {
-        setEstadoResenas(prev => prev.map(resena => resena.id === id ? 
-            {...resena, contador_dislikes: resena.contador_dislikes + 1} : resena));
-    }
+        setEstadoResenas(prev => {
+            const resenasActualizadas = prev.map(resena =>
+                resena.id === id
+                    ? { ...resena, contador_dislikes: resena.contador_dislikes + 1 }
+                    : resena
+            );
+            localStorage.setItem('resenas', JSON.stringify(resenasActualizadas));
+            return resenasActualizadas;
+        });
+    };
 
 
 
@@ -48,7 +70,10 @@ export function DetalleProducto() {
     const [busqueda, setBusqueda] = useState('');
     // estado para el carrito
     const [openCarrito, setOpenCarrito] = useState(false);
-    const [carrito, setCarrito] = useState([]);
+    const [carrito, setCarrito] = useState(() => {
+        const carritoStorage = localStorage.getItem('carrito');
+        return carritoStorage ? JSON.parse(carritoStorage) : [];
+    });
 
     // funciones del carrito
     const handleToggleCarritoNavbar = () => setOpenCarrito(!openCarrito);
@@ -56,15 +81,21 @@ export function DetalleProducto() {
 
     const handleAddToCartLocal = (item) => {
         setCarrito(prev => {
-            const existingItem = prev.find(cartItem => cartItem.id === item.id);
-            if (existingItem) {
-                return prev.map(cartItem =>
+            const itemExistente = prev.find(cartItem => cartItem.id === item.id);
+            let nuevoCarrito;
+
+            if (itemExistente) {
+                nuevoCarrito = prev.map(cartItem =>
                     cartItem.id === item.id
                         ? { ...cartItem, cantidad: cartItem.cantidad + 1 }
                         : cartItem
                 );
+            } else {
+                nuevoCarrito = [...prev, { ...item, cantidad: 1 }];
             }
-            return [...prev, { ...item, cantidad: 1 }];
+
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            return nuevoCarrito;
         });
     };
 
@@ -86,9 +117,9 @@ export function DetalleProducto() {
                 ? { ...item, cantidad: Math.max(1, item.cantidad - 1) }
                 : item
         ));
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        return nuevoCarrito;
     };
-
-
 
     /**
      * errores generales
@@ -151,7 +182,10 @@ export function DetalleProducto() {
                         </div>
                         <button
                             className="btn btn-primary btn-lg"
-                            onClick={() => handleAddToCartLocal(producto)}
+                            onClick={() => {
+                                handleAddToCartLocal(producto);
+                                handleToggleCarritoNavbar();
+                            }}
                         >
                             Añadir al carrito
                         </button>
@@ -209,7 +243,7 @@ export function DetalleProducto() {
                                             onClick={() => handleLike(resena.id)}>Like {resena.contador_likes}
                                             {console.log('like pulsado con exito')}</button>
                                         <button className="btn btn-danger"
-                                            onClick={() => handleDislike(resena.id)}>Dislike</button>
+                                            onClick={() => handleDislike(resena.id)}>Dislike {resena.contador_dislikes}</button>
                                     </div>
                                 </div>
                             ))}
@@ -218,7 +252,7 @@ export function DetalleProducto() {
 
                     {/* dejar opinion en si mismo */}
                     <div className="opiniones_clientes">
-
+                        <button className="btn btn-primary">Dejar opinión</button>
                     </div>
                 </div>
 

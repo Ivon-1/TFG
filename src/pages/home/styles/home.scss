@@ -74,7 +74,7 @@ body {
             padding: 3%;
             .card_personalizada {
                 position: relative;
-                .discount-tag{
+                .discount-tag {
                     position: absolute;
                     top: 10px;
                     left: 10px;
@@ -91,9 +91,10 @@ body {
                 }
 
                 .total_precio {
-                    display: flex;
+                    display: grid;
+                    text-align: start;
                     gap: 20px;
-                    justify-content: space-around;
+                    justify-content: start;
                     margin-top: 5%;
                 }
             }
@@ -201,8 +202,8 @@ media queries
 }
 
 @media (max-width: 576px) {
-    .tarjetas_categorias{
-        padding: 2%;        
+    .tarjetas_categorias {
+        padding: 2%;
     }
 }
 
@@ -217,7 +218,6 @@ media queries
     // categorias
     .tarjetas_categorias {
         grid-template-columns: repeat(4, 1fr) !important;
-        
     }
 
     // todo

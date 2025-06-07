@@ -249,16 +249,7 @@ export const Productos = () => {
                                             alt={producto.nombre}
                                             onClick={() => navigate(`/producto/${producto.id}`, {
                                                 state: {
-                                                    carrito,
-                                                    openCarrito,
-                                                    handleToggleCarritoNavbar,
-                                                    handleCloseCarritoNavbar,
-                                                    handleAddToCartLocal,
-                                                    handleEliminarCantidad,
-                                                    handleSumarCantidad,
-                                                    handleRestarCantidad,
-                                                    busqueda,
-                                                    setBusqueda,
+                                                   
                                                 }
                                             })}
                                             style={{ cursor: 'pointer' }}

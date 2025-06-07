@@ -552,13 +552,5 @@ export function Home() {
         </section>
         {/* footer */}
         <Footer />
-
-        {/* pruebas facturas MODIFICAR LUEGO*/}
-        <section>
-            <Link to="facturas" className="btn btn-danger m-2 p-2">
-                Facturas
-            </Link>
-        </section>
-
     </ >
 }
