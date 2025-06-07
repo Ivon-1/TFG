@@ -163,8 +163,12 @@ export function DetalleProducto() {
                         </div>
                     </div>
 
-                    {/* barra de valoraciones */}
+                    {/* barra de valoraciones. SI DA TIEMPO */}
                     
+                    {/* dejar opinion en si mismo */}
+                    <div className="opiniones_clientes">
+                              
+                    </div>
                 </div>
 
             </div>
