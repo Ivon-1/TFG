@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFetchData, useFetchResenas } from "../../consumirAxios";
 import { Navbar } from "./navbar";
@@ -20,16 +20,37 @@ export function DetalleProducto() {
         ? (resenas.reduce((acc, r) => acc + r.valoracion, 0) / resenas.length).toFixed(1)
         : "No hay valoraciones";
 
+    /**
+     * funcion para likes y dislikes
+     */
+    // estado local para likes y dislikes
+    const [estadoResenas, setEstadoResenas] = useState([]);
 
-    // Estado para el carrito
+    useEffect(() => {
+        if (resenas && resenas.length > 0) {
+            setEstadoResenas(resenas);
+        }
+    }, [resenas]);
+
+    const handleLike = (id) => {
+        setEstadoResenas(prev => prev.map(resena => resena.id === id  ? 
+            {...resena, contador_likes: resena.contador_likes + 1} : resena))
+    }
+
+    const handleDislike = (id) => {
+        setEstadoResenas(prev => prev.map(resena => resena.id === id ? 
+            {...resena, contador_dislikes: resena.contador_dislikes + 1} : resena));
+    }
+
+
+
+    // estado para la búsqueda
+    const [busqueda, setBusqueda] = useState('');
+    // estado para el carrito
     const [openCarrito, setOpenCarrito] = useState(false);
     const [carrito, setCarrito] = useState([]);
 
-
-
-
-
-    // Funciones del carrito
+    // funciones del carrito
     const handleToggleCarritoNavbar = () => setOpenCarrito(!openCarrito);
     const handleCloseCarritoNavbar = () => setOpenCarrito(false);
 
@@ -67,8 +88,7 @@ export function DetalleProducto() {
         ));
     };
 
-    // Estado para la búsqueda
-    const [busqueda, setBusqueda] = useState('');
+
 
     /**
      * errores generales
@@ -148,26 +168,57 @@ export function DetalleProducto() {
                     <div className="anonimo text-white mt-4">
                         <h3 className="text-center">Opiniones de clientes</h3>
                         <div className="text-white d-flex align-items-center justify-content-center gap-2 gap-md-4 text-center">
-                            <div className="bg-white text-black col-md-6 mt-2" 
-                            style={{ height: '80px', width: '250px' }}>
+                            <div className="bg-white text-black col-md-6 mt-2"
+                                style={{ height: '80px', width: '250px' }}>
                                 <p >{valoracionPromedio}</p>
                                 <p>{[...Array(Math.max(0, Math.floor(valoracionPromedio) || 0))].map((_, i) => (
                                     <span key={i} style={{ color: 'gold', fontSize: '20px' }}>⭐</span>
                                 ))}</p>
                             </div>
-                            <div className="bg-white text-black col-md-6 mt-2" 
-                            style={{ height: '80px', width: '250px' }}>
+                            <div className="bg-white text-black col-md-6 mt-2"
+                                style={{ height: '80px', width: '250px' }}>
                                 <p>100%</p>
                                 <p>Recomendado</p>
                             </div>
                         </div>
                     </div>
 
-                    {/* barra de valoraciones. SI DA TIEMPO */}
-                    
+                    {resenas.length === 0 ? (
+                        <p className="text-center mt-3">Aún no hay reseñas para este producto.</p>
+                    ) : (
+                        <div className="mt-4 d-flex flex-column align-items-center">
+                            {estadoResenas.map((resena) => (
+                                <div
+                                    key={resena.id}
+                                    className="bg-white text-black rounded p-3 mb-3"
+                                    style={{ width: '90%', maxWidth: '500px' }}
+                                >
+                                    <div className="d-flex justify-content-between">
+                                        <span className="fw-bold">Usuario anónimo</span>
+                                        <span className="text-muted small">
+                                            {new Date(resena.created_at).toLocaleDateString()} {/* convierte date a string */}
+                                        </span>
+                                    </div>
+                                    <div style={{ color: 'gold', fontSize: '18px' }}>
+                                        {'⭐'.repeat(resena.valoracion)}{'☆'.repeat(5 - resena.valoracion)} {/* 5 es el numero de estrellas - valoracion que hay */}
+                                    </div>
+                                    <p className="mb-0">{resena.descripcion}</p>
+
+                                    <div className="d-flex gap-2 mt-2">
+                                        <button className="btn btn-success"
+                                            onClick={() => handleLike(resena.id)}>Like {resena.contador_likes}
+                                            {console.log('like pulsado con exito')}</button>
+                                        <button className="btn btn-danger"
+                                            onClick={() => handleDislike(resena.id)}>Dislike</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
                     {/* dejar opinion en si mismo */}
                     <div className="opiniones_clientes">
-                              
+
                     </div>
                 </div>
 
