@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import env from "./env";  // Asegúrate de importar correctamente
 import axios from "axios";
 
-// Configuración global de axios
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common['Accept'] = 'application/json';
-
 export function useFetchData(url = null) {
     const [data, setData] = useState("");
     const [loading, setLoading] = useState(true);
@@ -14,20 +9,16 @@ export function useFetchData(url = null) {
 
     useEffect(() => {
         if (!url) return;
-        axios.get(env.url_produccion + url, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        axios.get(env.url_produccion + url)
             .then(response => {
                 setData(response.data);
                 setLoading(false);
                 console.log(response);
             })
             .catch(error => {
-                console.error('Error completo:', error);
-                setError(error.response?.data?.message || "Error al obtener los datos");
+                setError("Error al obtener los datos");
                 setLoading(false);
+                console.log(error);
             })
     }, [url])
 

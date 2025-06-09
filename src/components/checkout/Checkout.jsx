@@ -144,9 +144,14 @@ const Checkout = ({ total, carrito, onSuccess }) => {
 
     const onCreateOrder = (data, actions) => {
         try {
+            // Calculamos el total de los items
             const itemTotal = carrito.reduce((sum, item) => {
-                return sum + (parseFloat(item.precioConDescuento || item.precio) * item.cantidad);
+                const precio = parseFloat(item.precioConDescuento || item.precio);
+                return sum + (precio * item.cantidad);
             }, 0).toFixed(2);
+
+            console.log('Total a pagar:', total);
+            console.log('Item total:', itemTotal);
 
             return actions.order.create({
                 purchase_units: [
