@@ -4,6 +4,8 @@ import { useFetchData, useFetchResenas } from "../../consumirAxios";
 import { Navbar } from "./navbar";
 import styles from "./styles/detalleProducto.module.scss";
 import { Footer } from "./footer";
+import axios from "axios";
+import env from "../../env";
 
 export function DetalleProducto() {
     const { id } = useParams();
@@ -11,7 +13,7 @@ export function DetalleProducto() {
     const { data: productos_datos, loading, error } = useFetchData('api/productos');
     const { data: resenas_datos, loading: loadingResenas, error: errorResenas } = useFetchResenas(id);
     const { productos = [] } = productos_datos ?? {};
-   
+
 
     // reseñas
     const resenas = resenas_datos?.reseña ?? []; // accedemos con los ? para que no de error si no hay
@@ -20,46 +22,135 @@ export function DetalleProducto() {
 
     const producto = productos.find(p => p.id === parseInt(id));
     // funcionalidad reseñas
-    const valoracionPromedio = resenas.length > 0
-        ? (resenas.reduce((acc, r) => acc + r.valoracion, 0) / resenas.length).toFixed(1)
-        : "No hay valoraciones";
+    const [valoracionPromedio, setValoracionPromedio] = useState(0);
+    const [totalOpiniones, setTotalOpiniones] = useState(0);
 
     /**
-     * funcion para likes y dislikes
+     * funciones para likes y dislikes
      */
     // estado local para likes y dislikes
     const [estadoResenas, setEstadoResenas] = useState([]);
 
     useEffect(() => {
-        const resenasStorage = localStorage.getItem('resenas');
+        const resenasStorage = localStorage.getItem(`resenas_producto_${id}`);
         if (resenasStorage) {
-            setEstadoResenas(JSON.parse(resenasStorage));
+            const resenasGuardadas = JSON.parse(resenasStorage);
+            setEstadoResenas(resenasGuardadas);
+            
+            // Actualizar valoraciones y total
+            if (resenasGuardadas.length > 0) {
+                const totalValoraciones = resenasGuardadas.reduce((sum, resena) => sum + resena.valoracion, 0);
+                const promedio = totalValoraciones / resenasGuardadas.length;
+                setValoracionPromedio(promedio);
+                setTotalOpiniones(resenasGuardadas.length);
+            }
         } else if (resenas && resenas.length > 0) {
-            setEstadoResenas(resenas);
-            localStorage.setItem('resenas', JSON.stringify(resenas));
-        }
-    }, [resenas]);
+            const resenasConContadores = resenas.map(resena => ({
+                ...resena,
+                contador_likes: resena.contador_likes || 0,
+                contador_dislikes: resena.contador_dislikes || 0
+            }));
+            setEstadoResenas(resenasConContadores);
+            localStorage.setItem(`resenas_producto_${id}`, JSON.stringify(resenasConContadores));
 
-    const handleLike = (id) => {
+            // Actualizar valoraciones y total inicial
+            const totalValoraciones = resenasConContadores.reduce((sum, resena) => sum + resena.valoracion, 0);
+            const promedio = totalValoraciones / resenasConContadores.length;
+            setValoracionPromedio(promedio);
+            setTotalOpiniones(resenasConContadores.length);
+        }
+    }, [resenas, id]);
+
+    /**
+     * funciones relacionadas con desplegar formulari de reseñas y añadirlas
+     */
+    const [openFormulario, setOpenFormulario] = useState(false);
+
+    /**
+     * abrir formulario de reseñas
+     */
+    const handleOpenFormulario = () => {
+        setOpenFormulario(prev => !prev);
+    }
+
+    const handleSubmitResena = async () => {
+        if (!nuevaResena.trim()) {
+            alert('Por favor, escribe una opinión');
+            return;
+        }
+
+        try {
+            const datosResena = {
+                id_producto: parseInt(id),
+                valoracion: nuevaValoracion,
+                descripcion: nuevaResena,
+                contador_likes: 0,
+                nombre: 'Usuario Anónimo'
+            };
+
+            console.log('Enviando reseña:', datosResena);
+
+            const response = await axios.post(env.url_produccion + 'api/resena/store', datosResena);
+
+            console.log('Respuesta del servidor:', response.data);
+
+            if (response.data) {
+                const nuevaResenaObj = {
+                    id: response.data.id ?? Date.now(),
+                    id_producto: parseInt(id),
+                    valoracion: nuevaValoracion,
+                    descripcion: nuevaResena,
+                    nombre: 'Usuario Anónimo',
+                    contador_likes: 0,
+                    contador_dislikes: 0,
+                    created_at: new Date().toISOString()
+                };
+                
+                setEstadoResenas(prevResenas => {
+                    const resenasActualizadas = [...prevResenas, nuevaResenaObj]; // añadimos la nueva reseña al array de reseñas
+                    localStorage.setItem(`resenas_producto_${id}`, JSON.stringify(resenasActualizadas));
+
+                    // Actualizar valoraciones y total
+                    const totalValoraciones = resenasActualizadas.reduce((sum, resena) => sum + resena.valoracion, 0);
+                    const promedio = totalValoraciones / resenasActualizadas.length; // calculamos el promedio y lo mostramos
+                    setValoracionPromedio(promedio);
+                    setTotalOpiniones(resenasActualizadas.length);
+
+                    return resenasActualizadas;
+                });
+
+                setNuevaResena('');
+                setNuevaValoracion(5);
+                setOpenFormulario(false);
+            }
+        } catch (error) {
+            console.error('Error al guardar la reseña:', error);
+            alert('Error al guardar la reseña: ' + (error.response?.data?.message || 'Error al crear la reseña'));
+        }
+    };
+
+    const handleLike = (resenaId) => {
         setEstadoResenas(prev => {
-            const resenasActualizadas = prev.map(resena =>
-                resena.id === id
-                    ? { ...resena, contador_likes: resena.contador_likes + 1 }
-                    : resena
-            );
-            localStorage.setItem('resenas', JSON.stringify(resenasActualizadas));
+            const resenasActualizadas = prev.map(resena => {
+                if (resena.id === resenaId && resena.id_producto === parseInt(id)) {
+                    return { ...resena, contador_likes: resena.contador_likes + 1 };
+                }
+                return resena;
+            });
+            localStorage.setItem(`resenas_producto_${id}`, JSON.stringify(resenasActualizadas));
             return resenasActualizadas;
         });
     };
 
-    const handleDislike = (id) => {
+    const handleDislike = (resenaId) => {
         setEstadoResenas(prev => {
-            const resenasActualizadas = prev.map(resena =>
-                resena.id === id
-                    ? { ...resena, contador_dislikes: resena.contador_dislikes + 1 }
-                    : resena
-            );
-            localStorage.setItem('resenas', JSON.stringify(resenasActualizadas));
+            const resenasActualizadas = prev.map(resena => {
+                if (resena.id === resenaId && resena.id_producto === parseInt(id)) {
+                    return { ...resena, contador_dislikes: resena.contador_dislikes + 1 };
+                }
+                return resena;
+            });
+            localStorage.setItem(`resenas_producto_${id}`, JSON.stringify(resenasActualizadas));
             return resenasActualizadas;
         });
     };
@@ -79,10 +170,21 @@ export function DetalleProducto() {
     const handleToggleCarritoNavbar = () => setOpenCarrito(!openCarrito);
     const handleCloseCarritoNavbar = () => setOpenCarrito(false);
 
+    /**
+     * 
+     * @param {añadir carrito y productos al mismo} item 
+     */
     const handleAddToCartLocal = (item) => {
         setCarrito(prev => {
             const itemExistente = prev.find(cartItem => cartItem.id === item.id);
             let nuevoCarrito;
+
+            // aseguramos que el precio con descuento realmente existe
+            const productoParaCarrito = {
+                ...item,
+                precioConDescuento: item.descuento > 0 ? item.precioConDescuento : item.precio,
+                cantidad: 1
+            };
 
             if (itemExistente) {
                 nuevoCarrito = prev.map(cartItem =>
@@ -91,7 +193,7 @@ export function DetalleProducto() {
                         : cartItem
                 );
             } else {
-                nuevoCarrito = [...prev, { ...item, cantidad: 1 }];
+                nuevoCarrito = [...prev, productoParaCarrito];
             }
 
             localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
@@ -99,10 +201,18 @@ export function DetalleProducto() {
         });
     };
 
+    /**
+     * 
+     * @param {eliminar cantidad carrito } itemId 
+     */
     const handleEliminarCantidad = (itemId) => {
         setCarrito(prev => prev.filter(item => item.id !== itemId));
     };
 
+    /**
+     * 
+     * @param {sumar cantidad carrito} itemId 
+     */
     const handleSumarCantidad = (itemId) => {
         setCarrito(prev => prev.map(item =>
             item.id === itemId
@@ -111,6 +221,11 @@ export function DetalleProducto() {
         ));
     };
 
+    /**
+     * 
+     * @param {restar cantidad carrito } itemId 
+     * @returns 
+     */
     const handleRestarCantidad = (itemId) => {
         setCarrito(prev => prev.map(item =>
             item.id === itemId
@@ -120,6 +235,7 @@ export function DetalleProducto() {
         localStorage.setItem('carrito', JSON.stringify(carrito));
         return nuevoCarrito;
     };
+
 
     /**
      * errores generales
@@ -146,7 +262,7 @@ export function DetalleProducto() {
             <div style={{ height: '120px' }}></div> {/* separar la card */}
             <div style={{ marginTop: "350px" }} className={`container py-5 mt-5  ${styles.container}`} >
                 <button
-                    className="btn btn-secondary mb-4"
+                    className="btn btn-warning mb-4"
                     onClick={() => navigate(-1)} // ponemos -1 porque asi redirecciona a la pagina anterior
                 >
                     Volver
@@ -161,8 +277,8 @@ export function DetalleProducto() {
                     </div>
                     <div className="col-md-6 mt-2 ">
                         <h2>{producto.nombre}</h2>
-                        <p className="text-white">Valoracion: {valoracionPromedio} <span id="estrellas_resenas" style={{ color: 'gold', fontSize: '20px' }}>⭐</span></p>
-                        <p className="text-white">Total opiniones: {resenas.length}</p>
+                        <p className="text-white">Valoracion: {valoracionPromedio.toFixed(1)} <span id="estrellas_resenas" style={{ color: 'gold', fontSize: '20px' }}>⭐</span></p>
+                        <p className="text-white">Total opiniones: {totalOpiniones}</p>
                         <div className="my-4">
                             {producto.descuento > 0 ? (
                                 <>
@@ -181,7 +297,7 @@ export function DetalleProducto() {
                             )}
                         </div>
                         <button
-                            className="btn btn-primary btn-lg"
+                            className="btn btn-warning btn-lg"
                             onClick={() => {
                                 handleAddToCartLocal(producto);
                                 handleToggleCarritoNavbar();
@@ -204,7 +320,7 @@ export function DetalleProducto() {
                         <div className="text-white d-flex align-items-center justify-content-center gap-2 gap-md-4 text-center">
                             <div className="bg-white text-black col-md-6 mt-2"
                                 style={{ height: '80px', width: '250px' }}>
-                                <p >{valoracionPromedio}</p>
+                                <p >{valoracionPromedio.toFixed(1)}</p>
                                 <p>{[...Array(Math.max(0, Math.floor(valoracionPromedio) || 0))].map((_, i) => (
                                     <span key={i} style={{ color: 'gold', fontSize: '20px' }}>⭐</span>
                                 ))}</p>
@@ -217,7 +333,7 @@ export function DetalleProducto() {
                         </div>
                     </div>
 
-                    {resenas.length === 0 ? (
+                    {estadoResenas.length === 0 ? (
                         <p className="text-center mt-3">Aún no hay reseñas para este producto.</p>
                     ) : (
                         <div className="mt-4 d-flex flex-column align-items-center">
@@ -228,22 +344,28 @@ export function DetalleProducto() {
                                     style={{ width: '90%', maxWidth: '500px' }}
                                 >
                                     <div className="d-flex justify-content-between">
-                                        <span className="fw-bold">Usuario anónimo</span>
+                                        <span className="fw-bold">{resena.nombre}</span>
                                         <span className="text-muted small">
-                                            {new Date(resena.created_at).toLocaleDateString()} {/* convierte date a string */}
+                                            {new Date(resena.created_at).toLocaleDateString()}
                                         </span>
                                     </div>
                                     <div style={{ color: 'gold', fontSize: '18px' }}>
-                                        {'⭐'.repeat(resena.valoracion)}{'☆'.repeat(5 - resena.valoracion)} {/* 5 es el numero de estrellas - valoracion que hay */}
+                                        {'⭐'.repeat(resena.valoracion)}{'☆'.repeat(5 - resena.valoracion)}
                                     </div>
                                     <p className="mb-0">{resena.descripcion}</p>
-
                                     <div className="d-flex gap-2 mt-2">
-                                        <button className="btn btn-success"
-                                            onClick={() => handleLike(resena.id)}>Like {resena.contador_likes}
-                                            {console.log('like pulsado con exito')}</button>
-                                        <button className="btn btn-danger"
-                                            onClick={() => handleDislike(resena.id)}>Dislike {resena.contador_dislikes}</button>
+                                        <button 
+                                            className="btn btn-success"
+                                            onClick={() => handleLike(resena.id)}
+                                        >
+                                            Like {resena.contador_likes || 0}
+                                        </button>
+                                        <button 
+                                            className="btn btn-danger"
+                                            onClick={() => handleDislike(resena.id)}
+                                        >
+                                            Dislike {resena.contador_dislikes || 0}
+                                        </button>
                                     </div>
                                 </div>
                             ))}
@@ -252,7 +374,42 @@ export function DetalleProducto() {
 
                     {/* dejar opinion en si mismo */}
                     <div className="opiniones_clientes">
-                        <button className="btn btn-primary">Dejar opinión</button>
+                        <button className="btn btn-warning"
+                            onClick={handleOpenFormulario}
+                        >Dejar opinión</button>
+
+                        {openFormulario && (
+                            <div className="bg-white text-black rounded p-3 mt-3" style={{ width: '90%', maxWidth: '500px' }}>
+                                <div className="mb-3">
+                                    <label className="form-label">Valoración</label>
+                                    <select
+                                        className="form-select"
+                                        value={nuevaValoracion}
+                                        onChange={(e) => setNuevaValoracion(parseInt(e.target.value))}
+                                    >
+                                        {[1, 2, 3, 4, 5].map(num => (
+                                            <option key={num}
+                                                value={num}>{num} {'⭐'.repeat(num)}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Tu opinión</label>
+                                    <textarea
+                                        className="form-control"
+                                        value={nuevaResena}
+                                        onChange={(e) => setNuevaResena(e.target.value)}
+                                        rows="3"
+                                    ></textarea>
+                                </div>
+                                <button
+                                    className="btn btn-warning"
+                                    onClick={handleSubmitResena}
+                                >
+                                    Enviar opinión
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 

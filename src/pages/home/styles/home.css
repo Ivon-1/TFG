@@ -16,9 +16,11 @@ body {
   /** NUESTRO BLOG */
   /** NUESTRAS MARCAS */
 }
+
 body img {
   max-width: 100%;
 }
+
 body .tarjetas_categorias {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -26,20 +28,25 @@ body .tarjetas_categorias {
   gap: 80px;
   margin: auto;
 }
+
 body .tarjetas_categorias .card {
   width: 90%;
 }
+
 body .ofertas_home {
   background-color: black;
 }
+
 body .seccion_ofertas .todas_ofertas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   padding: 3%;
 }
+
 body .seccion_ofertas .todas_ofertas .card_personalizada {
   position: relative;
 }
+
 body .seccion_ofertas .todas_ofertas .card_personalizada .discount-tag {
   position: absolute;
   top: 10px;
@@ -55,6 +62,7 @@ body .seccion_ofertas .todas_ofertas .card_personalizada .discount-tag {
   text-transform: uppercase;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
+
 body .seccion_ofertas .todas_ofertas .card_personalizada .total_precio {
   display: grid;
   text-align: start;
@@ -62,14 +70,17 @@ body .seccion_ofertas .todas_ofertas .card_personalizada .total_precio {
   justify-content: start;
   margin-top: 5%;
 }
+
 body .productos_mas_vendidos .todo_mas_vendido {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   padding: 3%;
 }
+
 body .productos_mas_vendidos .todo_mas_vendido .card_personalizada {
   position: relative;
 }
+
 body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .discount-tag {
   position: absolute;
   top: 10px;
@@ -85,6 +96,7 @@ body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .discount-tag
   text-transform: uppercase;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
+
 body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .total_precio {
   display: grid;
   text-align: start;
@@ -92,16 +104,44 @@ body .productos_mas_vendidos .todo_mas_vendido .card_personalizada .total_precio
   justify-content: start;
   margin-top: 5%;
 }
+
 body .nuestro_blog {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 40px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 1400px;
 }
+
+body .nuestro_blog .carousel {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 body .nuestro_blog .carousel-inner {
-  border: 4px solid black;
-  border-radius: 40px;
+  border: 3px solid #2d8ab8;
+  border-radius: 20px;
+  overflow: hidden;
 }
+
+body .nuestro_blog .carousel-inner img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+body .nuestro_blog .carousel-inner img:hover {
+  transform: scale(1.02);
+}
+
+body .nuestro_blog h3.titulo_tercer_carousel {
+  margin-bottom: 15px;
+  background-color: #2d8ab8;
+  padding: 8px;
+  border-radius: 10px;
+}
+
 body .nuestras_marcas .marcas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -110,10 +150,12 @@ body .nuestras_marcas .marcas {
   margin: 40px;
   padding: 7%;
 }
+
 body .nuestras_marcas .marcas img {
   border-radius: 20px;
   border: 4px solid #2d8ab8;
 }
+
 body .informacion_general .logo_y_modtech {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -123,16 +165,20 @@ body .informacion_general .logo_y_modtech {
   gap: 20px;
   margin-bottom: 5%;
 }
+
 body .informacion_general .logo_y_modtech .logo {
   margin-left: 5%;
 }
+
 body .informacion_general .logo_y_modtech .logo img {
   width: 40%;
   border-radius: 40px;
 }
+
 body .informacion_general .logo_y_modtech .modtech {
   text-align: center;
 }
+
 body .informacion_general .redes {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -141,11 +187,13 @@ body .informacion_general .redes {
   gap: 15%;
   margin-bottom: 5%;
 }
+
 body .informacion_general .todo {
   display: grid;
   gap: 20px;
   text-align: center;
 }
+
 body .formas_pago {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -163,98 +211,124 @@ media queries
     display: flex !important;
     flex-direction: column;
   }
+
   .todo_mas_vendido {
     display: flex !important;
     flex-direction: column;
   }
+
   .nuestro_blog {
     grid-template-columns: 1fr !important;
+    padding: 15px;
   }
 }
+
 @media (max-width: 576px) {
   .tarjetas_categorias {
     padding: 2%;
   }
 }
+
 @media (min-width: 576px) {
   .nuestro_blog {
     grid-template-columns: repeat(3, 1fr) !important;
   }
 }
+
 @media (min-width: 768px) {
   .tarjetas_categorias {
     grid-template-columns: repeat(4, 1fr) !important;
   }
+
   .informacion_general .todo {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     text-align: center;
   }
 }
+
 @media (min-width: 992px) {
   #carousel-inner {
     height: 300px;
   }
+
   #carouselExampleCaptions .carousel-item img {
     -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     width: 100%;
     height: 100%;
   }
+
   .tarjetas_categorias {
     padding: 2% !important;
   }
+
   .productos_mas_vendidos .todo_mas_vendido {
     display: grid;
     grid-template-columns: repeat(3, 1fr) !important;
   }
+
   .seccion_ofertas .todas_ofertas {
     display: grid;
     grid-template-columns: repeat(3, 1fr) !important;
   }
+
   .nuestras_marcas .marcas {
     display: grid;
     grid-template-columns: repeat(3, 1fr) !important;
   }
+
   .informacion_general .logo_y_modtech {
     margin-left: 6%;
     margin-bottom: 2% !important;
     padding: 0;
   }
+
   .informacion_general .logo_y_modtech .logo {
     width: 30%;
   }
+
   .informacion_general .logo_y_modtech .todo {
     display: grid;
     grid-template-columns: repeat(4, 1fr) !important;
   }
-  .informacion_general .redes > div {
+
+  .informacion_general .redes>div {
     width: 40%;
   }
+
   .informacion_general .todo {
     grid-template-columns: repeat(4, 1fr);
   }
+
   .informacion_general .formas_pago {
     grid-template-columns: repeat(4, 1fr) !important;
     padding: 2%;
     width: 30%;
   }
 }
+
 @media (min-width: 1200px) {
   .nuestras_marcas .marcas {
     display: grid;
     grid-template-columns: repeat(4, 1fr) !important;
   }
+
   .productos_mas_vendidos .todo_mas_vendido {
     grid-template-columns: repeat(4, 1fr) !important;
   }
+
   .seccion_ofertas .todas_ofertas {
     grid-template-columns: repeat(4, 1fr) !important;
   }
+
   .seccion_ofertas .informacion_general .logo_y_modtech .logo {
     width: 30%;
   }
-  .seccion_ofertas .informacion_general .redes > div {
+
+  .seccion_ofertas .informacion_general .redes>div {
     width: 50%;
   }
-}/*# sourceMappingURL=home.css.map */
+}
+
+/*# sourceMappingURL=home.css.map */

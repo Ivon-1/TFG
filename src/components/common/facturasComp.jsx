@@ -76,9 +76,11 @@ export function FacturasComp({ detallesCompra, productos, total }) {
                     <div className={styles.cliente_detalles}>
                         <p><strong>Cliente:</strong> {detallesCompra?.payer?.name?.given_name} {detallesCompra?.payer?.name?.surname}</p>
                         <p><strong>Email:</strong> {detallesCompra?.payer?.email_address}</p>
-                        {detallesCompra?.payer?.address && (
-                            <p><strong>Dirección:</strong> {`${detallesCompra.payer.address.address_line_1}, ${detallesCompra.payer.address.admin_area_2}`}</p>
-                        )}
+                        <p><strong>Dirección de envío:</strong> {
+                            detallesCompra?.purchase_units?.[0]?.shipping?.address
+                                ? `${detallesCompra.purchase_units[0].shipping.address.address_line_1}, ${detallesCompra.purchase_units[0].shipping.address.admin_area_2}, ${detallesCompra.purchase_units[0].shipping.address.postal_code}`
+                                : detallesCompra?.payer?.address?.address_line_1 || 'Sin dirección especificada'
+                        }</p>
                     </div>
                 </div>
             </div>

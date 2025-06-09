@@ -83,14 +83,17 @@ const Checkout = ({ total, carrito, onSuccess }) => {
                 throw new Error('No hay usuario logueado');
             }
 
-            // direccion que tenemos indicada en paypal
-            const direccion = details.purchase_units[0]?.shipping?.address?.address_line_1 || 
-                            details.payer?.address?.address_line_1 || 
-                            'Sin dirección especificada';
+            // Obtenemos la dirección de envío de PayPal
+            const direccion = details.purchase_units[0]?.shipping?.address
+                ? `${details.purchase_units[0].shipping.address.address_line_1}, ${details.purchase_units[0].shipping.address.admin_area_2}, ${details.purchase_units[0].shipping.address.postal_code}`
+                : details.payer?.address?.address_line_1 || 'Sin dirección especificada';
+
+            console.log('Dirección de envío:', direccion);
 
             // datos para enviar al back
             const datosCompra = {
-                direccion: direccion
+                direccion: direccion,
+                detalles_paypal: details
             };
 
             console.log('Enviando datos de compra:', datosCompra);
@@ -133,23 +136,7 @@ const Checkout = ({ total, carrito, onSuccess }) => {
             });
         } catch (error) {
             console.error("Error al procesar el pago:", error);
-            console.error("Datos de la respuesta:", error.response?.data);
-            
-            let mensajeError = "Error al procesar el pago";
-            
-            if (error.message.includes('No hay usuario logueado')) {
-                mensajeError = "Debes iniciar sesión para completar la compra";
-                navigate('/login');
-            } else if (error.response?.status === 401) {
-                mensajeError = "Sesión expirada o inválida. Por favor, inicia sesión nuevamente";
-                navigate('/login');
-            } else if (error.message.includes('carrito')) {
-                mensajeError = error.message;
-            } else if (error.response?.data?.message) {
-                mensajeError = error.response.data.message;
-            }
-            
-            setError(mensajeError);
+            setError(error.message || "Error al procesar el pago");
         } finally {
             setIsProcessing(false);
         }
