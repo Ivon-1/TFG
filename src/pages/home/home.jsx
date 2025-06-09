@@ -229,9 +229,9 @@ export function Home() {
 
             {/* categorias portatiles */}
             <div className="card" >
-                <img src={imagenes_home.categoria_televisiones.url}
+                <img src={imagenes_home.categoria_portatiles.url}
                     className="card-img-top"
-                    alt={imagenes_home.categoria_televisiones.alt} />
+                    alt={imagenes_home.categoria_portatiles.alt} />
                 <div className="card-body bg-black text-center">
                     <a href="#" className="btn btn-info text-white">Portátiles</a>
                 </div>
@@ -292,7 +292,7 @@ export function Home() {
                                 <div className="total_precio">
                                     <button 
                                     className="btn btn-primary" 
-                                    onClick={() => handleAddToCartLocal(producto)}>Comprar</button>
+                                    onClick={() => handleAddToCartLocal(producto)}>Añadir</button>
                                     {producto.descuento > 0 ? (
                                         <>
                                             <p>Antes: {producto.precio}€</p>

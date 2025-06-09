@@ -127,7 +127,9 @@ export const Navbar = ({
                                     <li className="nav-item"><Link className="nav-link active" to="/">Inicio</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to="/productos">Productos</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to="">Soporte</Link></li>
-                                    <li className="nav-item"><Link className="nav-link" to="">Sobre nosotros</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to="">
+                                    Sobre nosotros
+                                    </Link></li>
                                     <li className="nav-item"><Link className="nav-link" to="">Contáctanos</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to="#" onClick={closeMenu}>Volver</Link></li>
                                 </ul>

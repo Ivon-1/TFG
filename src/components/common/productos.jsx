@@ -249,7 +249,7 @@ export const Productos = () => {
                                             alt={producto.nombre}
                                             onClick={() => navigate(`/producto/${producto.id}`, {
                                                 state: {
-                                                   
+
                                                 }
                                             })}
                                             style={{ cursor: 'pointer' }}
@@ -258,7 +258,7 @@ export const Productos = () => {
                                             <h5 className="card-title">{producto.nombre}</h5>
                                             <p className="card-text">{producto.descripcion}</p>
                                             <div className="total_precio">
-                                                <button onClick={() => handleAddToCartLocal(producto)} href="#" className="btn btn-primary">Comprar</button>
+                                                <button onClick={() => handleAddToCartLocal(producto)} href="#" className="btn btn-primary">Añadir</button>
                                                 <div className="precios mt-2">
                                                     {producto.descuento > 0 ? (
                                                         <>

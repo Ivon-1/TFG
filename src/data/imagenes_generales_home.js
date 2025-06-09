@@ -10,6 +10,7 @@ import categoria_componentes from "../assets/img/General/componentesvarios.jpeg"
 import categoria_televisiones from "../assets/img/General/television lg.jpeg";
 import categoria_ofertas from "../assets/img/Promociones/ofertas_msi2.jpeg";
 import productos_color from "../assets/img/GradientesFondo/01-gradiente.jpg";
+import categoria_portatiles from "../assets/img/Portatiles/razer.jpeg";
 
 const imagenes_home = {
     // imagen torre principal
@@ -68,7 +69,13 @@ const imagenes_home = {
         id: 11,
         url: productos_color,
         alt: "color de la seccion productos"
+    },
+    categoria_portatiles: {
+        id: 12, 
+        url: categoria_portatiles,
+        alt: 'portatiles'
     }
+    
     
 }
 
