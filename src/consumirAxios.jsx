@@ -200,4 +200,39 @@ export function useFetchResenas(id){
     return {data, loading, error}
 }
 
+// funcion para cerrar sesión
+export function useLogout() {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const cerrarSesion = async () => {
+        try {
+            setLoading(true);
+            const token = localStorage.getItem('token');
+            
+            // Llamada al endpoint de logout
+            await axios.post(env.url_produccion + 'api/logout', {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // Limpiamos todo el localStorage
+            localStorage.clear();
+            
+            return true;
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+            setError(error.response?.data?.message || 'Error al cerrar sesión');
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { cerrarSesion, loading, error };
+}
+
 

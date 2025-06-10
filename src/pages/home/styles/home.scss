@@ -106,10 +106,63 @@ body {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
-        padding: 40px;
-        .carousel-inner {
-            border: 4px solid black;
-            border-radius: 40px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        margin: 20px auto;
+        max-width: 1400px;
+
+        .carousel {
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(45, 138, 184, 0.2);
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: translateY(-5px);
+            }
+
+            .titulo_tercer_carousel {
+                color: white;
+                margin-bottom: 15px;
+                border-radius: 10px;
+                background: black;
+                padding: 10px;
+            }
+
+            .carousel-inner {
+                border: 4px solid #2d8ab8;
+                border-radius: 20px;
+                overflow: hidden;
+                max-height: 300px;
+
+                img {
+                    border-radius: 15px;
+                    transition: transform 0.3s ease;
+                    width: 100%;
+                    height: 300px;
+                    object-fit: cover;
+
+                    &:hover {
+                        transform: scale(1.02);
+                    }
+                }
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 35px;
+                height: 35px;
+                background: rgba(45, 138, 184, 0.7);
+                border-radius: 50%;
+                top: 50%;
+                transform: translateY(-50%);
+                margin: 0 10px;
+
+                &:hover {
+                    background: rgba(45, 138, 184, 0.9);
+                }
+            }
         }
     }
 
@@ -295,6 +348,11 @@ media queries
             width: 30%;
         }
     }
+
+    .nuestro_blog {
+        padding: 30px;
+        gap: 30px;
+    }
 }
 @media (min-width: 1200px) {
     // nuestras marcas
@@ -328,5 +386,11 @@ media queries
                 width: 50%;
             }
         }
+    }
+
+    .nuestro_blog {
+        padding: 40px;
+        gap: 40px;
+        margin: 40px auto;
     }
 }

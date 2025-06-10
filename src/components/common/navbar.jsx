@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/navbar.css';
 import todas_imagenes from "../../data/imagenes";
-import { useFetchData } from "../../consumirAxios";
+import { useFetchData, useLogout } from "../../consumirAxios";
 import Checkout from "../checkout/Checkout";
 
 export const Navbar = ({
@@ -28,6 +28,9 @@ export const Navbar = ({
     const [logueado, setLogueado] = useState(false);
     const [nombreUsuario, setNombreUsuario] = useState("");
     const [emailUsuario, setEmailUsuario] = useState("");
+
+    // Obtenemos la función de logout
+    const { cerrarSesion, loading: loadingLogout } = useLogout();
 
     // comprobamos si estamos logueados
     useEffect(() => {
@@ -74,13 +77,16 @@ export const Navbar = ({
     };
 
     // funcion para manejar el cierre de sesión
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        setLogueado(false);
-        setNombreUsuario("");
-        setEmailUsuario("");
-        setOpenUserMenu(false);
-        navigate('/');
+    const handleLogout = async () => {
+        const logoutExitoso = await cerrarSesion();
+        
+        if (logoutExitoso) {
+            setLogueado(false);
+            setNombreUsuario("");
+            setEmailUsuario("");
+            setOpenUserMenu(false);
+            navigate('/');
+        }
     };
 
     // funcion para limpiar url
