@@ -129,7 +129,8 @@ body .nuestro_blog .carousel .carousel-inner img {
   transition: transform 0.3s ease;
   width: 100%;
   height: 300px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 body .nuestro_blog .carousel .carousel-inner img:hover {
   transform: scale(1.02);
