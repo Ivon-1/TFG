@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFetchData, useFetchResenas } from "../../consumirAxios";
 import { Navbar } from "./navbar";
@@ -11,16 +11,47 @@ export function DetalleProducto() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: productos_datos, loading, error } = useFetchData('api/productos');
+    const { data: ofertas_datos } = useFetchData('api/ofertas');
     const { data: resenas_datos, loading: loadingResenas, error: errorResenas } = useFetchResenas(id);
     const { productos = [] } = productos_datos ?? {};
-
+    const { ofertas = [] } = ofertas_datos ?? {};
 
     // reseñas
     const resenas = resenas_datos?.reseña ?? []; // accedemos con los ? para que no de error si no hay
     const [nuevaResena, setNuevaResena] = useState('');
     const [nuevaValoracion, setNuevaValoracion] = useState(5);
 
-    const producto = productos.find(p => p.id === parseInt(id));
+    // buscamos producto y vemos que oferta tiene aplicada
+    const productoBase = productos.find(p => p.id === parseInt(id));
+    const ofertaProducto = ofertas?.find(o => o.id === productoBase?.id_oferta);
+    
+    const producto = useMemo(() => {
+        if (!productoBase) return null;
+        
+        let descuento = 0;
+        let precioConDescuento = productoBase.precio;
+        
+        if (ofertaProducto) {
+            // fecha que tenemos fijada en el home por defecto
+            const ahora = new Date('2025-05-15');
+            const inicio = new Date(ofertaProducto.fecha_inicio);
+            const fin = new Date(ofertaProducto.fecha_fin);
+            
+            if (ahora >= inicio && ahora <= fin) {
+                descuento = ofertaProducto.descuento;
+                precioConDescuento = parseFloat(
+                    (productoBase.precio - (productoBase.precio * descuento) / 100).toFixed(2)
+                );
+            }
+        }
+        
+        return {
+            ...productoBase,
+            descuento,
+            precioConDescuento
+        };
+    }, [productoBase, ofertaProducto]);
+
     // funcionalidad reseñas
     const [valoracionPromedio, setValoracionPromedio] = useState(0);
     const [totalOpiniones, setTotalOpiniones] = useState(0);
@@ -280,20 +311,11 @@ export function DetalleProducto() {
                         <p className="text-white">Valoracion: {valoracionPromedio.toFixed(1)} <span id="estrellas_resenas" style={{ color: 'gold', fontSize: '20px' }}>⭐</span></p>
                         <p className="text-white">Total opiniones: {totalOpiniones}</p>
                         <div className="my-4">
-                            {producto.descuento > 0 ? (
-                                <>
-                                    <p className="text-muted text-decoration-line-through">
-                                        Precio original: {producto.precio}€
-                                    </p>
-                                    <h3 className="text-danger">
-                                        Precio con descuento: {producto.precioConDescuento}€
-                                    </h3>
-                                    <span className="badge bg-danger">
-                                        {producto.descuento}% OFF
-                                    </span>
-                                </>
-                            ) : (
-                                <h3>Precio: {producto.precio}€</h3>
+                            <h3>Precio: {producto.descuento > 0 ? producto.precioConDescuento : producto.precio}€</h3>
+                            {producto.descuento > 0 && (
+                                <span className="badge bg-danger">
+                                    {producto.descuento}% OFF
+                                </span>
                             )}
                         </div>
                         <button

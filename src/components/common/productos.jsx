@@ -135,8 +135,6 @@ export const Productos = () => {
         return productos;
     }
 
-
-
     // configuramos para q al actualizar o darle a buscar salgan todos
     useEffect(() => {
         if (busquedaProductos) {
@@ -149,21 +147,39 @@ export const Productos = () => {
     // filtrar productos que tienen oferta
     const productosConOferta = Array.isArray(array_productos) && Array.isArray(array_ofertas)
         ? array_productos.map(producto => {
-            const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
-            const ahora = new Date();
-
+            //  vemos la oferta asignada al producto
+            console.log(`Buscando oferta para ${producto.nombre} con id_oferta: ${producto.id_oferta}`);
+            
+            const oferta = array_ofertas.find(o => {
+                const coincide = o.id === producto.id_oferta;
+                if (coincide) {
+                    console.log(`Encontrada oferta:`, o);
+                }
+                return coincide;
+            });
+            
+            // Forzamos la fecha actual a estar dentro del rango de las ofertas
+            const ahora = new Date('2025-05-15');
             let descuento = 0;
             let precioConDescuento = producto.precio;
 
             if (oferta) {
                 const inicio = new Date(oferta.fecha_inicio);
                 const fin = new Date(oferta.fecha_fin);
-
+                
                 if (ahora >= inicio && ahora <= fin) {
-                    descuento = oferta.descuento;
+                    descuento = Number(oferta.descuento);
                     precioConDescuento = parseFloat(
                         (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
                     );
+                    
+                    console.log(`Aplicando descuento:`);
+                    console.log(`- Producto: ${producto.nombre}`);
+                    console.log(`- ID Oferta: ${producto.id_oferta}`);
+                    console.log(`- Descuento: ${descuento}%`);
+                    console.log(`- Precio original: ${producto.precio}€`);
+                    console.log(`- Precio final: ${precioConDescuento}€`);
+                    console.log('------------------------');
                 }
             }
 
@@ -174,6 +190,16 @@ export const Productos = () => {
             };
         })
         : [];
+
+    useEffect(() => {
+        console.log('=== ESTADO INICIAL ===');
+        console.log('Ofertas disponibles:', array_ofertas);
+        console.log('Productos y sus ofertas:');
+        array_productos.forEach(p => {
+            console.log(`${p.nombre} -> id_oferta: ${p.id_oferta}`);
+        });
+        console.log('===================');
+    }, [array_productos, array_ofertas]);
 
     // funcion busqueda navbar
     const handleBuscar = (e) => {
@@ -226,7 +252,7 @@ export const Productos = () => {
                 {error_productos && <p className="text-danger">{error_productos}</p>}
 
                 {productosConOferta.length > 0 ? (
-                    <InfiniteScroll // componente para el infinite scroll a la hora de cargar productos
+                    <InfiniteScroll
                         dataLength={visible}
                         next={cargarScroll}
                         hasMore={visible < productosConOferta.length}
@@ -247,26 +273,22 @@ export const Productos = () => {
                                             src={producto.url}
                                             className="card-img-top p-2 w-100"
                                             alt={producto.nombre}
-                                            onClick={() => navigate(`/producto/${producto.id}`, {
-                                                state: {
-
-                                                }
-                                            })}
+                                            onClick={() => navigate(`/producto/${producto.id}`)}
                                             style={{ cursor: 'pointer' }}
                                         />
                                         <div className="card-body mt-3">
                                             <h5 className="card-title">{producto.nombre}</h5>
                                             <p className="card-text">{producto.descripcion}</p>
                                             <div className="total_precio">
-                                                <button onClick={() => handleAddToCartLocal(producto)} href="#" className="btn btn-primary">Añadir</button>
+                                                <button onClick={() => handleAddToCartLocal(producto)} className="btn btn-primary">Añadir</button>
                                                 <div className="precios mt-2">
                                                     {producto.descuento > 0 ? (
                                                         <>
-                                                            <p>Antes: {producto.precio} € </p>
-                                                            <p className="text-danger">Total: {producto.precioConDescuento} € </p>
+                                                            <p className="text-muted text-decoration-line-through">Antes: {producto.precio}€</p>
+                                                            <p className="text-danger">Ahora: {producto.precioConDescuento}€</p>
                                                         </>
                                                     ) : (
-                                                        <p>Total: {producto.precio} € </p>
+                                                        <p>Precio: {producto.precio}€</p>
                                                     )}
                                                 </div>
                                             </div>

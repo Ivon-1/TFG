@@ -115,6 +115,16 @@ export function Home() {
         }
     }, [loading_ofertas]);
 
+    useEffect(() => {
+        console.log('\n=== OFERTAS DISPONIBLES ===');
+        console.log(array_ofertas);
+        console.log('\n=== PRODUCTOS ===');
+        array_productos.forEach(p => {
+            if (p.id_oferta) {
+                console.log(`${p.nombre} -> id_oferta: ${p.id_oferta}`);
+            }
+        });
+    }, [array_productos, array_ofertas]);
 
     /**
      * filtro de productos
@@ -125,7 +135,8 @@ export function Home() {
         ? array_productos
             .map(producto => {
                 const oferta = array_ofertas.find(oferta => oferta.id === producto.id_oferta);
-                const ahora = new Date();
+                // Forzamos la fecha actual a estar dentro del rango de las ofertas
+                const ahora = new Date('2025-05-15');
 
                 let descuento = 0;
                 let precioConDescuento = producto.precio;
@@ -133,12 +144,24 @@ export function Home() {
                 if (oferta) {
                     const inicio = new Date(oferta.fecha_inicio);
                     const fin = new Date(oferta.fecha_fin);
+                    console.log(`Procesando ${producto.nombre}:`);
+                    console.log(`- ID Oferta: ${producto.id_oferta}`);
+                    console.log(`- Descuento de oferta: ${oferta.descuento}%`);
+                    console.log(`- Fechas: ${inicio} - ${fin}`);
+                    console.log(`- Fecha actual simulada: ${ahora}`);
 
-                    if (ahora >= inicio && ahora <= fin) { // IMPORTANTE PARA QUE SE ACTUALICEN CORRECTAMENTE
-                        descuento = oferta.descuento;
+                    if (ahora >= inicio && ahora <= fin) {
+                        descuento = Number(oferta.descuento);
                         precioConDescuento = parseFloat(
                             (producto.precio - (producto.precio * descuento) / 100).toFixed(2)
                         );
+                        console.log(`- Descuento aplicado: ${descuento}%`);
+                        console.log(`- Precio final: ${precioConDescuento}€`);
+                    } else {
+                        console.log('- Oferta fuera de fecha');
+                        console.log(`- Inicio: ${inicio}`);
+                        console.log(`- Fin: ${fin}`);
+                        console.log(`- Ahora: ${ahora}`);
                     }
                 }
 
@@ -148,7 +171,11 @@ export function Home() {
                     precioConDescuento
                 };
             })
-            .filter(producto => producto && producto.descuento > 0)
+            .filter(producto => {
+                const tieneDescuento = producto.descuento > 0;
+                console.log(`Filtrando ${producto.nombre}: descuento ${producto.descuento}%`);
+                return tieneDescuento;
+            })
         : [];
 
         // retornamos objetos añadidos carrito
@@ -271,45 +298,47 @@ export function Home() {
         <section className="seccion_ofertas">
             <h3 className="text-center bg-danger text-white text-uppercase mt-2 p-2">Ofertas</h3>
             <div className="todas_ofertas">
-                {/* oferta uno */}
                 {error_productos && <p className="text-danger">{error_productos}</p>}
                 {productosConOferta.length > 0 ? (
-                    productosConOferta.map((producto) => (
-                        <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
-                            {producto.descuento > 0 && (
-                                <span className="discount-tag">{producto.descuento}%</span>
-                            )}
+                    productosConOferta.map((producto) => {
+                        console.log('Renderizando producto:', producto.nombre, 'con descuento:', producto.descuento);
+                        return (
+                            <div key={producto.id} className="card_personalizada bg-dark p-3 m-3 rounded-2 position-relative">
+                                {producto.descuento > 0 && (
+                                    <span className="discount-tag">{producto.descuento}%</span>
+                                )}
 
-                            <img src={producto.url}
-                                className="card-img-top p-2"
-                                alt={producto.nombre}
-                                onClick={() => navigate(`/producto/${producto.id}`)}
-                                style={{ cursor: 'pointer' }}
-                            />
-                            <div className="card-body mt-3">
-                                <h5 className="card-title">{producto.nombre}</h5>
-                                <p className="card-text">{producto.descripcion}</p>
-                                <div className="total_precio">
-                                    <button 
-                                    className="btn btn-primary" 
-                                    onClick={() => handleAddToCartLocal(producto)}>Añadir</button>
-                                    {producto.descuento > 0 ? (
-                                        <>
-                                            <p>Antes: {producto.precio}€</p>
-                                            <p className="text-danger">Total: {producto.precioConDescuento.toFixed(2)}€</p>
-                                        </>
-                                    ) : (
-                                        <p>Total: {producto.precio} €</p>
-                                    )}
+                                <img src={producto.url}
+                                    className="card-img-top p-2"
+                                    alt={producto.nombre}
+                                    onClick={() => navigate(`/producto/${producto.id}`)}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                                <div className="card-body mt-3">
+                                    <h5 className="card-title">{producto.nombre}</h5>
+                                    <p className="card-text">{producto.descripcion}</p>
+                                    <div className="total_precio">
+                                        <button 
+                                        className="btn btn-primary" 
+                                        onClick={() => handleAddToCartLocal(producto)}>Añadir</button>
+                                        {producto.descuento > 0 ? (
+                                            <>
+                                                <p>Antes: {producto.precio}€</p>
+                                                <p className="text-danger">Total: {producto.precioConDescuento.toFixed(2)}€</p>
+                                            </>
+                                        ) : (
+                                            <p>Total: {producto.precio} €</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 ) : (
                     <p className="text-light text-center">Cargando productos en oferta</p>
                 )}
             </div>
-        </section >
+        </section>
 
         {/* SECCION PRODUCTOS MAS VENDIDOS */}
         <section className="productos_mas_vendidos">
