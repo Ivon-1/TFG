@@ -281,16 +281,14 @@ export const Productos = () => {
                                             <p className="card-text">{producto.descripcion}</p>
                                             <div className="total_precio">
                                                 <button onClick={() => handleAddToCartLocal(producto)} className="btn btn-primary">Añadir</button>
-                                                <div className="precios mt-2">
-                                                    {producto.descuento > 0 ? (
-                                                        <>
-                                                            <p className="text-muted text-decoration-line-through">Antes: {producto.precio}€</p>
-                                                            <p className="text-danger">Ahora: {producto.precioConDescuento}€</p>
-                                                        </>
-                                                    ) : (
-                                                        <p>Precio: {producto.precio}€</p>
-                                                    )}
-                                                </div>
+                                                {producto.descuento > 0 ? (
+                                                    <>
+                                                        <p>Antes: {producto.precio}€</p>
+                                                        <p className="text-danger">Total: {producto.precioConDescuento}€</p>
+                                                    </>
+                                                ) : (
+                                                    <p>Total: {producto.precio}€</p>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
