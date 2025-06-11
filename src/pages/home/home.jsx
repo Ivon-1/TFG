@@ -223,7 +223,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_monitores.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Sobremesa</a>
+                    <Link to="/productos" className="btn btn-info text-white">Sobremesa</Link>
                 </div>
             </div>
 
@@ -233,7 +233,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_portatiles.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Portátiles</a>
+                    <Link to="/productos" className="btn btn-info text-white">Portátiles</Link>
                 </div>
             </div>
 
@@ -243,7 +243,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_moviles.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Teléfonos</a>
+                    <Link to="/productos" className="btn btn-info text-white">Teléfonos</Link>
                 </div>
             </div>
 
@@ -253,7 +253,7 @@ export function Home() {
                     className="card-img-top"
                     alt={imagenes_home.categoria_consolas.alt} />
                 <div className="card-body bg-black text-center">
-                    <a href="#" className="btn btn-info text-white">Consola</a>
+                    <Link to="/productos" className="btn btn-info text-white">Consola</Link>
                 </div>
             </div>
 
