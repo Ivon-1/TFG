@@ -1,9 +1,4 @@
 
-Voy a buscar información relevante sobre los requisitos y el despliegue del proyecto.
-
-Ran tool
-Read file: package.json
-Basado en la información recopilada, aquí está la documentación para el despliegue y requisitos del proyecto:
 
 # Documentación de Despliegue - Modtech
 
